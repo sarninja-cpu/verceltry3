@@ -421,6 +421,27 @@ const config = {
       ]
     },
     {
+      text: 'SEAL Certifications',
+      collapsed: false,
+      items: [
+        { text: 'Overview', link: '/certs/overview' },
+        { text: 'Certified Partners', link: '/certs/certified-partners' },
+        { text: 'Certified Protocols', link: '/certs/certified-protocols', dev: true },
+        {
+          text: 'SEAL Certification Frameworks', collapsed: true, items: [
+            { text: 'DevOps & Infrastructure', link: '/certs/sfc-devops-infrastructure' },
+            { text: 'DNS Registrar', link: '/certs/sfc-dns-registrar' },
+            { text: 'Incident Response', link: '/certs/sfc-incident-response' },
+            { text: 'Multisig Operations', link: '/certs/sfc-multisig-ops' },
+            { text: 'Treasury Operations', link: '/certs/sfc-treasury-ops' },
+            { text: 'Workspace Security', link: '/certs/sfc-workspace-security' },
+          ]
+        },
+        { text: 'Certification Guidelines', link: '/certs/certification-guidelines' },
+        { text: 'Contributions', link: '/certs/contributions' },
+      ]
+    },
+    {
       text: 'About this',
       collapsed: false,
       items: [
