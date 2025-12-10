@@ -1,10 +1,14 @@
 @import "tailwindcss";
 
+details .vocs_Paragraph {
+    margin-bottom: var(--vocs-space_24);
+}
+
 .vocs_NavLogo_logoImage {
     height: 80% !important;
 }
 
-.vocs_DocsLayout_gutterLeft { 
+.vocs_DocsLayout_gutterLeft {
     justify-content: flex-start;
     width: unset;
 }
@@ -85,7 +89,7 @@
 :root:not(.dark) .vocs_AiCtaDropdown_buttonLeft.vocs_AiCtaDropdown_buttonLeft:hover {
     border-color: #303030;
     color: #1e1e1e;
-} 
+}
 
 :root:not(.dark) .vocs_AiCtaDropdown_dropdownMenuContent {
     border: 1px solid #908f8f;
