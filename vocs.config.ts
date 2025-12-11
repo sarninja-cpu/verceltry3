@@ -1,9 +1,9 @@
 import { defineConfig } from 'vocs'
 
-const isDev = process.env.CF_PAGES_BRANCH === 'main' && process.env.VERCEL_GIT_COMMIT_REF === 'main';
+const isMain = process.env.CF_PAGES_BRANCH === 'main' || process.env.VERCEL_GIT_COMMIT_REF === 'main';
 
 const config = {
-  checkDeadLinks: isDev ? "warn" : true,
+  checkDeadLinks: isMain ? 'warn' : true,
   banner: {
     content: '***This is a work in progress and not a release. We are looking for volunteers. See [Issues](https://github.com/security-alliance/frameworks/issues) and [Contribution](https://github.com/security-alliance/frameworks/blob/develop/docs/pages/contribute/contributing.mdx) to know how to collaborate.***',
     height: '30px',
