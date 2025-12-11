@@ -1,6 +1,6 @@
 import { defineConfig } from 'vocs'
 
-const isDev = process.env.CF_PAGES_BRANCH !== 'main' && process.env.VERCEL_GIT_COMMIT_REF !== 'main';
+const isDev = process.env.CF_PAGES_BRANCH === 'main' && process.env.VERCEL_GIT_COMMIT_REF === 'main';
 
 const config = {
   checkDeadLinks: isDev ? "warn" : true,
