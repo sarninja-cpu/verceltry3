@@ -47,7 +47,7 @@ export function Contributors() {
       
       {groups.map((group) => (
         <div key={group.label} className={`contributors-group ${group.label.toLowerCase().replace(' ', '-')}-group`}>
-          <h2>{group.label}</h2>
+          <h1>{group.label}</h1>
           <div className="contributors-page-list">
             {group.contributors.map((contributor) => (
               <div
