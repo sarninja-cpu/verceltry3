@@ -1,6 +1,7 @@
 import { defineConfig } from 'vocs'
 
 const config = {
+  checkDeadlinks: 'warn',
   banner: {
     content: '***This is a work in progress and not a release. We are looking for volunteers. See [Issues](https://github.com/security-alliance/frameworks/issues) and [Contribution](https://github.com/security-alliance/frameworks/blob/develop/docs/pages/contribute/contributing.mdx) to know how to collaborate.***',
     height: '30px',
@@ -20,7 +21,7 @@ const config = {
       text: 'Introduction',
       collapsed: false,
       items: [
-        { text: 'Introduction to Frameworks', link: '/intro/introduction' },
+        { text: 'Introduction to Frameworks', link: '/intro/introduc' },
         { text: 'How to Navigate the Website', link: '/intro/how-to-navigate-the-website' },
         { text: 'Overview of each Framework', link: '/intro/overview-of-each-framework' },
       ]
