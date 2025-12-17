@@ -1,5 +1,6 @@
 ---
 title: "Contribute"
+description: "Contribute to SEAL Security Frameworks: fix typos, add new sections, or propose enhancements. Help us build the documentation and improve security in the blockchain ecosystem"
 ---
 
 {/*
@@ -29,6 +30,9 @@ to join our effort, feel free to fix typos, contribute new sections, or propose 
 **Before contributing, please read our [Code of
 Conduct](https://github.com/security-alliance/frameworks/blob/develop/CODE_OF_CONDUCT.md)** to ensure that all
 interactions remain respectful, inclusive, and constructive.
+
+**Before contributing to SEAL Certifications** specifically, please read the [SEAL Certifications
+Contributing Guide](/certs/contributions.mdx) for details on the certification framework and project specifics.
 
 Join our [Discord](https://discord.gg/securityalliance) server, let others know what you are working on in the
 ‘frameworks-reviewers’ group channel, and collaborate with other contributors writing about related topics.
@@ -120,7 +124,7 @@ If you prefer to install dependencies locally on your machine:
 
 **Prerequisites:**
 
-- Node.js (v18 or later) and pnpm (for running Vocs locally)
+- Node.js (v22 or later) and pnpm (for running Vocs locally)
 - [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2) (For linting markdown files)
 - [Docker](https://docs.docker.com/get-docker/) (Optional: For running the devcontainer)
 - [GitHub CLI](https://cli.github.com/) (Optional: For using `gh` to interact with GitHub)
@@ -208,11 +212,24 @@ Or look at your branch on GitHub — commits should show a green **Verified** ba
 When contributing to the Security Frameworks, there are several additional responsibilities to ensure your updates
 integrate smoothly into the site and maintain proper structure:
 
-### 1. Page tags
+### 1. Frontmatter
 
-- Assign appropriate tags at the top of your pages in the frontmatter to help categorize content by role, topic, or
+Every page requires frontmatter at the top of the file. Here are the key fields:
 
-skill level:
+#### Title and Description
+
+Add a title and description to every page you add:
+
+```yaml
+---
+title: "Your Page Title"
+description: "A brief description of the page content."
+---
+```
+
+#### Tags
+
+Assign tags to categorize content by role, topic, or skill level:
 
 ```yaml
 ---
@@ -222,11 +239,11 @@ tags:
 ---
 ```
 
-- Proper tagging makes your contribution discoverable and filterable on the site.
+Proper tagging makes your contribution discoverable and filterable on the site.
 
-### 2. Contributors metadata
+#### Contributors
 
-- Add yourself and other relevant contributors to the page frontmatter:
+Add yourself and other relevant contributors:
 
 ```yaml
 ---
@@ -238,10 +255,13 @@ contributors:
 ---
 ```
 
-- Contributors are **managed centrally**:
-    1. **Contributor database:** `docs/pages/config/contributors.json`
-    2. **Usage guide:** `docs/pages/config/using-contributors.mdx`
-- This helps track contributions and ensures proper attribution for edits and reviews.
+Contributors are **managed centrally**:
+- **Contributor database:** `docs/pages/config/contributors.json`
+- **Usage guide:** `docs/pages/config/using-contributors.mdx`
+
+This helps track contributions and ensures proper attribution.
+
+For a complete frontmatter example, see the [template file](/config/template).
 
 ### 3. Sidebar / Navigation
 
