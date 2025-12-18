@@ -3,9 +3,76 @@
 <head>
   <title>404 - Page Not Found</title>
   <meta name="robots" content="noindex">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    
+    .not-found-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 400px;
+      margin: 0 auto;
+      padding-top: var(--vocs-space_64);
+      width: 100%;
+    }
+    
+    h1 {
+      font-size: var(--vocs-fontSize_h1);
+      letter-spacing: -0.02em;
+      color: inherit;
+    }
+    
+    .spacer-24 {
+      height: var(--vocs-space_24);
+    }
+    
+    .divider {
+      border: none;
+      border-top: 1px solid var(--vocs-color_border);
+      width: 50%;
+      margin: 0;
+    }
+    
+    p {
+      line-height: var(--vocs-lineHeight_paragraph);
+      letter-spacing: 0.005em;
+      text-align: center;
+    }
+    
+    .spacer-8 {
+      height: var(--vocs-space_8);
+    }
+    
+    a {
+      color: var(--vocs-color_link);
+      font-weight: var(--vocs-fontWeight_medium);
+      text-underline-offset: var(--vocs-space_2);
+      text-decoration: underline;
+      transition: color 0.1s;
+    }
+    
+    a:hover {
+      color: var(--vocs-color_linkHover);
+    }
+  </style>
 </head>
 <body>
-  <h1>404 - Page Not Found</h1>
-  <p>The page you are looking for doesn’t exist.</p>
+  <div class="not-found-container">
+    <h1>Page Not Found</h1>
+    <div class="spacer-24"></div>
+    <hr class="divider" />
+    <div class="spacer-24"></div>
+    <p>The page you were looking for could not be found.</p>
+    <div class="spacer-8"></div>
+    <a href="/">Go to Home Page</a>
+  </div>
 </body>
 </html>
