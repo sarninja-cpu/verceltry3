@@ -1,4 +1,4 @@
-/* 404 Page Styles - Matching vocs NotFound component */
+/* 404 Page Styles */
 
 /* CSS Variables */
 :root {
@@ -119,11 +119,10 @@ p {
   flex-direction: column;
   max-width: 400px;
   margin: 0 auto;
-  padding-top: var(--vocs-404-space_64);
+  padding-top: 8rem;
 }
 
 .vocs_NotFound_divider {
   border-color: var(--vocs-404-color_border);
   width: 50%;
 }
-
