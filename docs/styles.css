@@ -107,3 +107,18 @@ details .vocs_Paragraph {
 .vocs_Outline_item {
     margin-bottom: 0.3rem;
 }
+
+/* NotFound component styles */
+.vocs_NotFound_root {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: 0 auto;
+    padding-top: var(--vocs-space_64);
+}
+
+.vocs_NotFound_divider {
+    border-color: var(--vocs-color_border);
+    width: 50%;
+}
