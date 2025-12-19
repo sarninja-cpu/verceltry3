@@ -108,6 +108,113 @@ details .vocs_Paragraph {
     margin-bottom: 0.3rem;
 }
 
+/* 404 Page Styles - CSS Variables for standalone 404.html */
+:root {
+    --vocs-color_background: rgba(255 255 255 / 100%);
+    --vocs-color_text: #4c4c4c;
+    --vocs-color_heading: #202020;
+    --vocs-color_border: #ececec;
+    --vocs-color_textAccent: #0588f0;
+    --vocs-color_textAccentHover: #0d74ce;
+    --vocs-space_8: .5rem;
+    --vocs-space_24: 1.5rem;
+    --vocs-space_64: 4rem;
+    --vocs-fontSize_root: 16px;
+    --vocs-fontSize_h1: 2rem;
+    --vocs-fontFamily_default: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    --vocs-fontWeight_regular: 300;
+    --vocs-fontWeight_medium: 400;
+    --vocs-lineHeight_paragraph: 1.75em;
+    --vocs-lineHeight_heading: 1.5em;
+}
+
+:root.dark {
+    --vocs-color_background: #121113;
+    --vocs-color_text: rgba(255, 255, 255, .8);
+    --vocs-color_heading: rgba(255 255 255 / 100%);
+    --vocs-color_border: #2b292d;
+    --vocs-color_textAccent: #3b9eff;
+    --vocs-color_textAccentHover: #0090ff;
+}
+
+/* 404 Page Base Reset */
+body[data-404] *,
+body[data-404] *::before,
+body[data-404] *::after {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}
+
+body[data-404] {
+    margin: 0;
+    padding: 0;
+    font-family: var(--vocs-fontFamily_default);
+    font-size: var(--vocs-fontSize_root);
+    line-height: var(--vocs-lineHeight_paragraph);
+    font-weight: var(--vocs-fontWeight_regular);
+    background-color: var(--vocs-color_background);
+    color: var(--vocs-color_text);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+}
+
+body[data-404] hr {
+    height: 0;
+    color: inherit;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: var(--vocs-color_border);
+}
+
+body[data-404] h1,
+body[data-404] h2,
+body[data-404] h3,
+body[data-404] h4,
+body[data-404] h5,
+body[data-404] h6 {
+    font-size: inherit;
+    font-weight: inherit;
+    margin: 0;
+}
+
+body[data-404] a {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+body[data-404] p {
+    margin: 0;
+}
+
+/* 404 Page Component Styles */
+body[data-404] .vocs_H1 {
+    font-size: var(--vocs-fontSize_h1);
+    letter-spacing: -.02em;
+    line-height: var(--vocs-lineHeight_heading);
+    color: var(--vocs-color_heading);
+    font-weight: var(--vocs-fontWeight_regular);
+}
+
+body[data-404] .vocs_Paragraph {
+    line-height: var(--vocs-lineHeight_paragraph);
+    letter-spacing: .005em;
+    color: var(--vocs-color_text);
+    margin-bottom: var(--vocs-space_24);
+}
+
+body[data-404] .vocs_Link {
+    color: var(--vocs-color_textAccent);
+    font-weight: var(--vocs-fontWeight_medium);
+    text-underline-offset: var(--vocs-space_8);
+    text-decoration: underline;
+    transition: color .1s;
+}
+
+body[data-404] .vocs_Link:hover {
+    color: var(--vocs-color_textAccentHover);
+}
+
 /* NotFound component styles */
 .vocs_NotFound_root {
     align-items: center;
