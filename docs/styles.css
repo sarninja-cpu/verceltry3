@@ -1,5 +1,3 @@
-@import "tailwindcss";
-
 details .vocs_Paragraph {
     margin-bottom: var(--vocs-space_24);
 }
@@ -109,32 +107,33 @@ details .vocs_Paragraph {
 }
 
 /* 404 Page Styles - CSS Variables for standalone 404.html */
+/* Define variables on :root so they're available globally, but only use them in 404 page */
 :root {
-    --vocs-color_background: rgba(255 255 255 / 100%);
-    --vocs-color_text: #4c4c4c;
-    --vocs-color_heading: #202020;
-    --vocs-color_border: #ececec;
-    --vocs-color_textAccent: #0588f0;
-    --vocs-color_textAccentHover: #0d74ce;
-    --vocs-space_8: .5rem;
-    --vocs-space_24: 1.5rem;
-    --vocs-space_64: 4rem;
-    --vocs-fontSize_root: 16px;
-    --vocs-fontSize_h1: 2rem;
-    --vocs-fontFamily_default: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    --vocs-fontWeight_regular: 300;
-    --vocs-fontWeight_medium: 400;
-    --vocs-lineHeight_paragraph: 1.75em;
-    --vocs-lineHeight_heading: 1.5em;
+    --vocs-404-color_background: rgba(255 255 255 / 100%);
+    --vocs-404-color_text: #4c4c4c;
+    --vocs-404-color_heading: #202020;
+    --vocs-404-color_border: #ececec;
+    --vocs-404-color_textAccent: #0588f0;
+    --vocs-404-color_textAccentHover: #0d74ce;
+    --vocs-404-space_8: .5rem;
+    --vocs-404-space_24: 1.5rem;
+    --vocs-404-space_64: 4rem;
+    --vocs-404-fontSize_root: 16px;
+    --vocs-404-fontSize_h1: 2rem;
+    --vocs-404-fontFamily_default: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    --vocs-404-fontWeight_regular: 300;
+    --vocs-404-fontWeight_medium: 400;
+    --vocs-404-lineHeight_paragraph: 1.75em;
+    --vocs-404-lineHeight_heading: 1.5em;
 }
 
 :root.dark {
-    --vocs-color_background: #121113;
-    --vocs-color_text: rgba(255, 255, 255, .8);
-    --vocs-color_heading: rgba(255 255 255 / 100%);
-    --vocs-color_border: #2b292d;
-    --vocs-color_textAccent: #3b9eff;
-    --vocs-color_textAccentHover: #0090ff;
+    --vocs-404-color_background: #121113;
+    --vocs-404-color_text: rgba(255, 255, 255, .8);
+    --vocs-404-color_heading: rgba(255 255 255 / 100%);
+    --vocs-404-color_border: #2b292d;
+    --vocs-404-color_textAccent: #3b9eff;
+    --vocs-404-color_textAccentHover: #0090ff;
 }
 
 /* 404 Page Base Reset */
@@ -149,12 +148,12 @@ body[data-404] *::after {
 body[data-404] {
     margin: 0;
     padding: 0;
-    font-family: var(--vocs-fontFamily_default);
-    font-size: var(--vocs-fontSize_root);
-    line-height: var(--vocs-lineHeight_paragraph);
-    font-weight: var(--vocs-fontWeight_regular);
-    background-color: var(--vocs-color_background);
-    color: var(--vocs-color_text);
+    font-family: var(--vocs-404-fontFamily_default);
+    font-size: var(--vocs-404-fontSize_root);
+    line-height: var(--vocs-404-lineHeight_paragraph);
+    font-weight: var(--vocs-404-fontWeight_regular);
+    background-color: var(--vocs-404-color_background);
+    color: var(--vocs-404-color_text);
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
 }
@@ -164,7 +163,7 @@ body[data-404] hr {
     color: inherit;
     border-top-width: 1px;
     border-top-style: solid;
-    border-top-color: var(--vocs-color_border);
+    border-top-color: var(--vocs-404-color_border);
 }
 
 body[data-404] h1,
@@ -189,43 +188,43 @@ body[data-404] p {
 
 /* 404 Page Component Styles */
 body[data-404] .vocs_H1 {
-    font-size: var(--vocs-fontSize_h1);
+    font-size: var(--vocs-404-fontSize_h1);
     letter-spacing: -.02em;
-    line-height: var(--vocs-lineHeight_heading);
-    color: var(--vocs-color_heading);
-    font-weight: var(--vocs-fontWeight_regular);
+    line-height: var(--vocs-404-lineHeight_heading);
+    color: var(--vocs-404-color_heading);
+    font-weight: var(--vocs-404-fontWeight_regular);
 }
 
 body[data-404] .vocs_Paragraph {
-    line-height: var(--vocs-lineHeight_paragraph);
+    line-height: var(--vocs-404-lineHeight_paragraph);
     letter-spacing: .005em;
-    color: var(--vocs-color_text);
-    margin-bottom: var(--vocs-space_24);
+    color: var(--vocs-404-color_text);
+    margin-bottom: var(--vocs-404-space_24);
 }
 
 body[data-404] .vocs_Link {
-    color: var(--vocs-color_textAccent);
-    font-weight: var(--vocs-fontWeight_medium);
-    text-underline-offset: var(--vocs-space_8);
+    color: var(--vocs-404-color_textAccent);
+    font-weight: var(--vocs-404-fontWeight_medium);
+    text-underline-offset: var(--vocs-404-space_8);
     text-decoration: underline;
     transition: color .1s;
 }
 
 body[data-404] .vocs_Link:hover {
-    color: var(--vocs-color_textAccentHover);
+    color: var(--vocs-404-color_textAccentHover);
 }
 
-/* NotFound component styles */
-.vocs_NotFound_root {
+/* NotFound component styles - scoped for 404 page */
+body[data-404] .vocs_NotFound_root {
     align-items: center;
     display: flex;
     flex-direction: column;
     max-width: 400px;
     margin: 0 auto;
-    padding-top: var(--vocs-space_64);
+    padding-top: var(--vocs-404-space_64);
 }
 
-.vocs_NotFound_divider {
-    border-color: var(--vocs-color_border);
+body[data-404] .vocs_NotFound_divider {
+    border-color: var(--vocs-404-color_border);
     width: 50%;
 }
