@@ -1,6 +1,6 @@
-export function onRequest() {
-  // Detect the branch: main or preview/dev
-  const branch = process.env.CF_PAGES_BRANCH || 'dev';
+export function onRequest(context: { env: { CF_PAGES_BRANCH?: string; }; }) {
+  // Access environment through the context parameter
+  const branch = context.env.CF_PAGES_BRANCH || 'dev';
   const isMain = branch === 'main';
 
   // Build the robots.txt content
