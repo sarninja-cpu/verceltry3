@@ -5,8 +5,10 @@ export function onRequest(context: { env: { CF_PAGES_BRANCH?: string; }; }) {
   const header = `# As a condition of accessing this website, you agree to abide by the following
 # content signals:
 
-# (a) If a content-signal = yes, you may collect content for the corresponding use.
-# (b) If a content-signal = no, you may not collect content for the corresponding use.
+# (a) If a content-signal = yes, you may collect content for the corresponding
+#     use.
+# (b) If a content-signal = no, you may not collect content for the
+#     corresponding use.
 # (c) If the website operator does not include a content signal for a
 #     corresponding use, the website operator neither grants nor restricts
 #     via content signal with respect to the corresponding use.
@@ -24,6 +26,11 @@ export function onRequest(context: { env: { CF_PAGES_BRANCH?: string; }; }) {
 # ANY RESTRICTIONS EXPRESSED VIA CONTENT SIGNALS ARE EXPRESS RESERVATIONS OF
 # RIGHTS UNDER ARTICLE 4 OF THE EUROPEAN UNION DIRECTIVE 2019/790 ON COPYRIGHT
 # AND RELATED RIGHTS IN THE DIGITAL SINGLE MARKET.
+`;
+
+const rules = isMain
+? `User-agent: *
+Allow: /
 
 User-agent: Amazonbot
 Disallow: /
@@ -48,11 +55,6 @@ Disallow: /
 
 User-agent: meta-externalagent
 Disallow: /
-`;
-
-const rules = isMain
-? `User-agent: *
-Allow: /
 `
 : `User-agent: *
 Disallow: /
