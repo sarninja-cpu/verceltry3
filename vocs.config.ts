@@ -7,7 +7,7 @@ const config = {
     height: '30px',
     backgroundColor: '#8b5cf6',
     textColor: 'white',
-    dismissable: false 
+    dismissable: false
   },
   title: 'Security Frameworks by SEAL',
   description: 'Comprehensive security framework documentation for Web3 projects and blockchain security best practices.',
