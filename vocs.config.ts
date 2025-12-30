@@ -14,7 +14,7 @@ const config = {
   logoUrl: 'https://frameworks-static.s3.us-east-2.amazonaws.com/images/logo/frameworks-full.svg',
   iconUrl: '/favicon.ico',
   ogImageUrl: {
-    '/': '/frameworks-twitter.png'
+    '/': 'frameworks-twitter.png'
   },
   sidebar: [
     {
