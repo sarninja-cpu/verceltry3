@@ -1,5 +1,11 @@
 import contributorsData from '../../docs/pages/config/contributors.json';
 import './Contributors.css';
+import { BadgeDisplay } from '../badges/BadgeDisplay';
+
+interface Badge {
+  name: string;
+  assigned: string;
+}
 
 interface Contributor {
   slug: string;
@@ -8,10 +14,8 @@ interface Contributor {
   avatar: string;
   github: string | null;
   twitter: string | null;
-  website: string | null;
-  company: string | null;
-  job_title: string | null;
-  description: string;
+  steward: string;
+  badges: Badge[];
 }
 
 interface ContributorGroup {
@@ -89,20 +93,20 @@ export function Contributors() {
 
                 <div className="contributors-page-header">
                   <div className="contributors-page-name">{contributor.name}</div>
-                  {contributor.role === "steward" && group.label.toLowerCase() === "core contributors" && (
+                  {contributor.role === "steward" && (
                     <span className="contributors-page-badge steward-badge">Steward</span>
                   )}
                 </div>
 
-                {contributor.company && (
-                  <div className="contributors-page-company">{contributor.company}</div>
+                {contributor.steward && (
+                  <div className="contributors-page-steward">Steward: {contributor.steward}</div>
                 )}
 
-                {contributor.job_title && (
-                  <div className="contributors-page-role">{contributor.job_title}</div>
+                {contributor.badges && contributor.badges.some(b => b.name && b.name.trim() !== '') && (
+                  <div className="contributors-page-badges">
+                    <BadgeDisplay badges={contributor.badges} compact={true} />
+                  </div>
                 )}
-
-                <div className="contributors-page-description">{contributor.description}</div>
 
                 <div className="contributors-page-social">
                   {contributor.github && (
@@ -119,13 +123,6 @@ export function Contributors() {
                         </svg>
                       </a>
                     )}
-                                    {contributor.website && (
-                    <a href={contributor.website} target="_blank" rel="noopener noreferrer" title="Website" className="contributor-link">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-                      </svg>
-                    </a>
-                  )}
                 </div>
               </div>
             ))}

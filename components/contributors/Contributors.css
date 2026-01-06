@@ -91,7 +91,7 @@
   font-style: italic;
 }
 
-.contributors-page-company {
+.contributors-page-steward {
   font-size: 0.8rem;
   color: var(--fg);
   margin: 0.4rem 0 0.4rem;
@@ -105,6 +105,7 @@
   width: auto;
   margin-left: auto;
   margin-right: auto;
+  font-style: italic;
 }
 
 /* Dark theme specific adjustments */
@@ -216,4 +217,11 @@ html.navy .contributors-page-company {
 /* Featured contributors styling */
 .featured-group .contributors-page-card {
   border-left: 3px solid #f6c32c;
+}
+
+/* Badges in contributor cards */
+.contributors-page-badges {
+  margin: 0.75rem 0;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--theme-popup-border);
 }
