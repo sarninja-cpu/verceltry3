@@ -303,5 +303,17 @@
       {"name": "Contributor-10", "assigned": "2024-08-20"},
       {"name": "Active-Last-90d", "assigned": "2024-12-18"}
     ]
+  },
+  "scode2277": {
+    "slug": "scode2277",
+    "name": "scode2277",
+    "avatar": "https://avatars.githubusercontent.com/scode2277",
+    "github": "https://github.com/scode2277",
+    "twitter": "https://x.com/emit_sara",
+    "role": "contributor",
+    "steward": "",
+    "badges": [
+      {"name": "", "assigned": ""}
+    ]
   }
 }
