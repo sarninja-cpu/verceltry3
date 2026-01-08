@@ -183,6 +183,9 @@ export function BadgeDisplay({ contributorSlug, badges, compact = false, showCou
           <div className="badge-list">
             {achievementBadges.map((badge, index) => {
               const config = getBadgeConfig(badge.name);
+              const badgeDate = badge.assigned ? formatDate(badge.assigned) : '';
+              const tooltipText = badgeDate ? `Awarded ${badgeDate}` : '';
+
               return (
                 <div
                   key={`${badge.name}-${index}`}
@@ -191,7 +194,9 @@ export function BadgeDisplay({ contributorSlug, badges, compact = false, showCou
                     '--badge-color': config.color,
                     '--badge-bg': config.bgColor,
                   } as React.CSSProperties}
-                  title={badge.assigned ? `Awarded ${formatDate(badge.assigned)}` : badge.name}
+                  data-badge-name={badge.name}
+                  data-badge-date={tooltipText}
+                  title={`${badge.name}${tooltipText ? ` - ${tooltipText}` : ''}`}
                 >
                   <span className="badge-icon">{config.icon}</span>
                   <span className="badge-name">{badge.name}</span>
@@ -212,6 +217,9 @@ export function BadgeDisplay({ contributorSlug, badges, compact = false, showCou
             {activityBadges.map((badge, index) => {
               const config = getBadgeConfig(badge.name);
               const isRecent = isRecentActivity(badge.name, badge.assigned);
+              const badgeDate = badge.assigned ? formatDate(badge.assigned) : '';
+              const tooltipText = badgeDate ? `Active since ${badgeDate}` : '';
+
               return (
                 <div
                   key={`${badge.name}-${index}`}
@@ -220,7 +228,9 @@ export function BadgeDisplay({ contributorSlug, badges, compact = false, showCou
                     '--badge-color': config.color,
                     '--badge-bg': config.bgColor,
                   } as React.CSSProperties}
-                  title={badge.assigned ? `Active since ${formatDate(badge.assigned)}` : badge.name}
+                  data-badge-name={badge.name}
+                  data-badge-date={tooltipText}
+                  title={`${badge.name}${tooltipText ? ` - ${tooltipText}` : ''}`}
                 >
                   <span className="badge-icon">{config.icon}</span>
                   <span className="badge-name">{badge.name}</span>
