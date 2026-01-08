@@ -122,7 +122,7 @@ function isRecentActivity(badgeName: string, assignedDate: string): boolean {
   if (!assignedDate) return false;
   const activityBadges = ['Active-Last-30d', 'Active-Last-90d', 'New-Joiner'];
   if (!activityBadges.includes(badgeName)) return false;
-  
+
   try {
     const date = new Date(assignedDate);
     const now = new Date();
@@ -138,11 +138,12 @@ interface BadgeDisplayProps {
   contributorSlug?: string;
   badges?: Badge[];
   compact?: boolean;
+  showCount?: boolean;
 }
 
-export function BadgeDisplay({ contributorSlug, badges, compact = false }: BadgeDisplayProps) {
+export function BadgeDisplay({ contributorSlug, badges, compact = false, showCount = false }: BadgeDisplayProps) {
   let displayBadges: Badge[] = [];
-  
+
   if (badges) {
     displayBadges = badges.filter(b => b.name && b.name.trim() !== '');
   } else if (contributorSlug) {
@@ -162,7 +163,7 @@ export function BadgeDisplay({ contributorSlug, badges, compact = false }: Badge
     const config = getBadgeConfig(b.name);
     return config.category === 'achievement';
   });
-  
+
   const activityBadges = displayBadges.filter(b => {
     const config = getBadgeConfig(b.name);
     return config.category === 'activity';
@@ -170,6 +171,12 @@ export function BadgeDisplay({ contributorSlug, badges, compact = false }: Badge
 
   return (
     <div className={`badge-display ${compact ? 'badge-display-compact' : ''}`}>
+      {showCount && displayBadges.length > 0 && (
+        <div className="badge-count-indicator">
+          {displayBadges.length}
+        </div>
+      )}
+
       {achievementBadges.length > 0 && (
         <div className="badge-category">
           {!compact && <div className="badge-category-label">Achievements</div>}
@@ -188,7 +195,7 @@ export function BadgeDisplay({ contributorSlug, badges, compact = false }: Badge
                 >
                   <span className="badge-icon">{config.icon}</span>
                   <span className="badge-name">{badge.name}</span>
-                  {badge.assigned && !compact && (
+                  {badge.assigned && (
                     <span className="badge-date">{formatDate(badge.assigned)}</span>
                   )}
                 </div>
@@ -197,7 +204,7 @@ export function BadgeDisplay({ contributorSlug, badges, compact = false }: Badge
           </div>
         </div>
       )}
-      
+
       {activityBadges.length > 0 && (
         <div className="badge-category">
           {!compact && <div className="badge-category-label">Activity</div>}
@@ -217,7 +224,7 @@ export function BadgeDisplay({ contributorSlug, badges, compact = false }: Badge
                 >
                   <span className="badge-icon">{config.icon}</span>
                   <span className="badge-name">{badge.name}</span>
-                  {badge.assigned && !compact && (
+                  {badge.assigned && (
                     <span className="badge-date">{formatDate(badge.assigned)}</span>
                   )}
                 </div>
@@ -233,7 +240,7 @@ export function BadgeDisplay({ contributorSlug, badges, compact = false }: Badge
 // Standalone component to show all contributors' badges
 export function AllBadgesDisplay() {
   const contributors = Object.values(contributorsData as Record<string, Contributor>);
-  const contributorsWithBadges = contributors.filter(c => 
+  const contributorsWithBadges = contributors.filter(c =>
     c.badges && c.badges.some(b => b.name && b.name.trim() !== '')
   );
 
@@ -255,20 +262,20 @@ export function AllBadgesDisplay() {
         </div>
         <div className="badge-stat-item">
           <span className="badge-stat-number">
-            {contributorsWithBadges.reduce((sum, c) => 
+            {contributorsWithBadges.reduce((sum, c) =>
               sum + (c.badges?.filter(b => b.name && b.name.trim() !== '').length || 0), 0
             )}
           </span>
           <span className="badge-stat-label">Total Badges Awarded</span>
         </div>
       </div>
-      
+
       <div className="badge-contributors-grid">
         {contributorsWithBadges.map(contributor => (
           <div key={contributor.slug} className="badge-contributor-card">
             <div className="badge-contributor-header">
-              <img 
-                src={contributor.avatar} 
+              <img
+                src={contributor.avatar}
                 alt={contributor.name}
                 className="badge-contributor-avatar"
               />
@@ -288,4 +295,3 @@ export function AllBadgesDisplay() {
 }
 
 export default BadgeDisplay;
-
