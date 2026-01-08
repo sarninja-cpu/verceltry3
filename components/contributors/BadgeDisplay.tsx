@@ -112,6 +112,16 @@ const BadgeIcon = ({ name, color, isAchievement }: { name: string, color: string
             <path className="svg-sparkle-delay" d="M19 15L19.5 17.5L22 18L19.5 18.5L19 21L18.5 18.5L16 18L18.5 17.5L19 15Z" fill={color} opacity="0.6" />
           </svg>
         );
+      case 'Issue-Opener-5':
+      case 'Issue-Opener-10':
+      case 'Issue-Opener-25':
+        return (
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path className="svg-float" d="M17 8L12 3L7 8" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path className="svg-pulse" d="M12 3V15" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        );
       case 'Dormant-90d+':
         return (
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -135,74 +145,121 @@ const BadgeIcon = ({ name, color, isAchievement }: { name: string, color: string
   );
 };
 
-// Badge type definitions
-const BADGE_CONFIG: Record<string, { color: string; bgColor: string; category: 'achievement' | 'activity'; role?: boolean }> = {
+// Badge type definitions with better naming and descriptions
+const BADGE_CONFIG: Record<string, { color: string; bgColor: string; category: 'achievement' | 'activity'; label: string; description: string; role?: boolean }> = {
   'Framework-Steward': {
     color: '#0366d6',
     bgColor: 'rgba(3, 102, 214, 0.1)',
     category: 'achievement',
+    label: 'Framework Steward',
+    description: 'Official maintainer responsible for specific framework quality.',
     role: true
   },
   'Core-Contributor': {
     color: '#28a745',
     bgColor: 'rgba(40, 167, 69, 0.1)',
     category: 'achievement',
+    label: 'Core Team',
+    description: 'Trusted contributor with ongoing governance responsibilities.',
     role: true
   },
   'Top-Reviewer': {
     color: '#6f42c1',
     bgColor: 'rgba(111, 66, 193, 0.1)',
-    category: 'achievement'
+    category: 'achievement',
+    label: 'Top Community Reviewer',
+    description: 'Exceptional contributions to the PR review and quality process.',
   },
   'Contributor-5': {
     color: '#e34c26',
     bgColor: 'rgba(227, 76, 38, 0.1)',
-    category: 'achievement'
+    category: 'achievement',
+    label: 'Rising Contributor',
+    description: 'Awarded for reaching 5 merged code contributions.',
   },
   'Contributor-10': {
     color: '#e34c26',
     bgColor: 'rgba(227, 76, 38, 0.1)',
-    category: 'achievement'
+    category: 'achievement',
+    label: 'Gold Contributor',
+    description: 'Awarded for reaching 10 merged code contributions.',
   },
   'Contributor-25': {
     color: '#e34c26',
     bgColor: 'rgba(227, 76, 38, 0.1)',
-    category: 'achievement'
+    category: 'achievement',
+    label: 'Elite Contributor',
+    description: 'Major milestone: 25+ merged code contributions.',
   },
   'Reviewer-10': {
     color: '#6f42c1',
     bgColor: 'rgba(111, 66, 193, 0.1)',
-    category: 'achievement'
+    category: 'achievement',
+    label: 'Active Reviewer',
+    description: 'Awarded for completing 10+ peer reviews.',
   },
   'Reviewer-25': {
     color: '#6f42c1',
     bgColor: 'rgba(111, 66, 193, 0.1)',
-    category: 'achievement'
+    category: 'achievement',
+    label: 'Senior Reviewer',
+    description: 'Significant impact with 25+ completed peer reviews.',
   },
   'Early-Contributor': {
     color: '#f6c32c',
     bgColor: 'rgba(246, 195, 44, 0.1)',
-    category: 'achievement'
+    category: 'achievement',
+    label: 'Early Contributor',
+    description: 'Joined and contributed during the project\'s first 90 days.',
   },
   'Active-Last-30d': {
     color: '#28a745',
     bgColor: 'rgba(40, 167, 69, 0.1)',
-    category: 'activity'
+    category: 'activity',
+    label: 'Recently Active',
+    description: 'Contributed or reviewed in the last 30 days.',
   },
   'Active-Last-90d': {
     color: '#17a2b8',
     bgColor: 'rgba(23, 162, 184, 0.1)',
-    category: 'activity'
+    category: 'activity',
+    label: 'Quarterly Active',
+    description: 'Maintained activity within the last 90 days.',
   },
   'New-Joiner': {
     color: '#ffc107',
     bgColor: 'rgba(255, 193, 7, 0.1)',
-    category: 'activity'
+    category: 'activity',
+    label: 'New Joiner',
+    description: 'First contribution made within the last 30 days.',
   },
   'Dormant-90d+': {
     color: '#6c757d',
     bgColor: 'rgba(108, 117, 125, 0.1)',
-    category: 'activity'
+    category: 'activity',
+    label: 'Historically Active',
+    description: 'No recent contributions for more than 90 days.',
+  },
+  'Issue-Opener-5': {
+    color: '#17a2b8',
+    bgColor: 'rgba(23, 162, 184, 0.1)',
+    category: 'achievement',
+    label: 'Bug Hunter',
+    description: 'Awarded for opening 5+ high-quality issues or reports.'
+  },
+  'Issue-Opener-10': {
+    color: '#17a2b8',
+    bgColor: 'rgba(23, 162, 184, 0.1)',
+    category: 'achievement',
+    label: 'Discovery Specialist',
+    description: 'Awarded for identifying and reporting 10+ issues.'
+  },
+  'Issue-Opener-25': {
+    color: '#17a2b8',
+    bgColor: 'rgba(23, 162, 184, 0.1)',
+    category: 'achievement',
+    label: 'Ecosystem Sentinel',
+    description: 'Major impact: Reported 25+ ecosystem-wide issues.'
   }
 };
 
@@ -210,7 +267,9 @@ function getBadgeConfig(badgeName: string) {
   return BADGE_CONFIG[badgeName] || {
     color: '#6c757d',
     bgColor: 'rgba(108, 117, 125, 0.1)',
-    category: 'achievement' as const
+    category: 'achievement' as const,
+    label: badgeName,
+    description: 'A recognized contribution to the alliance.'
   };
 }
 
@@ -223,6 +282,29 @@ function formatDate(dateString: string): string {
     return dateString;
   }
 }
+
+// Visual Legend Component
+const BadgeGuide = () => {
+  return (
+    <div className="badge-guide">
+      <h3 className="badge-guide-title">Contributor Badge Guide</h3>
+      <p className="badge-guide-intro">Badges celebrate contributions across code, reviews, and community discovery. Hover over any badge to see its requirements.</p>
+      <div className="badge-guide-grid">
+        {Object.entries(BADGE_CONFIG).filter(([key]) => ['Core-Contributor', 'Top-Reviewer', 'Contributor-10', 'Issue-Opener-10', 'Active-Last-30d', 'New-Joiner'].includes(key)).map(([key, config]) => (
+          <div key={key} className="badge-guide-item">
+            <div className="badge-guide-icon" style={{ '--badge-color': config.color } as React.CSSProperties}>
+              <BadgeIcon name={key} color={config.color} isAchievement={config.category === 'achievement'} />
+            </div>
+            <div className="badge-guide-text">
+              <span className="badge-guide-label">{config.label}</span>
+              <span className="badge-guide-desc">{config.description}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 interface BadgeDisplayProps {
   contributorSlug?: string;
@@ -263,16 +345,14 @@ export function BadgeDisplay({ contributorSlug, badges, compact = false, showCou
               '--badge-color': config.color,
               'transitionDelay': `${globalIndex * 100}ms`
             } as React.CSSProperties}
-            data-badge-name={badge.name}
+            data-badge-name={config.label}
             data-badge-date={badgeDate ? `${isNew ? '✨ New! ' : ''}Awarded ${badgeDate}` : ''}
+            title={`${config.label}${badgeDate ? ` (${badgeDate})` : ''}`}
           >
-            <span className="badge-icon">
+            {isNew && <div className="badge-new-indicator" />}
+            <div className="badge-icon-reveal">
               <BadgeIcon name={badge.name} color={config.color} isAchievement={config.category === 'achievement'} />
-            </span>
-            <span className="badge-name">{badge.name}</span>
-            {badge.assigned && (
-              <span className="badge-date">{formatDate(badge.assigned)}</span>
-            )}
+            </div>
           </div>
         );
       })}
@@ -304,16 +384,17 @@ export function BadgeDisplay({ contributorSlug, badges, compact = false, showCou
 }
 
 export function AllBadgesDisplay() {
-  const contributors = Object.values(contributorsData as Record<string, Contributor>);
-  const contributorsWithBadges = contributors.filter(c =>
-    c.badges && c.badges.some(b => b.name && b.name.trim() !== '')
-  );
+  const contributors = contributorsData as Record<string, Contributor>;
+  const contributorsWithBadges = Object.values(contributors).filter(c => c.badges && c.badges.length > 0);
 
   if (contributorsWithBadges.length === 0) return null;
 
   return (
     <div className="all-badges-display">
       <h2 className="badge-section-title">Contributor Badges</h2>
+
+      <BadgeGuide />
+
       <div className="badge-stats">
         <div className="badge-stat-item">
           <span className="badge-stat-number">{contributorsWithBadges.length}</span>

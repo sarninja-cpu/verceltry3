@@ -48,7 +48,8 @@ const MANAGED_BADGE_NAMES = [
     'Contributor-5', 'Contributor-10', 'Contributor-25',
     'Reviewer-10', 'Reviewer-25', 'Top-Reviewer',
     'Active-Last-30d', 'Active-Last-90d', 'Dormant-90d+',
-    'New-Joiner', 'Early-Contributor'
+    'New-Joiner', 'Early-Contributor',
+    'Issue-Opener-5', 'Issue-Opener-10', 'Issue-Opener-25'
 ];
 
 // GitHub API base URL
@@ -118,13 +119,15 @@ async function getAccurateMilestoneDate(username, targetIndex, type = 'commits')
             totalCount = searchData?.total_count || 0;
             endpoint = (page) => `/search/issues?q=repo:${REPO_OWNER}/${REPO_NAME}+type:pr+reviewed-by:${username}&per_page=100&page=${page}`;
             isSearch = true;
+        } else if (type === 'issues') {
+            const searchData = await githubRequest(`/search/issues?q=repo:${REPO_OWNER}/${REPO_NAME}+type:issue+author:${username}&per_page=1`, true);
+            totalCount = searchData?.total_count || 0;
+            endpoint = (page) => `/search/issues?q=repo:${REPO_OWNER}/${REPO_NAME}+type:issue+author:${username}&per_page=100&page=${page}`;
+            isSearch = true;
         }
 
-        if (totalCount < targetIndex && totalCount > 0 && targetIndex > 1) {
-            // If we don't have enough of the SPECIFIC type, use the oldest one we have as fallback
-            targetIndex = totalCount;
-        } else if (totalCount === 0) {
-            return null;
+        if (totalCount < targetIndex) {
+            return null; // Don't award if threshold not met
         }
 
         // Index from newest (GitHub API default order)
@@ -181,20 +184,59 @@ async function determineBadges(contributor, userDetails) {
     if (firstCommit) {
         const repoCreationDate = new Date('2023-01-01');
         const firstDate = new Date(firstCommit);
+
+        // Early Contributor: joined in the first 90 days of repo history
         if ((firstDate - repoCreationDate) / (1000 * 60 * 60 * 24) < 90) {
             badges.push({ name: 'Early-Contributor', assigned: firstCommit });
         }
+
+        // New-Joiner: joined in the last 30 days
+        const diffFromNow = Math.ceil(Math.abs(new Date() - firstDate) / (1000 * 60 * 60 * 24));
+        if (diffFromNow <= 30) {
+            badges.push({ name: 'New-Joiner', assigned: firstCommit });
+        }
     }
 
-    // 4. Activity Status (last commit)
-    const lastCommits = await githubRequest(`/repos/${REPO_OWNER}/${REPO_NAME}/commits?author=${username}&per_page=1`);
-    if (lastCommits && lastCommits[0]) {
-        const lastDate = lastCommits[0].commit.author.date.split('T')[0];
-        const diff = Math.ceil(Math.abs(new Date() - new Date(lastDate)) / (1000 * 60 * 60 * 24));
+    // 4. Top-Reviewer (if reviews >= 50)
+    const r50 = await getAccurateMilestoneDate(username, 50, 'reviews');
+    if (r50) badges.push({ name: 'Top-Reviewer', assigned: r50 });
 
-        if (diff <= 30) badges.push({ name: 'Active-Last-30d', assigned: lastDate });
-        else if (diff <= 90) badges.push({ name: 'Active-Last-90d', assigned: lastDate });
-        else badges.push({ name: 'Dormant-90d+', assigned: lastDate });
+    // 5. Issue Opener Milestones
+    const i25 = await getAccurateMilestoneDate(username, 25, 'issues');
+    if (i25) badges.push({ name: 'Issue-Opener-25', assigned: i25 });
+    else {
+        const i10 = await getAccurateMilestoneDate(username, 10, 'issues');
+        if (i10) badges.push({ name: 'Issue-Opener-10', assigned: i10 });
+        else {
+            const i5 = await getAccurateMilestoneDate(username, 5, 'issues');
+            if (i5) badges.push({ name: 'Issue-Opener-5', assigned: i5 });
+        }
+    }
+
+    // 6. Activity Status (last commit, review, or issue)
+    const lastCommits = await githubRequest(`/repos/${REPO_OWNER}/${REPO_NAME}/commits?author=${username}&per_page=1`);
+    const lastReviewDate = await getAccurateMilestoneDate(username, 1, 'reviews');
+    const lastIssueDate = await getAccurateMilestoneDate(username, 1, 'issues');
+
+    let lastActivityDate = null;
+    if (lastCommits && lastCommits[0]) {
+        lastActivityDate = lastCommits[0].commit.author.date.split('T')[0];
+    }
+
+    if (lastReviewDate && (!lastActivityDate || new Date(lastReviewDate) > new Date(lastActivityDate))) {
+        lastActivityDate = lastReviewDate;
+    }
+
+    if (lastIssueDate && (!lastActivityDate || new Date(lastIssueDate) > new Date(lastActivityDate))) {
+        lastActivityDate = lastIssueDate;
+    }
+
+    if (lastActivityDate) {
+        const diff = Math.ceil(Math.abs(new Date() - new Date(lastActivityDate)) / (1000 * 60 * 60 * 24));
+
+        if (diff <= 30) badges.push({ name: 'Active-Last-30d', assigned: lastActivityDate });
+        else if (diff <= 90) badges.push({ name: 'Active-Last-90d', assigned: lastActivityDate });
+        else badges.push({ name: 'Dormant-90d+', assigned: lastActivityDate });
     }
 
     return badges;

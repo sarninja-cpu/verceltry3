@@ -92,15 +92,18 @@ These badges represent milestones or responsibilities and do not expire.
 
 ### Examples
 
-- `Framework-Steward`
-- `Core-Contributor`
-- `Top-Reviewer`
-- `Contributor-5`
-- `Contributor-10`
-- `Contributor-25`
-- `Reviewer-10`
-- `Reviewer-25`
-- `Early-Contributor`
+- `Framework-Steward`: **Framework Steward**
+- `Core-Contributor`: **Core Team**
+- `Top-Reviewer`: **Top Community Reviewer**
+- `Contributor-5`: **Rising Contributor (5+)**
+- `Contributor-10`: **Gold Contributor (10+)**
+- `Contributor-25`: **Elite Contributor (25+)**
+- `Reviewer-10`: **Active Reviewer (10+)**
+- `Reviewer-25`: **Senior Reviewer (25+)**
+- `Issue-Opener-5`: **Bug Hunter (5+)**
+- `Issue-Opener-10`: **Discovery Specialist (10+)**
+- `Issue-Opener-25`: **Ecosystem Sentinel (25+)**
+- `Early-Contributor`: **Early Contributor**
 
 > **Note:** These are awarded when a contributor crosses a threshold, not per action.
 
