@@ -8,10 +8,18 @@
     "role": "lead",
     "steward": "",
     "badges": [
-      {"name": "Core-Contributor", "assigned": "2024-01-15"},
-      {"name": "Contributor-25", "assigned": "2024-06-20"},
-      {"name": "Early-Contributor", "assigned": "2023-11-10"},
-      {"name": "Active-Last-30d", "assigned": "2025-01-15"}
+      {
+        "name": "Core-Contributor",
+        "assigned": "2024-01-15"
+      },
+      {
+        "name": "Contributor-25",
+        "assigned": "2024-06-20"
+      },
+      {
+        "name": "Early-Contributor",
+        "assigned": "2023-11-10"
+      }
     ]
   },
   "fredriksvantes": {
@@ -23,9 +31,18 @@
     "role": "core",
     "steward": "",
     "badges": [
-      {"name": "Core-Contributor", "assigned": "2024-01-20"},
-      {"name": "Contributor-10", "assigned": "2024-06-10"},
-      {"name": "Early-Contributor", "assigned": "2023-12-05"}
+      {
+        "name": "Core-Contributor",
+        "assigned": "2024-01-20"
+      },
+      {
+        "name": "Contributor-10",
+        "assigned": "2024-06-10"
+      },
+      {
+        "name": "Early-Contributor",
+        "assigned": "2023-12-05"
+      }
     ]
   },
   "zedt3ster": {
@@ -36,9 +53,7 @@
     "twitter": "https://twitter.com/ethzed",
     "role": "core",
     "steward": "",
-    "badges": [
-      {"name": "", "assigned": ""}
-    ]
+    "badges": []
   },
   "nftdreww": {
     "slug": "nftdreww",
@@ -49,9 +64,14 @@
     "role": "steward",
     "steward": "Community Management framework",
     "badges": [
-      {"name": "Framework-Steward", "assigned": "2024-03-15"},
-      {"name": "Contributor-10", "assigned": "2024-08-01"},
-      {"name": "Active-Last-30d", "assigned": "2025-01-10"}
+      {
+        "name": "Framework-Steward",
+        "assigned": "2024-03-15"
+      },
+      {
+        "name": "Contributor-10",
+        "assigned": "2024-08-01"
+      }
     ]
   },
   "robert": {
@@ -62,9 +82,7 @@
     "twitter": null,
     "role": "core",
     "steward": "",
-    "badges": [
-      {"name": "", "assigned": ""}
-    ]
+    "badges": []
   },
   "tebayoso": {
     "slug": "tebayoso",
@@ -75,8 +93,10 @@
     "role": "contributor",
     "steward": "",
     "badges": [
-      {"name": "Contributor-5", "assigned": "2024-08-15"},
-      {"name": "New-Joiner", "assigned": "2024-07-01"}
+      {
+        "name": "Contributor-5",
+        "assigned": "2024-08-15"
+      }
     ]
   },
   "engn33r": {
@@ -87,9 +107,7 @@
     "twitter": "https://twitter.com/bl4ckb1rd71",
     "role": "contributor",
     "steward": "",
-    "badges": [
-      {"name": "", "assigned": ""}
-    ]
+    "badges": []
   },
   "ghadi8": {
     "slug": "ghadi8",
@@ -100,9 +118,14 @@
     "role": "steward",
     "steward": "ENS framework",
     "badges": [
-      {"name": "Framework-Steward", "assigned": "2024-02-20"},
-      {"name": "Contributor-10", "assigned": "2024-07-15"},
-      {"name": "Active-Last-90d", "assigned": "2024-12-05"}
+      {
+        "name": "Framework-Steward",
+        "assigned": "2024-02-20"
+      },
+      {
+        "name": "Contributor-10",
+        "assigned": "2024-07-15"
+      }
     ]
   },
   "patrickalphac": {
@@ -114,10 +137,18 @@
     "role": "steward",
     "steward": "Security Testing framework",
     "badges": [
-      {"name": "Framework-Steward", "assigned": "2024-04-10"},
-      {"name": "Contributor-25", "assigned": "2024-09-30"},
-      {"name": "Top-Reviewer", "assigned": "2024-11-15"},
-      {"name": "Active-Last-30d", "assigned": "2025-01-12"}
+      {
+        "name": "Framework-Steward",
+        "assigned": "2024-04-10"
+      },
+      {
+        "name": "Contributor-25",
+        "assigned": "2024-09-30"
+      },
+      {
+        "name": "Top-Reviewer",
+        "assigned": "2024-11-15"
+      }
     ]
   },
   "pinalikefruit": {
@@ -128,9 +159,7 @@
     "twitter": "https://x.com/pinalikefruit",
     "role": "steward",
     "steward": "Wallet-Security framework",
-    "badges": [
-      {"name": "", "assigned": ""}
-    ]
+    "badges": []
   },
   "njelich": {
     "slug": "njelich",
@@ -140,9 +169,7 @@
     "twitter": "https://x.com/NoahJelich",
     "role": "contributor",
     "steward": "",
-    "badges": [
-      {"name": "", "assigned": ""}
-    ]
+    "badges": []
   },
   "dickson": {
     "slug": "dickson",
@@ -152,9 +179,7 @@
     "twitter": "https://x.com/DicksonWuML",
     "role": "contributor",
     "steward": "",
-    "badges": [
-      {"name": "", "assigned": ""}
-    ]
+    "badges": []
   },
   "blackbigswan": {
     "slug": "blackbigswan",
@@ -164,9 +189,7 @@
     "twitter": "https://x.com/blackbigswan",
     "role": "contributor",
     "steward": "",
-    "badges": [
-      {"name": "", "assigned": ""}
-    ]
+    "badges": []
   },
   "yaniv": {
     "slug": "yaniv",
@@ -177,9 +200,14 @@
     "role": "reviewer",
     "steward": "",
     "badges": [
-      {"name": "Top-Reviewer", "assigned": "2024-05-20"},
-      {"name": "Reviewer-25", "assigned": "2024-10-05"},
-      {"name": "Active-Last-30d", "assigned": "2025-01-08"}
+      {
+        "name": "Top-Reviewer",
+        "assigned": "2024-05-20"
+      },
+      {
+        "name": "Reviewer-25",
+        "assigned": "2024-10-05"
+      }
     ]
   },
   "relotnek": {
@@ -190,9 +218,7 @@
     "twitter": "https://twitter.com/relotnek",
     "role": "contributor",
     "steward": "",
-    "badges": [
-      {"name": "", "assigned": ""}
-    ]
+    "badges": []
   },
   "the-caliber": {
     "slug": "the-caliber",
@@ -202,9 +228,7 @@
     "twitter": "https://x.com/caliber_tweets",
     "role": "contributor",
     "steward": "",
-    "badges": [
-      {"name": "", "assigned": ""}
-    ]
+    "badges": []
   },
   "SEAL": {
     "slug": "SEAL",
@@ -214,9 +238,7 @@
     "twitter": "https://x.com/_SEAL_Org",
     "role": "contributor",
     "steward": "",
-    "badges": [
-      {"name": "", "assigned": ""}
-    ]
+    "badges": []
   },
   "bsamuels453": {
     "slug": "bsamuels453",
@@ -226,9 +248,7 @@
     "twitter": "https://x.com/thebensams",
     "role": "contributor",
     "steward": "",
-    "badges": [
-      {"name": "", "assigned": ""}
-    ]
+    "badges": []
   },
   "ElliotFriedman": {
     "slug": "ElliotFriedman",
@@ -238,9 +258,7 @@
     "twitter": "https://x.com/Elliot0x",
     "role": "contributor",
     "steward": "",
-    "badges": [
-      {"name": "", "assigned": ""}
-    ]
+    "badges": []
   },
   "isaac": {
     "slug": "isaac",
@@ -250,9 +268,7 @@
     "twitter": "https://x.com/isaacpatka",
     "role": "contributor",
     "steward": "",
-    "badges": [
-      {"name": "", "assigned": ""}
-    ]
+    "badges": []
   },
   "geoffrey": {
     "slug": "geoffrey",
@@ -262,9 +278,7 @@
     "twitter": null,
     "role": "contributor",
     "steward": "",
-    "badges": [
-      {"name": "", "assigned": ""}
-    ]
+    "badges": []
   },
   "louis": {
     "slug": "louis",
@@ -274,9 +288,7 @@
     "twitter": null,
     "role": "contributor",
     "steward": "",
-    "badges": [
-      {"name": "", "assigned": ""}
-    ]
+    "badges": []
   },
   "pablo": {
     "slug": "pablo",
@@ -286,9 +298,7 @@
     "twitter": "https://x.com/pablosabbatella",
     "role": "contributor",
     "steward": "",
-    "badges": [
-      {"name": "", "assigned": ""}
-    ]
+    "badges": []
   },
   "Raiders0786": {
     "slug": "Raiders0786",
@@ -299,9 +309,14 @@
     "role": "steward",
     "steward": "DNS and Domain Registration Security",
     "badges": [
-      {"name": "Framework-Steward", "assigned": "2024-05-01"},
-      {"name": "Contributor-10", "assigned": "2024-08-20"},
-      {"name": "Active-Last-90d", "assigned": "2024-12-18"}
+      {
+        "name": "Framework-Steward",
+        "assigned": "2024-05-01"
+      },
+      {
+        "name": "Contributor-10",
+        "assigned": "2024-08-20"
+      }
     ]
   },
   "scode2277": {
@@ -313,7 +328,18 @@
     "role": "contributor",
     "steward": "",
     "badges": [
-      {"name": "", "assigned": ""}
+      {
+        "name": "Contributor-5",
+        "assigned": "2025-10-20"
+      },
+      {
+        "name": "Active-Last-30d",
+        "assigned": "2026-01-08"
+      },
+      {
+        "name": "Active-Last-90d",
+        "assigned": "2026-01-08"
+      }
     ]
   }
 }
