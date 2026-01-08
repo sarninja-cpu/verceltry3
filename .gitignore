@@ -34,3 +34,5 @@ CLAUDE.md
 
 # Build folder
 **/dist/
+
+.env

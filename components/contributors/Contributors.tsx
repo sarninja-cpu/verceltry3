@@ -31,23 +31,9 @@ function slugify(text: string): string {
     .replace(/[^a-z0-9-]/g, '');
 }
 
-// Merge static badges from contributors.json with dynamic badges from generated file
-function mergeBadges(contributor: Contributor): Badge[] {
-  const staticBadges = (contributor.badges || []).filter(b => b.name && b.name.trim() !== '');
-
-  // Create a set of static badge names to avoid duplicates
-  const staticBadgeNames = new Set(staticBadges.map(b => b.name));
-
-  // Combine: static badges first, then dynamic badges
-  return [...staticBadges];
-}
-
 export function Contributors() {
-  // Convert JSON object to array and merge badges
-  const contributors = Object.values(contributorsData as Record<string, Contributor>).map(contributor => ({
-    ...contributor,
-    badges: mergeBadges(contributor)
-  }));
+  // Convert JSON object to array
+  const contributors = Object.values(contributorsData as Record<string, Contributor>);
 
   const groups: ContributorGroup[] = [
     {

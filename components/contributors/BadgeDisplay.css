@@ -595,6 +595,7 @@ html.navy .badge-stats {
   position: relative;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08),
+    0 0 10px color-mix(in srgb, var(--badge-color) 20%, transparent),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
@@ -662,13 +663,197 @@ html.navy .badge-stats {
   }
 }
 
-.badge-icon {
-  font-size: 1.125rem;
-  line-height: 1;
+/* SVG Icon Container */
+.badge-icon-svg {
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.badge-icon-svg svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.badge-item:hover .badge-icon-svg svg {
+  transform: scale(1.2);
+}
+
+/* Custom SVG Animations */
+
+/* Pulsing */
+@keyframes svgPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+.svg-pulse {
+  animation: svgPulse 2s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* Rotating */
+@keyframes svgRotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.svg-rotate {
+  animation: svgRotate 4s linear infinite;
+  transform-origin: center;
+}
+
+/* Scanning line */
+@keyframes svgScan {
+  0% {
+    transform: translateY(-4px);
+    opacity: 0;
+  }
+
+  50% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(4px);
+    opacity: 0;
+  }
+}
+
+.svg-scan {
+  animation: svgScan 2s ease-in-out infinite;
+}
+
+/* Expanding circles */
+@keyframes svgExpand {
+  0% {
+    transform: scale(0.5);
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.svg-expand {
+  animation: svgExpand 2.5s ease-out infinite;
+  transform-origin: center;
+}
+
+/* Flickering lightning */
+@keyframes svgFlicker {
+
+  0%,
+  100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 2px currentColor);
+  }
+
+  50% {
+    opacity: 0.6;
+    filter: drop-shadow(0 0 8px currentColor);
+  }
+
+  75% {
+    opacity: 0.9;
+  }
+}
+
+.svg-flicker {
+  animation: svgFlicker 0.2s ease-in-out infinite;
+}
+
+/* Sparkling / Twinkling */
+@keyframes svgSparkle {
+
+  0%,
+  100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+.svg-sparkle {
+  animation: svgSparkle 1.5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.svg-sparkle-delay {
+  animation: svgSparkle 1.5s ease-in-out infinite 0.7s;
+  transform-origin: center;
+}
+
+/* Growing seed */
+@keyframes svgGrow {
+  0% {
+    stroke-dashoffset: 20;
+  }
+
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.svg-grow {
+  stroke-dasharray: 20;
+  animation: svgGrow 3s ease-in-out infinite alternate;
+}
+
+/* Floating / Drifting */
+@keyframes svgFloat {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.svg-float {
+  animation: svgFloat 3s ease-in-out infinite;
+}
+
+.svg-float-delay {
+  animation: svgFloat 3s ease-in-out infinite 1.5s;
+}
+
+/* Updated Responsive Rules */
+@media (max-width: 768px) {
+  .badge-icon-svg svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
 }
 
 .badge-name {
@@ -1105,7 +1290,6 @@ html.navy .badge-stats {
   background: var(--badge-bg, rgba(108, 117, 125, 0.1));
   color: var(--badge-color, #6c757d);
   border: 1px solid var(--badge-color, #6c757d);
-  border-opacity: 0.3;
   transition: all 0.2s ease;
   cursor: default;
   position: relative;
@@ -1133,7 +1317,6 @@ html.navy .badge-stats {
 .badge-item:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border-opacity: 0.5;
 }
 
 .badge-achievement {

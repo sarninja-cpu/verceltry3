@@ -9,39 +9,16 @@
     "steward": "",
     "badges": [
       {
-        "name": "Core-Contributor",
-        "assigned": "2024-01-15"
-      },
-      {
         "name": "Contributor-25",
-        "assigned": "2024-06-20"
+        "assigned": "2024-07-02"
       },
       {
-        "name": "Early-Contributor",
-        "assigned": "2023-11-10"
-      }
-    ]
-  },
-  "fredriksvantes": {
-    "slug": "fredriksvantes",
-    "name": "Fredrik Svantes",
-    "avatar": "https://avatars.githubusercontent.com/fredriksvantes",
-    "github": "https://github.com/fredriksvantes",
-    "twitter": "https://twitter.com/fredriksvantes",
-    "role": "core",
-    "steward": "",
-    "badges": [
-      {
-        "name": "Core-Contributor",
-        "assigned": "2024-01-20"
+        "name": "Reviewer-25",
+        "assigned": "2024-06-30"
       },
       {
-        "name": "Contributor-10",
-        "assigned": "2024-06-10"
-      },
-      {
-        "name": "Early-Contributor",
-        "assigned": "2023-12-05"
+        "name": "Active-Last-90d",
+        "assigned": "2025-11-11"
       }
     ]
   },
@@ -53,7 +30,20 @@
     "twitter": "https://twitter.com/ethzed",
     "role": "core",
     "steward": "",
-    "badges": []
+    "badges": [
+      {
+        "name": "Contributor-5",
+        "assigned": "2024-10-02"
+      },
+      {
+        "name": "Reviewer-25",
+        "assigned": "2024-10-14"
+      },
+      {
+        "name": "Active-Last-30d",
+        "assigned": "2025-12-17"
+      }
+    ]
   },
   "nftdreww": {
     "slug": "nftdreww",
@@ -65,12 +55,16 @@
     "steward": "Community Management framework",
     "badges": [
       {
-        "name": "Framework-Steward",
-        "assigned": "2024-03-15"
+        "name": "Contributor-5",
+        "assigned": "2025-01-29"
       },
       {
-        "name": "Contributor-10",
-        "assigned": "2024-08-01"
+        "name": "Reviewer-25",
+        "assigned": "2025-12-17"
+      },
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2025-07-28"
       }
     ]
   },
@@ -82,7 +76,20 @@
     "twitter": null,
     "role": "core",
     "steward": "",
-    "badges": []
+    "badges": [
+      {
+        "name": "Contributor-25",
+        "assigned": "2025-09-01"
+      },
+      {
+        "name": "Reviewer-25",
+        "assigned": "2025-08-09"
+      },
+      {
+        "name": "Active-Last-90d",
+        "assigned": "2025-12-08"
+      }
+    ]
   },
   "tebayoso": {
     "slug": "tebayoso",
@@ -94,8 +101,16 @@
     "steward": "",
     "badges": [
       {
-        "name": "Contributor-5",
-        "assigned": "2024-08-15"
+        "name": "Contributor-10",
+        "assigned": "2024-09-27"
+      },
+      {
+        "name": "Reviewer-25",
+        "assigned": "2024-09-30"
+      },
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2024-09-30"
       }
     ]
   },
@@ -107,7 +122,12 @@
     "twitter": "https://twitter.com/bl4ckb1rd71",
     "role": "contributor",
     "steward": "",
-    "badges": []
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2025-06-18"
+      }
+    ]
   },
   "ghadi8": {
     "slug": "ghadi8",
@@ -119,12 +139,12 @@
     "steward": "ENS framework",
     "badges": [
       {
-        "name": "Framework-Steward",
-        "assigned": "2024-02-20"
+        "name": "Reviewer-25",
+        "assigned": "2025-08-05"
       },
       {
-        "name": "Contributor-10",
-        "assigned": "2024-07-15"
+        "name": "Dormant-90d+",
+        "assigned": "2025-08-11"
       }
     ]
   },
@@ -138,16 +158,16 @@
     "steward": "Security Testing framework",
     "badges": [
       {
-        "name": "Framework-Steward",
-        "assigned": "2024-04-10"
+        "name": "Contributor-5",
+        "assigned": "2025-07-31"
       },
       {
-        "name": "Contributor-25",
-        "assigned": "2024-09-30"
+        "name": "Reviewer-25",
+        "assigned": "2025-07-30"
       },
       {
-        "name": "Top-Reviewer",
-        "assigned": "2024-11-15"
+        "name": "Dormant-90d+",
+        "assigned": "2025-07-31"
       }
     ]
   },
@@ -159,7 +179,16 @@
     "twitter": "https://x.com/pinalikefruit",
     "role": "steward",
     "steward": "Wallet-Security framework",
-    "badges": []
+    "badges": [
+      {
+        "name": "Reviewer-25",
+        "assigned": "2025-12-01"
+      },
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2025-08-27"
+      }
+    ]
   },
   "njelich": {
     "slug": "njelich",
@@ -169,7 +198,12 @@
     "twitter": "https://x.com/NoahJelich",
     "role": "contributor",
     "steward": "",
-    "badges": []
+    "badges": [
+      {
+        "name": "Active-Last-90d",
+        "assigned": "2025-10-29"
+      }
+    ]
   },
   "dickson": {
     "slug": "dickson",
@@ -179,7 +213,20 @@
     "twitter": "https://x.com/DicksonWuML",
     "role": "contributor",
     "steward": "",
-    "badges": []
+    "badges": [
+      {
+        "name": "Contributor-10",
+        "assigned": "2025-12-01"
+      },
+      {
+        "name": "Reviewer-25",
+        "assigned": "2025-12-17"
+      },
+      {
+        "name": "Active-Last-30d",
+        "assigned": "2025-12-17"
+      }
+    ]
   },
   "blackbigswan": {
     "slug": "blackbigswan",
@@ -189,24 +236,14 @@
     "twitter": "https://x.com/blackbigswan",
     "role": "contributor",
     "steward": "",
-    "badges": []
-  },
-  "yaniv": {
-    "slug": "yaniv",
-    "name": "Yaniv Sofer",
-    "avatar": "https://avatars.githubusercontent.com/u/47369984?v=4",
-    "github": "https://github.com/YSSofer",
-    "twitter": "",
-    "role": "reviewer",
-    "steward": "",
     "badges": [
       {
-        "name": "Top-Reviewer",
-        "assigned": "2024-05-20"
+        "name": "Reviewer-25",
+        "assigned": "2025-08-07"
       },
       {
-        "name": "Reviewer-25",
-        "assigned": "2024-10-05"
+        "name": "Dormant-90d+",
+        "assigned": "2025-09-03"
       }
     ]
   },
@@ -218,7 +255,16 @@
     "twitter": "https://twitter.com/relotnek",
     "role": "contributor",
     "steward": "",
-    "badges": []
+    "badges": [
+      {
+        "name": "Reviewer-25",
+        "assigned": "2025-09-30"
+      },
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2025-07-15"
+      }
+    ]
   },
   "the-caliber": {
     "slug": "the-caliber",
@@ -228,27 +274,16 @@
     "twitter": "https://x.com/caliber_tweets",
     "role": "contributor",
     "steward": "",
-    "badges": []
-  },
-  "SEAL": {
-    "slug": "SEAL",
-    "name": "SEAL",
-    "avatar": "https://avatars.githubusercontent.com/u/141400526?s=200&v=4",
-    "github": "https://github.com/security-alliance",
-    "twitter": "https://x.com/_SEAL_Org",
-    "role": "contributor",
-    "steward": "",
-    "badges": []
-  },
-  "bsamuels453": {
-    "slug": "bsamuels453",
-    "name": "Ben S",
-    "avatar": "https://avatars.githubusercontent.com/bsamuels453",
-    "github": "https://github.com/bsamuels453",
-    "twitter": "https://x.com/thebensams",
-    "role": "contributor",
-    "steward": "",
-    "badges": []
+    "badges": [
+      {
+        "name": "Reviewer-25",
+        "assigned": "2025-07-30"
+      },
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2025-08-28"
+      }
+    ]
   },
   "ElliotFriedman": {
     "slug": "ElliotFriedman",
@@ -258,17 +293,16 @@
     "twitter": "https://x.com/Elliot0x",
     "role": "contributor",
     "steward": "",
-    "badges": []
-  },
-  "isaac": {
-    "slug": "isaac",
-    "name": "Isaac Patka",
-    "avatar": "https://avatars.githubusercontent.com/ipatka",
-    "github": "https://github.com/ipatka",
-    "twitter": "https://x.com/isaacpatka",
-    "role": "contributor",
-    "steward": "",
-    "badges": []
+    "badges": [
+      {
+        "name": "Reviewer-25",
+        "assigned": "2025-12-01"
+      },
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2025-06-02"
+      }
+    ]
   },
   "geoffrey": {
     "slug": "geoffrey",
@@ -300,25 +334,6 @@
     "steward": "",
     "badges": []
   },
-  "Raiders0786": {
-    "slug": "Raiders0786",
-    "name": "Raiders",
-    "avatar": "https://avatars.githubusercontent.com/Raiders0786",
-    "github": "https://github.com/Raiders0786",
-    "twitter": "https://x.com/__Raiders",
-    "role": "steward",
-    "steward": "DNS and Domain Registration Security",
-    "badges": [
-      {
-        "name": "Framework-Steward",
-        "assigned": "2024-05-01"
-      },
-      {
-        "name": "Contributor-10",
-        "assigned": "2024-08-20"
-      }
-    ]
-  },
   "scode2277": {
     "slug": "scode2277",
     "name": "scode2277",
@@ -329,16 +344,182 @@
     "steward": "",
     "badges": [
       {
-        "name": "Contributor-5",
-        "assigned": "2025-10-20"
+        "name": "Contributor-25",
+        "assigned": "2025-12-15"
+      },
+      {
+        "name": "Reviewer-25",
+        "assigned": "2025-10-09"
       },
       {
         "name": "Active-Last-30d",
-        "assigned": "2026-01-08"
+        "assigned": "2025-12-17"
+      }
+    ]
+  },
+  "fredrik0x": {
+    "slug": "fredrik0x",
+    "name": "Fredrik",
+    "avatar": "https://avatars.githubusercontent.com/u/fredrik0x",
+    "github": "https://github.com/fredrik0x",
+    "twitter": null,
+    "role": "contributor",
+    "steward": "",
+    "badges": [
+      {
+        "name": "Contributor-25",
+        "assigned": "2024-06-30"
       },
       {
+        "name": "Reviewer-25",
+        "assigned": "2024-10-14"
+      },
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2024-10-15"
+      }
+    ]
+  },
+  "davidthegardens": {
+    "slug": "davidthegardens",
+    "name": "David",
+    "avatar": "https://avatars.githubusercontent.com/u/100804766?v=4",
+    "github": "https://github.com/davidthegardens",
+    "twitter": null,
+    "role": "contributor",
+    "steward": "",
+    "badges": [
+      {
         "name": "Active-Last-90d",
-        "assigned": "2026-01-08"
+        "assigned": "2025-11-18"
+      }
+    ]
+  },
+  "godwinda": {
+    "slug": "godwinda",
+    "name": "Godwin Udo",
+    "avatar": "https://avatars.githubusercontent.com/u/102424075?v=4",
+    "github": "https://github.com/GodwinDA",
+    "twitter": null,
+    "role": "contributor",
+    "steward": "",
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2025-07-29"
+      }
+    ]
+  },
+  "00xwizard": {
+    "slug": "00xwizard",
+    "name": "00xWizard",
+    "avatar": "https://avatars.githubusercontent.com/u/16108762?v=4",
+    "github": "https://github.com/00xWizard",
+    "twitter": null,
+    "role": "contributor",
+    "steward": "",
+    "badges": [
+      {
+        "name": "Reviewer-25",
+        "assigned": "2025-09-04"
+      },
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2025-09-18"
+      }
+    ]
+  },
+  "aviggiano": {
+    "slug": "aviggiano",
+    "name": "Antonio Viggiano",
+    "avatar": "https://avatars.githubusercontent.com/u/3029017?v=4",
+    "github": "https://github.com/aviggiano",
+    "twitter": "https://twitter.com/aviggiano",
+    "role": "contributor",
+    "steward": "",
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2025-09-29"
+      }
+    ]
+  },
+  "compojoom": {
+    "slug": "compojoom",
+    "name": "Daniel Dimitrov",
+    "avatar": "https://avatars.githubusercontent.com/u/693770?v=4",
+    "github": "https://github.com/compojoom",
+    "twitter": null,
+    "role": "contributor",
+    "steward": "",
+    "badges": [
+      {
+        "name": "Active-Last-90d",
+        "assigned": "2025-12-01"
+      }
+    ]
+  },
+  "nbelenkov": {
+    "slug": "nbelenkov",
+    "name": "Nikita Belenkov",
+    "avatar": "https://avatars.githubusercontent.com/u/16175835?v=4",
+    "github": "https://github.com/nbelenkov",
+    "twitter": "https://twitter.com/nbelenkov",
+    "role": "contributor",
+    "steward": "",
+    "badges": [
+      {
+        "name": "Reviewer-25",
+        "assigned": "2025-07-26"
+      },
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2025-08-22"
+      }
+    ]
+  },
+  "damboy0": {
+    "slug": "damboy0",
+    "name": "damboy0",
+    "avatar": "https://avatars.githubusercontent.com/u/100064629?v=4",
+    "github": "https://github.com/damboy0",
+    "twitter": "https://twitter.com/only1dami",
+    "role": "contributor",
+    "steward": "",
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2025-08-01"
+      }
+    ]
+  },
+  "madjin": {
+    "slug": "madjin",
+    "name": "jin",
+    "avatar": "https://avatars.githubusercontent.com/u/32600939?v=4",
+    "github": "https://github.com/madjin",
+    "twitter": "https://twitter.com/dankvr",
+    "role": "contributor",
+    "steward": "",
+    "badges": [
+      {
+        "name": "Active-Last-30d",
+        "assigned": "2025-12-17"
+      }
+    ]
+  },
+  "mattdragonfly": {
+    "slug": "mattdragonfly",
+    "name": "matt-dragonfly",
+    "avatar": "https://avatars.githubusercontent.com/u/187294432?v=4",
+    "github": "https://github.com/matt-dragonfly",
+    "twitter": null,
+    "role": "contributor",
+    "steward": "",
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2025-02-03"
       }
     ]
   }
