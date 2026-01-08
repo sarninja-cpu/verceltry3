@@ -1,3 +1,4 @@
+import React, { useEffect, useRef, useState } from 'react';
 import './BadgeDisplay.css';
 import contributorsData from '../../docs/pages/config/contributors.json';
 
@@ -17,8 +18,42 @@ interface Contributor {
   badges: Badge[];
 }
 
+// Custom Hook for Intersection Observer
+function useIntersectionObserver(options = {}) {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.unobserve(entry.target);
+      }
+    }, options);
+
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return [ref, isVisible] as const;
+}
+
+// Helper to check if a badge was earned recently (< 30 days)
+function isNewlyEarned(assignedDate: string): boolean {
+  if (!assignedDate) return false;
+  try {
+    const date = new Date(assignedDate);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - date.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays <= 30;
+  } catch {
+    return false;
+  }
+}
+
 // Custom Animated SVG Icons
-const BadgeIcon = ({ name, color }: { name: string, color: string }) => {
+const BadgeIcon = ({ name, color, isAchievement }: { name: string, color: string, isAchievement: boolean }) => {
   const getIcon = () => {
     switch (name) {
       case 'Framework-Steward':
@@ -94,23 +129,25 @@ const BadgeIcon = ({ name, color }: { name: string, color: string }) => {
   };
 
   return (
-    <div className="badge-icon-svg">
+    <div className={`badge-icon-svg ${isAchievement ? 'svg-achievement' : 'svg-activity'}`}>
       {getIcon()}
     </div>
   );
 };
 
-// Badge type definitions with colors and icons
-const BADGE_CONFIG: Record<string, { color: string; bgColor: string; category: 'achievement' | 'activity' }> = {
+// Badge type definitions
+const BADGE_CONFIG: Record<string, { color: string; bgColor: string; category: 'achievement' | 'activity'; role?: boolean }> = {
   'Framework-Steward': {
     color: '#0366d6',
     bgColor: 'rgba(3, 102, 214, 0.1)',
-    category: 'achievement'
+    category: 'achievement',
+    role: true
   },
   'Core-Contributor': {
     color: '#28a745',
     bgColor: 'rgba(40, 167, 69, 0.1)',
-    category: 'achievement'
+    category: 'achievement',
+    role: true
   },
   'Top-Reviewer': {
     color: '#6f42c1',
@@ -187,22 +224,6 @@ function formatDate(dateString: string): string {
   }
 }
 
-function isRecentActivity(badgeName: string, assignedDate: string): boolean {
-  if (!assignedDate) return false;
-  const activityBadges = ['Active-Last-30d', 'Active-Last-90d', 'New-Joiner'];
-  if (!activityBadges.includes(badgeName)) return false;
-
-  try {
-    const date = new Date(assignedDate);
-    const now = new Date();
-    const diffTime = Math.abs(now.getTime() - date.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays <= 90;
-  } catch {
-    return false;
-  }
-}
-
 interface BadgeDisplayProps {
   contributorSlug?: string;
   badges?: Badge[];
@@ -211,6 +232,7 @@ interface BadgeDisplayProps {
 }
 
 export function BadgeDisplay({ contributorSlug, badges, compact = false, showCount = false }: BadgeDisplayProps) {
+  const [containerRef, isVisible] = useIntersectionObserver({ threshold: 0.1 });
   let displayBadges: Badge[] = [];
 
   if (badges) {
@@ -223,117 +245,71 @@ export function BadgeDisplay({ contributorSlug, badges, compact = false, showCou
     }
   }
 
-  if (displayBadges.length === 0) {
-    return null;
-  }
+  if (displayBadges.length === 0) return null;
 
-  // Separate badges by category
-  const achievementBadges = displayBadges.filter(b => {
-    const config = getBadgeConfig(b.name);
-    return config.category === 'achievement';
-  });
+  const renderBadgeList = (badges: Badge[], startIndex: number) => (
+    <div className="badge-list">
+      {badges.map((badge, index) => {
+        const config = getBadgeConfig(badge.name);
+        const isNew = isNewlyEarned(badge.assigned);
+        const badgeDate = badge.assigned ? formatDate(badge.assigned) : '';
+        const globalIndex = startIndex + index;
 
-  const activityBadges = displayBadges.filter(b => {
-    const config = getBadgeConfig(b.name);
-    return config.category === 'activity';
-  });
+        return (
+          <div
+            key={`${badge.name}-${index}`}
+            className={`badge-item ${config.category === 'achievement' ? 'badge-achievement' : 'badge-activity'} ${config.role ? 'badge-role' : ''} ${isNew ? 'newly-earned' : ''} ${isVisible ? 'visible' : ''}`}
+            style={{
+              '--badge-color': config.color,
+              'transitionDelay': `${globalIndex * 100}ms`
+            } as React.CSSProperties}
+            data-badge-name={badge.name}
+            data-badge-date={badgeDate ? `${isNew ? '✨ New! ' : ''}Awarded ${badgeDate}` : ''}
+          >
+            <span className="badge-icon">
+              <BadgeIcon name={badge.name} color={config.color} isAchievement={config.category === 'achievement'} />
+            </span>
+            <span className="badge-name">{badge.name}</span>
+            {badge.assigned && (
+              <span className="badge-date">{formatDate(badge.assigned)}</span>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+
+  const achievements = displayBadges.filter(b => getBadgeConfig(b.name).category === 'achievement');
+  const activities = displayBadges.filter(b => getBadgeConfig(b.name).category === 'activity');
 
   return (
-    <div className={`badge-display ${compact ? 'badge-display-compact' : ''}`}>
-      {showCount && displayBadges.length > 0 && (
-        <div className="badge-count-indicator">
-          {displayBadges.length}
-        </div>
-      )}
+    <div ref={containerRef} className={`badge-display ${compact ? 'badge-display-compact' : ''}`}>
+      {showCount && <div className="badge-count-indicator">{displayBadges.length}</div>}
 
-      {achievementBadges.length > 0 && (
+      {achievements.length > 0 && (
         <div className="badge-category">
           {!compact && <div className="badge-category-label">Achievements</div>}
-          <div className="badge-list">
-            {achievementBadges.map((badge, index) => {
-              const config = getBadgeConfig(badge.name);
-              const badgeDate = badge.assigned ? formatDate(badge.assigned) : '';
-              const tooltipText = badgeDate ? `Awarded ${badgeDate}` : '';
-
-              return (
-                <div
-                  key={`${badge.name}-${index}`}
-                  className="badge-item badge-achievement"
-                  style={{
-                    '--badge-color': config.color,
-                    '--badge-bg': config.bgColor,
-                  } as React.CSSProperties}
-                  data-badge-name={badge.name}
-                  data-badge-date={tooltipText}
-                  title={`${badge.name}${tooltipText ? ` - ${tooltipText}` : ''}`}
-                >
-                  <span className="badge-icon">
-                    <BadgeIcon name={badge.name} color={config.color} />
-                  </span>
-                  <span className="badge-name">{badge.name}</span>
-                  {badge.assigned && (
-                    <span className="badge-date">{formatDate(badge.assigned)}</span>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+          {renderBadgeList(achievements, 0)}
         </div>
       )}
 
-      {activityBadges.length > 0 && (
+      {activities.length > 0 && (
         <div className="badge-category">
           {!compact && <div className="badge-category-label">Activity</div>}
-          <div className="badge-list">
-            {activityBadges.map((badge, index) => {
-              const config = getBadgeConfig(badge.name);
-              const isRecent = isRecentActivity(badge.name, badge.assigned);
-              const badgeDate = badge.assigned ? formatDate(badge.assigned) : '';
-              const tooltipText = badgeDate ? `Active since ${badgeDate}` : '';
-
-              return (
-                <div
-                  key={`${badge.name}-${index}`}
-                  className={`badge-item badge-activity ${isRecent ? 'badge-recent' : ''}`}
-                  style={{
-                    '--badge-color': config.color,
-                    '--badge-bg': config.bgColor,
-                  } as React.CSSProperties}
-                  data-badge-name={badge.name}
-                  data-badge-date={tooltipText}
-                  title={`${badge.name}${tooltipText ? ` - ${tooltipText}` : ''}`}
-                >
-                  <span className="badge-icon">
-                    <BadgeIcon name={badge.name} color={config.color} />
-                  </span>
-                  <span className="badge-name">{badge.name}</span>
-                  {badge.assigned && (
-                    <span className="badge-date">{formatDate(badge.assigned)}</span>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+          {renderBadgeList(activities, achievements.length)}
         </div>
       )}
     </div>
   );
 }
 
-// Standalone component to show all contributors' badges
 export function AllBadgesDisplay() {
   const contributors = Object.values(contributorsData as Record<string, Contributor>);
   const contributorsWithBadges = contributors.filter(c =>
     c.badges && c.badges.some(b => b.name && b.name.trim() !== '')
   );
 
-  if (contributorsWithBadges.length === 0) {
-    return (
-      <div className="badge-display-empty">
-        <p>No badges have been awarded yet. Check back soon!</p>
-      </div>
-    );
-  }
+  if (contributorsWithBadges.length === 0) return null;
 
   return (
     <div className="all-badges-display">
@@ -341,35 +317,39 @@ export function AllBadgesDisplay() {
       <div className="badge-stats">
         <div className="badge-stat-item">
           <span className="badge-stat-number">{contributorsWithBadges.length}</span>
-          <span className="badge-stat-label">Contributors with Badges</span>
+          <span className="badge-stat-label">Active Contributors</span>
+        </div>
+        <div className="badge-stat-item">
+          <span className="badge-stat-number">
+            {contributorsWithBadges.reduce((sum, c) => sum + (c.badges?.length || 0), 0)}
+          </span>
+          <span className="badge-stat-label">Milestones Reached</span>
         </div>
         <div className="badge-stat-item">
           <span className="badge-stat-number">
             {contributorsWithBadges.reduce((sum, c) =>
-              sum + (c.badges?.filter(b => b.name && b.name.trim() !== '').length || 0), 0
+              sum + (c.badges?.filter(b => isNewlyEarned(b.assigned)).length || 0), 0
             )}
           </span>
-          <span className="badge-stat-label">Total Badges Awarded</span>
+          <span className="badge-stat-label">New This Month ✨</span>
         </div>
       </div>
 
       <div className="badge-contributors-grid">
-        {contributorsWithBadges.map(contributor => (
-          <div key={contributor.slug} className="badge-contributor-card">
+        {contributorsWithBadges.map((contributor, index) => (
+          <div
+            key={contributor.slug}
+            className="badge-contributor-card"
+            style={{ '--card-index': index } as React.CSSProperties}
+          >
             <div className="badge-contributor-header">
-              <img
-                src={contributor.avatar}
-                alt={contributor.name}
-                className="badge-contributor-avatar"
-              />
+              <img src={contributor.avatar} alt="" className="badge-contributor-avatar" />
               <div className="badge-contributor-info">
                 <div className="badge-contributor-name">{contributor.name}</div>
-                {contributor.steward && (
-                  <div className="badge-contributor-steward">Steward: {contributor.steward}</div>
-                )}
+                {contributor.steward && <div className="badge-contributor-steward">{contributor.steward}</div>}
               </div>
             </div>
-            <BadgeDisplay badges={contributor.badges} compact={false} />
+            <BadgeDisplay badges={contributor.badges} />
           </div>
         ))}
       </div>
