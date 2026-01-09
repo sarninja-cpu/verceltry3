@@ -9,6 +9,7 @@
     opacity: 1;
     transform: translateY(0);
     transition: all 0.6s var(--badge-easing);
+    overflow: visible !important;
   }
 
   .badge-display.visible {
@@ -51,6 +52,7 @@
     flex-wrap: wrap;
     gap: 0.75rem;
     align-items: flex-start;
+    overflow: visible !important;
   }
   
   .badges-container.stack {
@@ -64,6 +66,11 @@
     opacity: 0;
     animation: badgeSlideIn 0.6s var(--badge-transition) forwards;
     animation-delay: var(--delay);
+    z-index: 1;
+  }
+
+  .badge-wrapper:hover {
+    z-index: 100;
   }
   
   @keyframes badgeSlideIn {
@@ -263,126 +270,108 @@
     height: 100%;
   }
   
-  /* Tooltip - Premium Design */
-  .badge-tooltip {
+   /* Tooltip */
+   .badge-tooltip {
     position: absolute;
-    bottom: calc(100% + 16px);
+    bottom: calc(100% + 12px);
     left: 50%;
     transform: translateX(-50%);
-    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    background: #1f2937;
     color: white;
-    padding: 1rem 1.25rem;
-    border-radius: 14px;
-    min-width: 260px;
-    max-width: 320px;
-    box-shadow: 
-      0 20px 40px rgba(0, 0, 0, 0.4),
-      0 0 0 1px rgba(255, 255, 255, 0.1);
-    z-index: 1000;
-    animation: tooltipFadeIn 0.25s var(--badge-easing);
+    padding: 1rem;
+    border-radius: 12px;
+    min-width: 240px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    z-index: 9999;
+    animation: tooltipAppear 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
-    backdrop-filter: blur(10px);
   }
-  
+
   .badge-tooltip::before {
     content: '';
     position: absolute;
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
-    border: 10px solid transparent;
+    border: 8px solid transparent;
     border-top-color: #1f2937;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
   }
-  
-  .badge-tooltip::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 14px;
-    padding: 2px;
-    background: linear-gradient(135deg, var(--badge-color), transparent);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0.5;
-  }
-  
-  @keyframes tooltipFadeIn {
+
+  @keyframes tooltipAppear {
     from {
       opacity: 0;
-      transform: translateX(-50%) translateY(8px) scale(0.95);
+      transform: translateX(-50%) translateY(10px);
     }
     to {
       opacity: 1;
-      transform: translateX(-50%) translateY(0) scale(1);
+      transform: translateX(-50%) translateY(0);
     }
   }
-  
+
   .tooltip-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 0.5rem;
     gap: 0.75rem;
-    margin-bottom: 0.625rem;
-    padding-bottom: 0.625rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
-  
+
   .tooltip-header strong {
-    font-size: 1rem;
+    font-size: 0.9375rem;
     font-weight: 700;
-    line-height: 1.2;
   }
-  
+
   .tier-badge {
     font-size: 0.625rem;
     font-weight: 800;
-    padding: 0.25rem 0.625rem;
-    border-radius: 8px;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    white-space: nowrap;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
-  
+
   .tier-badge.tier-legendary {
     background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-    color: #78350f;
   }
-  
+
   .tier-badge.tier-epic {
     background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
   }
-  
+
   .tier-badge.tier-rare {
     background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   }
-  
+
   .tier-badge.tier-common {
     background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   }
-  
+
   .tooltip-description {
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     color: #d1d5db;
-    line-height: 1.5;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
   }
-  
-  .tooltip-footer {
-    padding-top: 0.625rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
+
   .tooltip-date {
     font-size: 0.75rem;
     color: #9ca3af;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    font-style: italic;
   }
-  
+
+  /* Alternative: Position tooltip below if there's not enough space above */
+  .badges-container.tooltip-below .badge-tooltip {
+    bottom: auto;
+    top: calc(100% + 12px);
+  }
+
+  .badges-container.tooltip-below .badge-tooltip::before {
+    top: auto;
+    bottom: 100%;
+    border-top-color: transparent;
+    border-bottom-color: #1f2937;
+  }
+
   .new-badge-text {
     display: inline-flex;
     align-items: center;

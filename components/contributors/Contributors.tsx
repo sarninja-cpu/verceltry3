@@ -16,6 +16,7 @@ interface Contributor {
   twitter: string | null;
   steward: string;
   badges: Badge[];
+  description: string;
 }
 
 interface ContributorGroup {
@@ -103,21 +104,7 @@ export function Contributors() {
                       <div className="contributors-page-name">{contributor.name}</div>
                       
                       <div className="contributor-badges-row">
-                        {contributor.role === "steward" && (
-                          <span className="contributors-page-badge steward-badge">
-                            🛡️ Steward
-                          </span>
-                        )}
-                        {contributor.role === "lead" && (
-                          <span className="contributors-page-badge lead-badge">
-                            👑 Leadership
-                          </span>
-                        )}
-                        {contributor.role === "core" && (
-                          <span className="contributors-page-badge core-badge">
-                            ⭐ Core
-                          </span>
-                        )}
+                        
                         {contributor.badges && contributor.badges.length > 0 && (
                           <span className="contributors-badge-count">
                             <span className="badge-count-number">{contributor.badges.filter(b => b.name && b.name.trim() !== '').length}</span>
@@ -132,6 +119,13 @@ export function Contributors() {
                       <div className="contributors-page-steward">
                         <span className="steward-label">Steward:</span>
                         <span className="steward-name">{contributor.steward}</span>
+                      </div>
+                    )}
+
+                    {/* Description - only show for non-stewards */}
+                    {contributor.description && contributor.role !== "steward" && (
+                      <div className="contributors-page-description">
+                        {contributor.description}
                       </div>
                     )}
 

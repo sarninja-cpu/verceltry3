@@ -122,63 +122,51 @@
   /* Grid Layout - Enhanced */
   .contributors-page-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 1.75rem;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
     padding: 0 0.5rem;
     max-width: 1400px;
   }
-  
+
   /* Contributor Card - Simple Design */
   .contributors-page-card {
     background: var(--sidebar-bg);
     border: 1px solid var(--theme-popup-border);
     border-radius: 6px;
-    padding: 0.5rem 0.4rem;
+    padding: 1rem;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     transition: all 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
+    grid-template-rows: auto auto auto 1fr auto;
+    align-items: start;
     text-align: center;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     position: relative;
+    min-height: 280px;
   }
 
   .contributors-page-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
   }
   
   /* Avatar - Enhanced with wrapper */
   .avatar-wrapper {
     position: relative;
-    margin-bottom: 1rem;
-    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
   }
-  
+
   .contributors-page-avatar {
-    width: 88px;
-    height: 88px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     object-fit: cover;
-    border: 4px solid var(--theme-popup-border);
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    box-shadow: 
-      0 4px 12px rgba(0, 0, 0, 0.12),
-      0 0 0 4px var(--sidebar-bg);
+    border: 3px solid var(--theme-popup-border);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     background-color: var(--sidebar-bg);
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-  
-  .contributors-page-card:hover .contributors-page-avatar {
-    transform: scale(1.08) rotate(3deg);
-    border-color: var(--vocs-color_codeInlineBg);
-    box-shadow: 
-      0 8px 24px rgba(0, 0, 0, 0.16),
-      0 0 0 4px var(--sidebar-bg),
-      0 0 0 6px var(--vocs-color_codeInlineBg);
+    transition: all 0.3s ease;
   }
   
   /* Avatar Badge for top contributors */
@@ -219,16 +207,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.625rem;
-    margin-bottom: 0.75rem;
+    gap: 0.5rem;
     width: 100%;
-    position: relative;
-    z-index: 2;
   }
-  
+
   .contributors-page-name {
     font-weight: 700;
-    font-size: 1.25rem;
+    font-size: 1rem;
     word-break: break-word;
     color: var(--fg);
     line-height: 1.3;
@@ -312,16 +297,6 @@
     transition: left 0.5s ease;
   }
   
-  .contributors-page-card:hover .contributors-badge-count {
-    transform: scale(1.08) translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-    border-color: var(--vocs-color_codeInlineBg);
-  }
-  
-  .contributors-page-card:hover .contributors-badge-count::before {
-    left: 100%;
-  }
-  
   .badge-count-number {
     font-size: 0.8125rem;
     color: var(--fg);
@@ -339,94 +314,76 @@
     flex-direction: column;
     align-items: center;
     gap: 0.25rem;
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     color: var(--fg);
-    margin: 0.75rem 0 1rem;
-    padding: 0.625rem 1rem;
-    background: linear-gradient(135deg, 
-      var(--quote-bg, rgba(0, 0, 0, 0.05)), 
-      transparent
-    );
-    border: 2px solid var(--theme-popup-border);
-    border-radius: 12px;
+    padding: 0.5rem 0.75rem;
+    background: var(--quote-bg, rgba(0, 0, 0, 0.05));
+    border: 1px solid var(--theme-popup-border);
+    border-radius: 6px;
     width: 100%;
     transition: all 0.3s ease;
-    position: relative;
-    z-index: 2;
   }
   
   .steward-label {
-    font-size: 0.75rem;
+    font-size: 0.625rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     opacity: 0.7;
   }
-  
+
   .steward-name {
     font-weight: 700;
-    font-size: 0.9375rem;
+    font-size: 0.75rem;
   }
-  
+
   .contributors-page-card:hover .contributors-page-steward {
     border-color: var(--vocs-color_codeInlineBg);
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Description */
+  .contributors-page-description {
+    font-size: 0.8rem;
+    color: var(--fg);
+    opacity: 0.8;
+    line-height: 1.4;
+    padding: 0.5rem 0;
+    text-align: center;
   }
   
-  /* Social Links - Enhanced */
   .contributors-page-social {
     display: flex;
-    gap: 1rem;
-    margin-top: auto;
-    padding-top: 1rem;
+    gap: 0.6rem;
     justify-content: center;
-    position: relative;
-    z-index: 2;
+    margin: 0.8rem 0 0.3rem;
   }
   
   .contributor-link {
-    color: var(--fg);
-    opacity: 0.6;
-    font-size: 1.25rem;
+    color: #586069;
+    font-size: 1.2rem;
     text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.2s;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: var(--quote-bg, rgba(0, 0, 0, 0.05));
-    border: 2px solid transparent;
   }
   
   .contributor-link:hover {
-    transform: translateY(-4px) scale(1.1) rotate(5deg);
-    opacity: 1;
-    background: var(--vocs-color_codeInlineBg);
-    border-color: var(--theme-popup-border);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+    transform: scale(1.15);
+    color: #0066cc;
   }
   
+  /* SVG icon styling */
   .contributor-link svg {
     width: 18px;
     height: 18px;
-    transition: transform 0.3s ease;
-  }
-  
-  .contributor-link:hover svg {
-    transform: scale(1.15);
   }
   
   /* Badge Display Section - Enhanced */
   .contributors-page-badges {
-    margin: 1.25rem 0 0.75rem;
-    padding-top: 1.25rem;
-    border-top: 2px solid var(--theme-popup-border);
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--theme-popup-border);
     width: 100%;
-    position: relative;
-    z-index: 2;
   }
   
   .contributors-page-badges::before {
@@ -452,6 +409,7 @@
   .contributors-page-badges .badge-display {
     display: flex;
     justify-content: center;
+    margin: 0 0 0.3rem;
   }
   
   .contributors-page-badges .badges-container {
@@ -463,40 +421,16 @@
     border-left: 4px solid #e34c26;
   }
   
-  .leadership-group .contributors-page-card:hover {
-    box-shadow: 
-      0 8px 24px rgba(227, 76, 38, 0.15),
-      0 16px 48px rgba(0, 0, 0, 0.08);
-  }
-  
   .core-contributors-group .contributors-page-card {
     border-left: 4px solid #28a745;
-  }
-  
-  .core-contributors-group .contributors-page-card:hover {
-    box-shadow: 
-      0 8px 24px rgba(40, 167, 69, 0.15),
-      0 16px 48px rgba(0, 0, 0, 0.08);
   }
   
   .stewards-group .contributors-page-card {
     border-left: 4px solid #3b82f6;
   }
   
-  .stewards-group .contributors-page-card:hover {
-    box-shadow: 
-      0 8px 24px rgba(59, 130, 246, 0.15),
-      0 16px 48px rgba(0, 0, 0, 0.08);
-  }
-  
   .contributors-group .contributors-page-card {
     border-left: 4px solid #a855f7;
-  }
-  
-  .contributors-group .contributors-page-card:hover {
-    box-shadow: 
-      0 8px 24px rgba(168, 85, 247, 0.15),
-      0 16px 48px rgba(0, 0, 0, 0.08);
   }
   
   /* Corner Accent for elite contributors */

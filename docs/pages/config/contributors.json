@@ -6,6 +6,7 @@
     "github": "https://github.com/mattaereal",
     "twitter": "https://twitter.com/mattaereal",
     "role": "lead",
+    "description": "Initiative lead and maintainer",
     "steward": "",
     "badges": [
       {
@@ -37,6 +38,7 @@
     "github": "https://github.com/zedt3ster",
     "twitter": "https://twitter.com/ethzed",
     "role": "core",
+    "description": "Initial contributor to the Security Frameworks",
     "steward": "",
     "badges": [
       {
@@ -56,6 +58,7 @@
     "github": "https://github.com/NFTDreww",
     "twitter": "https://twitter.com/nft_dreww",
     "role": "steward",
+    "description": "Steward of Community Management framework",
     "steward": "Community Management framework",
     "badges": [
       {
@@ -75,6 +78,7 @@
     "github": "https://github.com/robert-macwha",
     "twitter": null,
     "role": "core",
+    "description": "Web dev & fact checking",
     "steward": "",
     "badges": [
       {
@@ -98,6 +102,7 @@
     "github": "https://github.com/tebayoso",
     "twitter": "https://twitter.com/tebayoso",
     "role": "contributor",
+    "description": "Initial implementation of tag filtering",
     "steward": "",
     "badges": [
       {
@@ -117,6 +122,7 @@
     "github": "https://github.com/engn33r",
     "twitter": "https://twitter.com/bl4ckb1rd71",
     "role": "contributor",
+    "description": "Signing best practices",
     "steward": "",
     "badges": [
       {
@@ -132,6 +138,7 @@
     "github": "https://github.com/ghadi8",
     "twitter": "https://twitter.com/ghadi8798",
     "role": "steward",
+    "description": "Steward of ENS framework",
     "steward": "ENS framework",
     "badges": [
       {
@@ -147,6 +154,7 @@
     "github": "https://github.com/patrickalphac",
     "twitter": "https://twitter.com/patrickalphac",
     "role": "steward",
+    "description": "Steward of Security Testing framework",
     "steward": "Security Testing framework",
     "badges": [
       {
@@ -166,6 +174,7 @@
     "github": "https://github.com/pinalikefruit",
     "twitter": "https://x.com/pinalikefruit",
     "role": "steward",
+    "description": "Steward of Wallet-Security framework",
     "steward": "Wallet-Security framework",
     "badges": [
       {
@@ -181,6 +190,7 @@
     "github": "https://github.com/njelich",
     "twitter": "https://x.com/NoahJelich",
     "role": "contributor",
+    "description": "Frameworks Contributor",
     "steward": "",
     "badges": [
       {
@@ -196,6 +206,7 @@
     "github": "https://github.com/DicksonWu654",
     "twitter": "https://x.com/DicksonWuML",
     "role": "contributor",
+    "description": "Steward of Safe Harbor & Steward of SEAL Certs",
     "steward": "",
     "badges": [
       {
@@ -219,6 +230,7 @@
     "github": "https://github.com/shortdoom",
     "twitter": "https://x.com/blackbigswan",
     "role": "contributor",
+    "description": "Frameworks Contributor",
     "steward": "",
     "badges": [
       {
@@ -234,6 +246,7 @@
     "github": "https://github.com/relotnek",
     "twitter": "https://twitter.com/relotnek",
     "role": "contributor",
+    "description": "Frameworks Contributor",
     "steward": "",
     "badges": [
       {
@@ -249,6 +262,7 @@
     "github": "https://github.com/the-caliber",
     "twitter": "https://x.com/caliber_tweets",
     "role": "contributor",
+    "description": "Frameworks Contributor",
     "steward": "",
     "badges": [
       {
@@ -264,6 +278,7 @@
     "github": "https://github.com/ElliotFriedman",
     "twitter": "https://x.com/Elliot0x",
     "role": "contributor",
+    "description": "Frameworks Contributor",
     "steward": "",
     "badges": [
       {
@@ -279,6 +294,7 @@
     "github": null,
     "twitter": null,
     "role": "contributor",
+    "description": "Shield3 Co-Founder",
     "steward": "",
     "badges": []
   },
@@ -289,6 +305,7 @@
     "github": null,
     "twitter": null,
     "role": "contributor",
+    "description": "Opsek Head of Operations",
     "steward": "",
     "badges": []
   },
@@ -299,6 +316,7 @@
     "github": null,
     "twitter": "https://x.com/pablosabbatella",
     "role": "contributor",
+    "description": "Opsek Founder",
     "steward": "",
     "badges": []
   },
@@ -309,6 +327,7 @@
     "github": "https://github.com/scode2277",
     "twitter": "https://x.com/emit_sara",
     "role": "core",
+    "description": "Frameworks Contributor",
     "steward": "",
     "badges": [
       {
@@ -328,6 +347,7 @@
     "github": "https://github.com/fredrik0x",
     "twitter": null,
     "role": "contributor",
+    "description": "Frameworks Contributor",
     "steward": "",
     "badges": [
       {
@@ -347,6 +367,7 @@
     "github": "https://github.com/davidthegardens",
     "twitter": null,
     "role": "contributor",
+    "description": "Frameworks Contributor",
     "steward": "",
     "badges": [
       {
@@ -362,6 +383,7 @@
     "github": "https://github.com/GodwinDA",
     "twitter": null,
     "role": "contributor",
+    "description": "Frameworks Contributor",
     "steward": "",
     "badges": [
       {
@@ -377,6 +399,7 @@
     "github": "https://github.com/00xWizard",
     "twitter": null,
     "role": "contributor",
+    "description": "Frameworks Contributor",
     "steward": "",
     "badges": [
       {
@@ -392,6 +415,7 @@
     "github": "https://github.com/aviggiano",
     "twitter": "https://twitter.com/aviggiano",
     "role": "contributor",
+    "description": "Frameworks Contributor",
     "steward": "",
     "badges": [
       {
@@ -407,6 +431,7 @@
     "github": "https://github.com/compojoom",
     "twitter": null,
     "role": "contributor",
+    "description": "Frameworks Contributor",
     "steward": "",
     "badges": [
       {
@@ -422,6 +447,7 @@
     "github": "https://github.com/nbelenkov",
     "twitter": "https://twitter.com/nbelenkov",
     "role": "contributor",
+    "description": "Frameworks Contributor",
     "steward": "",
     "badges": [
       {
@@ -437,6 +463,7 @@
     "github": "https://github.com/damboy0",
     "twitter": "https://twitter.com/only1dami",
     "role": "contributor",
+    "description": "Frameworks Contributor",
     "steward": "",
     "badges": [
       {
@@ -452,6 +479,7 @@
     "github": "https://github.com/madjin",
     "twitter": "https://twitter.com/dankvr",
     "role": "contributor",
+    "description": "Frameworks Contributor",
     "steward": "",
     "badges": [
       {
@@ -471,6 +499,7 @@
     "github": "https://github.com/matt-dragonfly",
     "twitter": null,
     "role": "contributor",
+    "description": "Frameworks Contributor",
     "steward": "",
     "badges": [
       {
