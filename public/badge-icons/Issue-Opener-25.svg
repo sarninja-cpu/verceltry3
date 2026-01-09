@@ -1,0 +1,21 @@
+<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="issue25-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#3b82f6" />
+      <stop offset="100%" stopColor="#1d4ed8" />
+    </linearGradient>
+  </defs>
+  <path d="M32 2L40 22L60 26L46 40L50 60L32 48L14 60L18 40L4 26L24 22L32 2Z"
+        fill="url(#issue25-grad)"/>
+  <circle cx="32" cy="34" r="16" stroke="white" strokeWidth="2" fill="none" opacity="0.3"/>
+  <circle cx="32" cy="34" r="11" stroke="white" strokeWidth="2" fill="none" opacity="0.5"/>
+  <circle cx="32" cy="34" r="6" stroke="white" strokeWidth="2" fill="none" opacity="0.7"/>
+  <path d="M32 34L32 18" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+  <path d="M32 34L44 26" stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
+  <circle cx="38" cy="28" r="3" fill="#ef4444"/>
+  <circle cx="26" cy="38" r="2" fill="#ef4444" opacity="0.8"/>
+  <circle cx="40" cy="40" r="2" fill="#ef4444" opacity="0.6"/>
+  <circle cx="32" cy="34" r="3" fill="white"/>
+  <circle cx="50" cy="50" r="10" fill="#fbbf24"/>
+  <text x="50" y="54" fontSize="10" fill="white" fontWeight="bold" textAnchor="middle">25</text>
+</svg>

@@ -1,0 +1,20 @@
+<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gold-medal-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#fcd34d" />
+      <stop offset="50%" stopColor="#fbbf24" />
+      <stop offset="100%" stopColor="#d97706" />
+    </linearGradient>
+  </defs>
+  <path d="M20 2L32 20L44 2L48 2L38 24L32 28L26 24L16 2Z" fill="#b45309" opacity="0.9"/>
+  <path d="M24 4L32 16L40 4" stroke="#fcd34d" strokeWidth="1" opacity="0.7"/>
+  <circle cx="24" cy="8" r="2" fill="#fcd34d"/>
+  <circle cx="32" cy="6" r="2" fill="#fcd34d"/>
+  <circle cx="40" cy="8" r="2" fill="#fcd34d"/>
+  <circle cx="32" cy="42" r="20" fill="url(#gold-medal-grad)"/>
+  <circle cx="32" cy="42" r="16" stroke="white" strokeWidth="1.5" opacity="0.5"/>
+  <path d="M32 30L42 42L32 54L22 42Z" fill="white" opacity="0.95"/>
+  <path d="M32 30L37 38H27L32 30Z" fill="#ec4899" opacity="0.8"/>
+  <path d="M27 38L32 54L22 42L27 38ZM37 38L32 54L42 42L37 38Z" fill="#be185d" opacity="0.6"/>
+  <text x="32" y="47" fontSize="12" fill="#be185d" fontWeight="bold" textAnchor="middle">25</text>
+</svg>

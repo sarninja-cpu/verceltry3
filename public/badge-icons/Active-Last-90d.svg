@@ -1,0 +1,17 @@
+<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="active90-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#14b8a6" />
+      <stop offset="100%" stopColor="#0d9488" />
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#active90-grad)"/>
+  <path d="M10 36L18 36L22 28L28 44L34 20L40 38L46 32L54 32"
+        stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+  <circle cx="22" cy="28" r="3" fill="white"/>
+  <circle cx="28" cy="44" r="3" fill="white"/>
+  <circle cx="34" cy="20" r="3" fill="white"/>
+  <circle cx="40" cy="38" r="3" fill="white"/>
+  <rect x="20" y="48" width="24" height="10" rx="2" fill="white" opacity="0.95"/>
+  <text x="32" y="56" fontSize="8" fill="#0d9488" fontWeight="bold" textAnchor="middle">90 DAYS</text>
+</svg>

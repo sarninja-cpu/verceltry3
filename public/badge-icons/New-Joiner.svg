@@ -1,0 +1,16 @@
+<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="newbie-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#fde047" />
+      <stop offset="100%" stopColor="#eab308" />
+    </linearGradient>
+  </defs>
+  <path d="M32 0L36 24L60 20L40 32L60 44L36 40L32 64L28 40L4 44L24 32L4 20L28 24L32 0Z"
+        fill="url(#newbie-grad)"/>
+  <circle cx="32" cy="32" r="14" fill="white" opacity="0.95"/>
+  <text x="32" y="38" fontSize="20" textAnchor="middle">👋</text>
+  <path d="M12 12L14 16L18 14L14 18L16 22L12 18L8 20L12 16L10 12L12 12Z" fill="white" opacity="0.9"/>
+  <path d="M52 12L54 16L58 14L54 18L56 22L52 18L48 20L52 16L50 12L52 12Z" fill="white" opacity="0.9"/>
+  <path d="M12 52L14 48L10 50L14 46L12 42L16 46L20 44L16 48L18 52L12 52Z" fill="white" opacity="0.8"/>
+  <path d="M52 52L54 48L50 50L54 46L52 42L56 46L60 44L56 48L58 52L52 52Z" fill="white" opacity="0.8"/>
+</svg>

@@ -426,26 +426,7 @@ const BadgeIcon = ({ name, isNew }: { name: string; isNew: boolean }) => {
     
     // ACTIVE-LAST-30D - Lightning bolt with calendar
     'Active-Last-30d': (
-      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="active30-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#10b981" />
-            <stop offset="100%" stopColor="#047857" />
-          </linearGradient>
-        </defs>
-        {/* Circle */}
-        <circle cx="32" cy="32" r="28" fill="url(#active30-grad)" className="badge-main"/>
-        {/* Lightning bolt - energy/activity */}
-        <path d="M36 8L22 32H30L28 56L42 28H34L36 8Z" fill="white" opacity="0.95"/>
-        {/* Inner bolt highlight */}
-        <path d="M34 14L26 30H32L30 48L40 32H34L34 14Z" fill="#10b981" opacity="0.3"/>
-        {/* Pulse rings */}
-        <circle cx="32" cy="32" r="24" stroke="white" strokeWidth="1" opacity="0.2"/>
-        <circle cx="32" cy="32" r="20" stroke="white" strokeWidth="1" opacity="0.3"/>
-        {/* 30d indicator */}
-        <rect x="42" y="44" width="18" height="14" rx="2" fill="white"/>
-        <text x="51" y="54" fontSize="8" fill="#047857" fontWeight="bold" textAnchor="middle">30d</text>
-      </svg>
+      <img src="/badge-icons/active-30-canva.svg" alt="Active Last 30 Days" style={{ width: '100%', height: '100%' }} /> 
     ),
     
     // ACTIVE-LAST-90D - Activity chart

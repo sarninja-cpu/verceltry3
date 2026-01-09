@@ -1,0 +1,18 @@
+<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="silver-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#e5e7eb" />
+      <stop offset="50%" stopColor="#9ca3af" />
+      <stop offset="100%" stopColor="#6b7280" />
+    </linearGradient>
+  </defs>
+  <path d="M22 4L32 18L42 4L46 4L38 22L32 26L26 22L18 4Z" fill="#4b5563" opacity="0.9"/>
+  <path d="M32 8L26 4M32 8L38 4" stroke="#9ca3af" strokeWidth="1" opacity="0.6"/>
+  <circle cx="32" cy="40" r="20" fill="url(#silver-grad)"/>
+  <circle cx="32" cy="40" r="16" stroke="white" strokeWidth="1" opacity="0.4"/>
+  <circle cx="26" cy="34" r="3" fill="white"/>
+  <circle cx="38" cy="34" r="3" fill="white"/>
+  <circle cx="32" cy="48" r="3" fill="white"/>
+  <path d="M26 37V42C26 45 28 48 32 48M38 37V40C38 43 36 46 32 48" stroke="white" strokeWidth="2"/>
+  <text x="32" y="43" fontSize="10" fill="#4b5563" fontWeight="bold" textAnchor="middle">10</text>
+</svg>
