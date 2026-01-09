@@ -151,32 +151,7 @@ const BadgeIcon = ({ name, isNew }: { name: string; isNew: boolean }) => {
     
     // CONTRIBUTOR-5 - Bronze medal with code brackets
     'Contributor-5': (
-      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="bronze-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#d97706" />
-            <stop offset="50%" stopColor="#b45309" />
-            <stop offset="100%" stopColor="#92400e" />
-          </linearGradient>
-          <linearGradient id="bronze-shine" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.4"/>
-            <stop offset="50%" stopColor="#fbbf24" stopOpacity="0"/>
-            <stop offset="100%" stopColor="#fbbf24" stopOpacity="0.4"/>
-          </linearGradient>
-        </defs>
-        {/* Ribbon */}
-        <path d="M24 4L32 16L40 4L44 4L38 20L32 24L26 20L20 4Z" fill="#c2410c" opacity="0.9"/>
-        <path d="M28 4L32 12L36 4" stroke="#fbbf24" strokeWidth="1" opacity="0.5"/>
-        {/* Medal circle */}
-        <circle cx="32" cy="38" r="20" fill="url(#bronze-grad)" className="badge-main"/>
-        <circle cx="32" cy="38" r="20" fill="url(#bronze-shine)"/>
-        <circle cx="32" cy="38" r="16" stroke="#fbbf24" strokeWidth="1" opacity="0.3"/>
-        {/* Code brackets < > representing contributions */}
-        <path d="M24 32L18 38L24 44" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M40 32L46 38L40 44" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-        {/* Number 5 */}
-        <text x="32" y="43" fontSize="14" fill="white" fontWeight="bold" textAnchor="middle" fontFamily="sans-serif">5</text>
-      </svg>
+      <img src="/badge-icons/5.svg" alt="Bronze medal for 5 contributions" style={{ width: '100%', height: '100%' }} /> 
     ),
     
     // CONTRIBUTOR-10 - Silver medal with merge icon
@@ -426,7 +401,7 @@ const BadgeIcon = ({ name, isNew }: { name: string; isNew: boolean }) => {
     
     // ACTIVE-LAST-30D - Lightning bolt with calendar
     'Active-Last-30d': (
-      <img src="/badge-icons/active-30-canva.svg" alt="Active Last 30 Days" style={{ width: '100%', height: '100%' }} /> 
+      <img src="/badge-icons/2.svg" alt="Active Last 30 Days" style={{ width: '100%', height: '100%' }} /> 
     ),
     
     // ACTIVE-LAST-90D - Activity chart
