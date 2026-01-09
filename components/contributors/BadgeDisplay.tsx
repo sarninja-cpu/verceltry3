@@ -56,370 +56,490 @@ function isNewlyEarned(assignedDate: string): boolean {
 
 const BadgeIcon = ({ name, isNew }: { name: string; isNew: boolean }) => {
   const icons: Record<string, JSX.Element> = {
+    // FRAMEWORK STEWARD - Shield with gear/cog representing maintenance & protection
     'Framework-Steward': (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="shield-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="steward-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#3b82f6" />
             <stop offset="100%" stopColor="#1e40af" />
           </linearGradient>
+          <linearGradient id="steward-inner" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#60a5fa" />
+            <stop offset="100%" stopColor="#3b82f6" />
+          </linearGradient>
         </defs>
-        {/* Shield background */}
-        <path d="M32 6L10 14V28C10 42 18 54 32 58C46 54 54 42 54 28V14L32 6Z" 
-              fill="url(#shield-grad)" className="badge-main"/>
-        {/* Checkmark/seal */}
-        <path d="M22 30L28 36L42 22" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="badge-accent"/>
-        {/* Framework letters */}
-        <text x="32" y="48" fontSize="9" fill="white" fontWeight="bold" textAnchor="middle" fontFamily="monospace">FW</text>
-        <circle cx="32" cy="32" r="24" stroke="white" strokeWidth="0.5" opacity="0.2" className="badge-ring"/>
+        {/* Shield shape */}
+        <path d="M32 4L8 14V30C8 44 18 54 32 60C46 54 56 44 56 30V14L32 4Z" 
+              fill="url(#steward-grad)" className="badge-main"/>
+        <path d="M32 8L12 16V30C12 42 20 50 32 56C44 50 52 42 52 30V16L32 8Z" 
+              fill="url(#steward-inner)" opacity="0.3"/>
+        {/* Gear/cog icon - represents maintenance */}
+        <circle cx="32" cy="32" r="8" fill="white" opacity="0.95"/>
+        <circle cx="32" cy="32" r="5" fill="#1e40af"/>
+        {/* Gear teeth */}
+        {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => {
+          const rad = (angle * Math.PI) / 180;
+          const x = 32 + Math.cos(rad) * 12;
+          const y = 32 + Math.sin(rad) * 12;
+          return <circle key={i} cx={x} cy={y} r="3" fill="white" opacity="0.9"/>;
+        })}
+        {/* Crown on top - leadership */}
+        <path d="M24 18L28 14L32 18L36 14L40 18L38 22H26L24 18Z" fill="#fbbf24"/>
       </svg>
     ),
     
+    // CORE CONTRIBUTOR - Star with connected nodes (network/core team)
     'Core-Contributor': (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="star-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="core-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#fbbf24" />
-            <stop offset="100%" stopColor="#f59e0b" />
+            <stop offset="100%" stopColor="#d97706" />
           </linearGradient>
+          <filter id="core-glow">
+            <feGaussianBlur stdDeviation="2" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
         </defs>
-        {/* Star background */}
-        <path d="M32 8L36 24L52 28L40 38L43 54L32 46L21 54L24 38L12 28L28 24L32 8Z" 
-              fill="url(#star-grad)" className="badge-main"/>
-        {/* Core symbol - circle with rays */}
-        <circle cx="32" cy="32" r="8" fill="white" opacity="0.9"/>
-        <text x="32" y="37" fontSize="10" fill="#f59e0b" fontWeight="bold" textAnchor="middle" fontFamily="sans-serif">C</text>
-        {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => {
-          const rad = (angle * Math.PI) / 180;
-          const x1 = 32 + Math.cos(rad) * 10;
-          const y1 = 32 + Math.sin(rad) * 10;
-          const x2 = 32 + Math.cos(rad) * 14;
-          const y2 = 32 + Math.sin(rad) * 14;
-          return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="white" strokeWidth="2" opacity="0.8"/>;
-        })}
+        {/* Outer star burst */}
+        <path d="M32 2L38 22L58 22L42 36L48 56L32 44L16 56L22 36L6 22L26 22L32 2Z" 
+              fill="url(#core-grad)" className="badge-main"/>
+        {/* Core hub - center */}
+        <circle cx="32" cy="32" r="10" fill="white" filter="url(#core-glow)"/>
+        <circle cx="32" cy="32" r="6" fill="#d97706"/>
+        {/* Connected nodes - representing team */}
+        <circle cx="20" cy="24" r="4" fill="white" opacity="0.9"/>
+        <circle cx="44" cy="24" r="4" fill="white" opacity="0.9"/>
+        <circle cx="20" cy="40" r="4" fill="white" opacity="0.9"/>
+        <circle cx="44" cy="40" r="4" fill="white" opacity="0.9"/>
+        {/* Connection lines */}
+        <line x1="24" y1="26" x2="28" y2="30" stroke="white" strokeWidth="2" opacity="0.7"/>
+        <line x1="40" y1="26" x2="36" y2="30" stroke="white" strokeWidth="2" opacity="0.7"/>
+        <line x1="24" y1="38" x2="28" y2="34" stroke="white" strokeWidth="2" opacity="0.7"/>
+        <line x1="40" y1="38" x2="36" y2="34" stroke="white" strokeWidth="2" opacity="0.7"/>
       </svg>
     ),
     
+    // TOP REVIEWER - Eye with magnifying glass and trophy
     'Top-Reviewer': (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="eye-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="reviewer-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#8b5cf6" />
-            <stop offset="100%" stopColor="#6d28d9" />
+            <stop offset="100%" stopColor="#5b21b6" />
           </linearGradient>
         </defs>
-        {/* Badge circle */}
-        <circle cx="32" cy="32" r="26" fill="url(#eye-grad)" className="badge-main"/>
-        {/* Magnifying glass */}
-        <circle cx="28" cy="28" r="10" stroke="white" strokeWidth="3" fill="none"/>
-        <line x1="35" y1="35" x2="44" y2="44" stroke="white" strokeWidth="3" strokeLinecap="round"/>
-        {/* Checkmark inside */}
-        <path d="M23 28L27 32L33 26" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        {/* Trophy icon at bottom */}
-        <path d="M26 48L26 50L38 50L38 48" stroke="#fbbf24" strokeWidth="2"/>
-        <text x="32" y="55" fontSize="7" fill="#fbbf24" fontWeight="bold" textAnchor="middle">TOP</text>
+        {/* Badge background */}
+        <circle cx="32" cy="32" r="28" fill="url(#reviewer-grad)" className="badge-main"/>
+        {/* Trophy shape */}
+        <path d="M22 16H42V20C42 28 38 34 32 36C26 34 22 28 22 20V16Z" fill="white" opacity="0.95"/>
+        {/* Trophy handles */}
+        <path d="M22 18C18 18 16 22 18 26C20 28 22 26 22 24" stroke="white" strokeWidth="2" fill="none"/>
+        <path d="M42 18C46 18 48 22 46 26C44 28 42 26 42 24" stroke="white" strokeWidth="2" fill="none"/>
+        {/* Trophy base */}
+        <rect x="28" y="36" width="8" height="4" fill="white" opacity="0.9"/>
+        <rect x="24" y="40" width="16" height="4" rx="1" fill="white" opacity="0.9"/>
+        {/* Eye inside trophy - represents review/oversight */}
+        <ellipse cx="32" cy="24" rx="6" ry="4" fill="#5b21b6"/>
+        <circle cx="32" cy="24" r="2" fill="white"/>
+        {/* #1 ribbon */}
+        <circle cx="46" cy="18" r="8" fill="#fbbf24"/>
+        <text x="46" y="22" fontSize="10" fill="white" fontWeight="bold" textAnchor="middle">#1</text>
       </svg>
     ),
     
+    // CONTRIBUTOR-5 - Bronze medal with code brackets
     'Contributor-5': (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="bronze-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#fb923c" />
-            <stop offset="100%" stopColor="#ea580c" />
+            <stop offset="0%" stopColor="#d97706" />
+            <stop offset="50%" stopColor="#b45309" />
+            <stop offset="100%" stopColor="#92400e" />
+          </linearGradient>
+          <linearGradient id="bronze-shine" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.4"/>
+            <stop offset="50%" stopColor="#fbbf24" stopOpacity="0"/>
+            <stop offset="100%" stopColor="#fbbf24" stopOpacity="0.4"/>
           </linearGradient>
         </defs>
-        {/* Medal circle */}
-        <circle cx="32" cy="32" r="22" fill="url(#bronze-grad)" className="badge-main"/>
-        <circle cx="32" cy="32" r="18" stroke="white" strokeWidth="2" opacity="0.3"/>
-        {/* Number 5 */}
-        <text x="32" y="42" fontSize="24" fill="white" fontWeight="bold" textAnchor="middle" fontFamily="sans-serif">5</text>
         {/* Ribbon */}
-        <path d="M24 8L28 20L32 8L36 20L40 8L38 24L32 28L26 24L24 8Z" fill="url(#bronze-grad)" opacity="0.8"/>
-        {/* Star accent */}
-        <path d="M32 16L33 19L36 19L34 21L35 24L32 22L29 24L30 21L28 19L31 19L32 16Z" fill="white" opacity="0.9"/>
+        <path d="M24 4L32 16L40 4L44 4L38 20L32 24L26 20L20 4Z" fill="#c2410c" opacity="0.9"/>
+        <path d="M28 4L32 12L36 4" stroke="#fbbf24" strokeWidth="1" opacity="0.5"/>
+        {/* Medal circle */}
+        <circle cx="32" cy="38" r="20" fill="url(#bronze-grad)" className="badge-main"/>
+        <circle cx="32" cy="38" r="20" fill="url(#bronze-shine)"/>
+        <circle cx="32" cy="38" r="16" stroke="#fbbf24" strokeWidth="1" opacity="0.3"/>
+        {/* Code brackets < > representing contributions */}
+        <path d="M24 32L18 38L24 44" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M40 32L46 38L40 44" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+        {/* Number 5 */}
+        <text x="32" y="43" fontSize="14" fill="white" fontWeight="bold" textAnchor="middle" fontFamily="sans-serif">5</text>
       </svg>
     ),
     
+    // CONTRIBUTOR-10 - Silver medal with merge icon
     'Contributor-10': (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#fbbf24" />
-            <stop offset="100%" stopColor="#d97706" />
+          <linearGradient id="silver-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#e5e7eb" />
+            <stop offset="50%" stopColor="#9ca3af" />
+            <stop offset="100%" stopColor="#6b7280" />
+          </linearGradient>
+          <linearGradient id="silver-shine" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="white" stopOpacity="0.5"/>
+            <stop offset="50%" stopColor="white" stopOpacity="0"/>
+            <stop offset="100%" stopColor="white" stopOpacity="0.5"/>
           </linearGradient>
         </defs>
-        {/* Medal circle */}
-        <circle cx="32" cy="34" r="20" fill="url(#gold-grad)" className="badge-main"/>
-        <circle cx="32" cy="34" r="16" stroke="white" strokeWidth="2" opacity="0.4"/>
-        {/* Number 10 */}
-        <text x="32" y="44" fontSize="20" fill="white" fontWeight="bold" textAnchor="middle" fontFamily="sans-serif">10</text>
-        {/* Ribbon top */}
-        <path d="M20 10L26 24L32 10L38 24L44 10L40 28L32 32L24 28L20 10Z" fill="url(#gold-grad)" opacity="0.9"/>
-        {/* Stars on ribbon */}
-        <path d="M32 14L33 17L36 17L34 19L35 22L32 20L29 22L30 19L28 17L31 17L32 14Z" fill="white" opacity="0.9"/>
+        {/* Ribbon */}
+        <path d="M22 4L32 18L42 4L46 4L38 22L32 26L26 22L18 4Z" fill="#4b5563" opacity="0.9"/>
+        <path d="M32 8L26 4M32 8L38 4" stroke="#9ca3af" strokeWidth="1" opacity="0.6"/>
+        {/* Medal */}
+        <circle cx="32" cy="40" r="20" fill="url(#silver-grad)" className="badge-main"/>
+        <circle cx="32" cy="40" r="20" fill="url(#silver-shine)"/>
+        <circle cx="32" cy="40" r="16" stroke="white" strokeWidth="1" opacity="0.4"/>
+        {/* Git merge icon */}
+        <circle cx="26" cy="34" r="3" fill="white"/>
+        <circle cx="38" cy="34" r="3" fill="white"/>
+        <circle cx="32" cy="48" r="3" fill="white"/>
+        <path d="M26 37V42C26 45 28 48 32 48M38 37V40C38 43 36 46 32 48" stroke="white" strokeWidth="2"/>
+        {/* Number */}
+        <text x="32" y="43" fontSize="10" fill="#4b5563" fontWeight="bold" textAnchor="middle">10</text>
       </svg>
     ),
     
+    // CONTRIBUTOR-25 - Gold medal with diamond & pull request icon
     'Contributor-25': (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="diamond-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#ec4899" />
-            <stop offset="100%" stopColor="#be185d" />
+          <linearGradient id="gold-medal-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#fcd34d" />
+            <stop offset="50%" stopColor="#fbbf24" />
+            <stop offset="100%" stopColor="#d97706" />
+          </linearGradient>
+          <linearGradient id="gold-shine" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="white" stopOpacity="0.6"/>
+            <stop offset="50%" stopColor="white" stopOpacity="0"/>
+            <stop offset="100%" stopColor="white" stopOpacity="0.6"/>
           </linearGradient>
         </defs>
-        {/* Medal circle */}
-        <circle cx="32" cy="36" r="20" fill="url(#diamond-grad)" className="badge-main"/>
-        <circle cx="32" cy="36" r="16" stroke="white" strokeWidth="2" opacity="0.4"/>
-        {/* Number 25 */}
-        <text x="32" y="44" fontSize="18" fill="white" fontWeight="bold" textAnchor="middle" fontFamily="sans-serif">25</text>
-        {/* Triple ribbon */}
-        <path d="M18 8L24 26L32 8L40 26L46 8L42 30L32 34L22 30L18 8Z" fill="url(#diamond-grad)" opacity="0.9"/>
-        {/* Three stars */}
-        <path d="M24 14L25 17L28 17L26 19L27 22L24 20L21 22L22 19L20 17L23 17L24 14Z" fill="white" opacity="0.95"/>
-        <path d="M32 12L33 15L36 15L34 17L35 20L32 18L29 20L30 17L28 15L31 15L32 12Z" fill="white" opacity="0.95"/>
-        <path d="M40 14L41 17L44 17L42 19L43 22L40 20L37 22L38 19L36 17L39 17L40 14Z" fill="white" opacity="0.95"/>
+        {/* Premium ribbon */}
+        <path d="M20 2L32 20L44 2L48 2L38 24L32 28L26 24L16 2Z" fill="#b45309" opacity="0.9"/>
+        <path d="M24 4L32 16L40 4" stroke="#fcd34d" strokeWidth="1" opacity="0.7"/>
+        {/* Stars on ribbon */}
+        <circle cx="24" cy="8" r="2" fill="#fcd34d"/>
+        <circle cx="32" cy="6" r="2" fill="#fcd34d"/>
+        <circle cx="40" cy="8" r="2" fill="#fcd34d"/>
+        {/* Medal */}
+        <circle cx="32" cy="42" r="20" fill="url(#gold-medal-grad)" className="badge-main"/>
+        <circle cx="32" cy="42" r="20" fill="url(#gold-shine)"/>
+        <circle cx="32" cy="42" r="16" stroke="white" strokeWidth="1.5" opacity="0.5"/>
+        {/* Diamond shape in center */}
+        <path d="M32 30L42 42L32 54L22 42Z" fill="white" opacity="0.95"/>
+        <path d="M32 30L37 38H27L32 30Z" fill="#ec4899" opacity="0.8"/>
+        <path d="M27 38L32 54L22 42L27 38ZM37 38L32 54L42 42L37 38Z" fill="#be185d" opacity="0.6"/>
+        {/* Number */}
+        <text x="32" y="47" fontSize="12" fill="#be185d" fontWeight="bold" textAnchor="middle">25</text>
       </svg>
     ),
     
+    // REVIEWER-10 - Document with checkmarks
     'Reviewer-10': (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="review-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="review10-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#8b5cf6" />
-            <stop offset="100%" stopColor="#7c3aed" />
+            <stop offset="100%" stopColor="#6d28d9" />
           </linearGradient>
         </defs>
-        {/* Badge hexagon */}
-        <path d="M32 6L50 18L50 38L32 50L14 38L14 18L32 6Z" fill="url(#review-grad)" className="badge-main"/>
-        {/* Document icon */}
-        <rect x="22" y="20" width="20" height="24" rx="2" fill="white" opacity="0.9"/>
-        <line x1="26" y1="26" x2="38" y2="26" stroke="#7c3aed" strokeWidth="1.5"/>
-        <line x1="26" y1="30" x2="38" y2="30" stroke="#7c3aed" strokeWidth="1.5"/>
-        <line x1="26" y1="34" x2="34" y2="34" stroke="#7c3aed" strokeWidth="1.5"/>
+        {/* Hexagon badge */}
+        <path d="M32 4L54 18V46L32 60L10 46V18L32 4Z" fill="url(#review10-grad)" className="badge-main"/>
+        {/* Document */}
+        <rect x="20" y="14" width="24" height="32" rx="2" fill="white" opacity="0.95"/>
+        <path d="M40 14L44 18V14H40Z" fill="#6d28d9" opacity="0.3"/>
+        {/* Code/text lines */}
+        <rect x="24" y="22" width="16" height="2" rx="1" fill="#6d28d9" opacity="0.3"/>
+        <rect x="24" y="28" width="12" height="2" rx="1" fill="#6d28d9" opacity="0.3"/>
+        <rect x="24" y="34" width="14" height="2" rx="1" fill="#6d28d9" opacity="0.3"/>
+        {/* Checkmarks - reviewed */}
+        <circle cx="26" cy="23" r="4" fill="#10b981"/>
+        <path d="M24 23L25.5 24.5L28 22" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <circle cx="26" cy="35" r="4" fill="#10b981"/>
+        <path d="M24 35L25.5 36.5L28 34" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
         {/* Number badge */}
-        <circle cx="38" cy="24" r="6" fill="#fbbf24"/>
-        <text x="38" y="28" fontSize="7" fill="white" fontWeight="bold" textAnchor="middle">10</text>
+        <circle cx="44" cy="48" r="10" fill="#fbbf24"/>
+        <text x="44" y="52" fontSize="10" fill="white" fontWeight="bold" textAnchor="middle">10</text>
       </svg>
     ),
     
+    // REVIEWER-25 - Stack of reviewed documents with star
     'Reviewer-25': (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="review-master-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="review25-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#a855f7" />
-            <stop offset="100%" stopColor="#9333ea" />
+            <stop offset="100%" stopColor="#7c3aed" />
           </linearGradient>
         </defs>
-        {/* Star badge */}
-        <path d="M32 4L38 22L56 26L44 38L48 56L32 46L16 56L20 38L8 26L26 22L32 4Z" 
-              fill="url(#review-master-grad)" className="badge-main"/>
-        {/* Document with checkmarks */}
-        <rect x="24" y="22" width="16" height="20" rx="1" fill="white" opacity="0.95"/>
-        <path d="M27 28L29 30L33 26" stroke="#9333ea" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M27 34L29 36L33 32" stroke="#9333ea" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        {/* Star burst background */}
+        <path d="M32 2L38 20L56 24L42 36L46 54L32 44L18 54L22 36L8 24L26 20L32 2Z" 
+              fill="url(#review25-grad)" className="badge-main"/>
+        {/* Stacked documents */}
+        <rect x="22" y="22" width="20" height="26" rx="1" fill="white" opacity="0.6" transform="rotate(-5 32 35)"/>
+        <rect x="22" y="20" width="20" height="26" rx="1" fill="white" opacity="0.8" transform="rotate(3 32 33)"/>
+        <rect x="22" y="18" width="20" height="26" rx="1" fill="white" opacity="0.95"/>
+        {/* Document lines */}
+        <rect x="25" y="24" width="14" height="2" rx="1" fill="#7c3aed" opacity="0.3"/>
+        <rect x="25" y="29" width="10" height="2" rx="1" fill="#7c3aed" opacity="0.3"/>
+        <rect x="25" y="34" width="12" height="2" rx="1" fill="#7c3aed" opacity="0.3"/>
+        {/* Big checkmark */}
+        <path d="M26 32L30 36L38 26" stroke="#10b981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
         {/* Number badge */}
-        <circle cx="40" cy="26" r="7" fill="#fbbf24"/>
-        <text x="40" y="30" fontSize="8" fill="white" fontWeight="bold" textAnchor="middle">25</text>
+        <circle cx="46" cy="46" r="10" fill="#fbbf24"/>
+        <text x="46" y="50" fontSize="10" fill="white" fontWeight="bold" textAnchor="middle">25</text>
       </svg>
     ),
     
+    // ISSUE-OPENER-5 - Bug with magnifying glass
     'Issue-Opener-5': (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="issue-5-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="issue5-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#06b6d4" />
             <stop offset="100%" stopColor="#0891b2" />
           </linearGradient>
         </defs>
-        {/* Octagon badge */}
-        <path d="M20 10L44 10L54 20L54 44L44 54L20 54L10 44L10 20L20 10Z" fill="url(#issue-5-grad)" className="badge-main"/>
-        {/* Bug icon */}
-        <circle cx="32" cy="28" r="8" stroke="white" strokeWidth="2" fill="none"/>
-        <line x1="24" y1="22" x2="20" y2="18" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-        <line x1="40" y1="22" x2="44" y2="18" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-        <line x1="24" y1="34" x2="20" y2="38" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-        <line x1="40" y1="34" x2="44" y2="38" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-        {/* Eyes */}
-        <circle cx="28" cy="27" r="2" fill="white"/>
-        <circle cx="36" cy="27" r="2" fill="white"/>
+        {/* Octagon */}
+        <path d="M22 6L42 6L58 22L58 42L42 58L22 58L6 42L6 22L22 6Z" fill="url(#issue5-grad)" className="badge-main"/>
+        {/* Bug body */}
+        <ellipse cx="32" cy="32" rx="12" ry="14" fill="white" opacity="0.95"/>
+        {/* Bug segments */}
+        <line x1="20" y1="28" x2="44" y2="28" stroke="#0891b2" strokeWidth="1.5"/>
+        <line x1="20" y1="36" x2="44" y2="36" stroke="#0891b2" strokeWidth="1.5"/>
+        {/* Bug head */}
+        <circle cx="32" cy="20" r="6" fill="white"/>
+        <circle cx="29" cy="19" r="2" fill="#0891b2"/>
+        <circle cx="35" cy="19" r="2" fill="#0891b2"/>
+        {/* Antennae */}
+        <path d="M28 14L24 8" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+        <path d="M36 14L40 8" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+        {/* Bug legs */}
+        <path d="M20 26L14 22" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+        <path d="M44 26L50 22" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+        <path d="M20 38L14 42" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+        <path d="M44 38L50 42" stroke="white" strokeWidth="2" strokeLinecap="round"/>
         {/* Number */}
-        <text x="32" y="50" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle">5</text>
+        <circle cx="46" cy="50" r="8" fill="#fbbf24"/>
+        <text x="46" y="54" fontSize="10" fill="white" fontWeight="bold" textAnchor="middle">5</text>
       </svg>
     ),
     
+    // ISSUE-OPENER-10 - Alert/warning icon with exclamation
     'Issue-Opener-10': (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="issue-10-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="issue10-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#0ea5e9" />
             <stop offset="100%" stopColor="#0284c7" />
           </linearGradient>
         </defs>
-        {/* Circle badge */}
-        <circle cx="32" cy="32" r="26" fill="url(#issue-10-grad)" className="badge-main"/>
-        {/* Magnifying glass with exclamation */}
-        <circle cx="28" cy="26" r="10" stroke="white" strokeWidth="3" fill="none"/>
-        <line x1="35" y1="33" x2="42" y2="40" stroke="white" strokeWidth="3" strokeLinecap="round"/>
-        {/* Exclamation in glass */}
-        <line x1="28" y1="22" x2="28" y2="28" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-        <circle cx="28" cy="31" r="1" fill="white"/>
+        {/* Circle */}
+        <circle cx="32" cy="32" r="28" fill="url(#issue10-grad)" className="badge-main"/>
+        {/* Warning triangle */}
+        <path d="M32 12L52 48H12L32 12Z" fill="white" opacity="0.95"/>
+        {/* Exclamation mark */}
+        <rect x="29" y="22" width="6" height="14" rx="2" fill="#0284c7"/>
+        <circle cx="32" cy="42" r="3" fill="#0284c7"/>
         {/* Number badge */}
-        <circle cx="42" cy="24" r="8" fill="white"/>
-        <text x="42" y="28" fontSize="9" fill="#0284c7" fontWeight="bold" textAnchor="middle">10</text>
+        <circle cx="48" cy="18" r="10" fill="#fbbf24"/>
+        <text x="48" y="22" fontSize="10" fill="white" fontWeight="bold" textAnchor="middle">10</text>
       </svg>
     ),
     
+    // ISSUE-OPENER-25 - Radar/scanner detecting issues
     'Issue-Opener-25': (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="issue-25-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="issue25-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#3b82f6" />
-            <stop offset="100%" stopColor="#2563eb" />
+            <stop offset="100%" stopColor="#1d4ed8" />
           </linearGradient>
         </defs>
         {/* Star badge */}
-        <path d="M32 4L38 22L56 26L44 38L48 56L32 46L16 56L20 38L8 26L26 22L32 4Z" 
-              fill="url(#issue-25-grad)" className="badge-main"/>
-        {/* Radar/target icon */}
-        <circle cx="32" cy="32" r="12" stroke="white" strokeWidth="2" fill="none" opacity="0.9"/>
-        <circle cx="32" cy="32" r="8" stroke="white" strokeWidth="2" fill="none" opacity="0.7"/>
-        <circle cx="32" cy="32" r="4" stroke="white" strokeWidth="2" fill="none" opacity="0.5"/>
-        {/* Crosshair */}
-        <line x1="32" y1="20" x2="32" y2="24" stroke="white" strokeWidth="2"/>
-        <line x1="32" y1="40" x2="32" y2="44" stroke="white" strokeWidth="2"/>
-        <line x1="20" y1="32" x2="24" y2="32" stroke="white" strokeWidth="2"/>
-        <line x1="40" y1="32" x2="44" y2="32" stroke="white" strokeWidth="2"/>
-        {/* Number */}
-        <circle cx="44" cy="20" r="8" fill="#fbbf24"/>
-        <text x="44" y="24" fontSize="8" fill="white" fontWeight="bold" textAnchor="middle">25</text>
+        <path d="M32 2L40 22L60 26L46 40L50 60L32 48L14 60L18 40L4 26L24 22L32 2Z" 
+              fill="url(#issue25-grad)" className="badge-main"/>
+        {/* Radar circles */}
+        <circle cx="32" cy="34" r="16" stroke="white" strokeWidth="2" fill="none" opacity="0.3"/>
+        <circle cx="32" cy="34" r="11" stroke="white" strokeWidth="2" fill="none" opacity="0.5"/>
+        <circle cx="32" cy="34" r="6" stroke="white" strokeWidth="2" fill="none" opacity="0.7"/>
+        {/* Radar sweep */}
+        <path d="M32 34L32 18" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+        <path d="M32 34L44 26" stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
+        {/* Detected dots (issues found) */}
+        <circle cx="38" cy="28" r="3" fill="#ef4444"/>
+        <circle cx="26" cy="38" r="2" fill="#ef4444" opacity="0.8"/>
+        <circle cx="40" cy="40" r="2" fill="#ef4444" opacity="0.6"/>
+        {/* Center */}
+        <circle cx="32" cy="34" r="3" fill="white"/>
+        {/* Number badge */}
+        <circle cx="50" cy="50" r="10" fill="#fbbf24"/>
+        <text x="50" y="54" fontSize="10" fill="white" fontWeight="bold" textAnchor="middle">25</text>
       </svg>
     ),
     
+    // EARLY CONTRIBUTOR - Pioneer/rocket ship
     'Early-Contributor': (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="early-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#f59e0b" />
-            <stop offset="100%" stopColor="#d97706" />
-          </linearGradient>
-        </defs>
-        {/* Badge circle */}
-        <circle cx="32" cy="32" r="26" fill="url(#early-grad)" className="badge-main"/>
-        {/* Trophy */}
-        <path d="M20 20L20 24C20 28 24 32 28 32L36 32C40 32 44 28 44 24L44 20" stroke="white" strokeWidth="3" strokeLinecap="round" fill="none"/>
-        <rect x="26" y="32" width="12" height="8" fill="white" opacity="0.9"/>
-        <path d="M22 40L42 40L40 46L24 46L22 40Z" fill="white" opacity="0.9"/>
-        {/* #1 badge */}
-        <circle cx="32" cy="18" r="8" fill="white"/>
-        <text x="32" y="23" fontSize="10" fill="#d97706" fontWeight="bold" textAnchor="middle">#1</text>
-        {/* Sparkles */}
-        <path d="M14 14L15 16L17 17L15 18L14 20L13 18L11 17L13 16L14 14Z" fill="white" opacity="0.8"/>
-        <path d="M50 14L51 16L53 17L51 18L50 20L49 18L47 17L49 16L50 14Z" fill="white" opacity="0.8"/>
-      </svg>
-    ),
-    
-    'Active-Last-30d': (
-      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="bolt-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#10b981" />
-            <stop offset="100%" stopColor="#059669" />
+            <stop offset="100%" stopColor="#b45309" />
           </linearGradient>
         </defs>
         {/* Circle badge */}
-        <circle cx="32" cy="32" r="26" fill="url(#bolt-grad)" className="badge-main"/>
-        {/* Fire/flame icon */}
-        <path d="M32 12C32 12 24 20 24 28C24 34 27 38 32 38C37 38 40 34 40 28C40 20 32 12 32 12Z" 
-              fill="white" opacity="0.9"/>
-        <path d="M32 18C32 18 28 22 28 26C28 29 29.5 31 32 31C34.5 31 36 29 36 26C36 22 32 18 32 18Z" 
-              fill="#10b981" opacity="0.8"/>
-        {/* Calendar icon at bottom */}
-        <rect x="20" y="42" width="24" height="16" rx="2" fill="white" opacity="0.9"/>
-        <rect x="20" y="42" width="24" height="4" fill="#10b981"/>
-        <text x="32" y="54" fontSize="10" fill="#059669" fontWeight="bold" textAnchor="middle">30d</text>
+        <circle cx="32" cy="32" r="28" fill="url(#early-grad)" className="badge-main"/>
+        {/* Rocket ship */}
+        <path d="M32 8C32 8 24 20 24 32C24 40 28 46 32 46C36 46 40 40 40 32C40 20 32 8 32 8Z" 
+              fill="white" opacity="0.95"/>
+        {/* Rocket window */}
+        <circle cx="32" cy="24" r="5" fill="#f59e0b"/>
+        <circle cx="32" cy="24" r="3" fill="white" opacity="0.5"/>
+        {/* Rocket fins */}
+        <path d="M24 36L18 42L24 44Z" fill="white" opacity="0.9"/>
+        <path d="M40 36L46 42L40 44Z" fill="white" opacity="0.9"/>
+        {/* Rocket flames */}
+        <path d="M28 46L32 56L36 46" fill="#ef4444"/>
+        <path d="M30 46L32 52L34 46" fill="#fbbf24"/>
+        {/* Stars */}
+        <circle cx="14" cy="16" r="2" fill="white" opacity="0.8"/>
+        <circle cx="50" cy="20" r="1.5" fill="white" opacity="0.6"/>
+        <circle cx="18" cy="48" r="1.5" fill="white" opacity="0.7"/>
+        <circle cx="48" cy="44" r="2" fill="white" opacity="0.8"/>
+        {/* #1 badge */}
+        <circle cx="48" cy="14" r="8" fill="white"/>
+        <text x="48" y="18" fontSize="9" fill="#b45309" fontWeight="bold" textAnchor="middle">#1</text>
       </svg>
     ),
     
+    // ACTIVE-LAST-30D - Lightning bolt with calendar
+    'Active-Last-30d': (
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="active30-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#10b981" />
+            <stop offset="100%" stopColor="#047857" />
+          </linearGradient>
+        </defs>
+        {/* Circle */}
+        <circle cx="32" cy="32" r="28" fill="url(#active30-grad)" className="badge-main"/>
+        {/* Lightning bolt - energy/activity */}
+        <path d="M36 8L22 32H30L28 56L42 28H34L36 8Z" fill="white" opacity="0.95"/>
+        {/* Inner bolt highlight */}
+        <path d="M34 14L26 30H32L30 48L40 32H34L34 14Z" fill="#10b981" opacity="0.3"/>
+        {/* Pulse rings */}
+        <circle cx="32" cy="32" r="24" stroke="white" strokeWidth="1" opacity="0.2"/>
+        <circle cx="32" cy="32" r="20" stroke="white" strokeWidth="1" opacity="0.3"/>
+        {/* 30d indicator */}
+        <rect x="42" y="44" width="18" height="14" rx="2" fill="white"/>
+        <text x="51" y="54" fontSize="8" fill="#047857" fontWeight="bold" textAnchor="middle">30d</text>
+      </svg>
+    ),
+    
+    // ACTIVE-LAST-90D - Activity chart
     'Active-Last-90d': (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="wave-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="active90-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#14b8a6" />
             <stop offset="100%" stopColor="#0d9488" />
           </linearGradient>
         </defs>
-        {/* Rounded square badge */}
-        <rect x="6" y="6" width="52" height="52" rx="12" fill="url(#wave-grad)" className="badge-main"/>
-        {/* Bar chart showing activity */}
-        <rect x="12" y="36" width="6" height="16" fill="white" opacity="0.9" rx="1"/>
-        <rect x="21" y="30" width="6" height="22" fill="white" opacity="0.9" rx="1"/>
-        <rect x="30" y="26" width="6" height="26" fill="white" opacity="0.9" rx="1"/>
-        <rect x="39" y="32" width="6" height="20" fill="white" opacity="0.9" rx="1"/>
-        <rect x="48" y="28" width="6" height="24" fill="white" opacity="0.9" rx="1"/>
-        {/* Text */}
-        <text x="32" y="20" fontSize="10" fill="white" fontWeight="bold" textAnchor="middle">90 DAYS</text>
+        {/* Rounded square */}
+        <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#active90-grad)" className="badge-main"/>
+        {/* Activity pulse line */}
+        <path d="M10 36L18 36L22 28L28 44L34 20L40 38L46 32L54 32" 
+              stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+        {/* Activity dots */}
+        <circle cx="22" cy="28" r="3" fill="white"/>
+        <circle cx="28" cy="44" r="3" fill="white"/>
+        <circle cx="34" cy="20" r="3" fill="white"/>
+        <circle cx="40" cy="38" r="3" fill="white"/>
+        {/* 90d label */}
+        <rect x="20" y="48" width="24" height="10" rx="2" fill="white" opacity="0.95"/>
+        <text x="32" y="56" fontSize="8" fill="#0d9488" fontWeight="bold" textAnchor="middle">90 DAYS</text>
       </svg>
     ),
     
+    // NEW JOINER - Welcome with sparkles
     'New-Joiner': (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="sparkle-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="newbie-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#fde047" />
-            <stop offset="100%" stopColor="#facc15" />
+            <stop offset="100%" stopColor="#eab308" />
           </linearGradient>
         </defs>
-        {/* Star burst background */}
-        <path d="M32 4L36 20L52 24L36 28L32 44L28 28L12 24L28 20L32 4Z" 
-              fill="url(#sparkle-grad)" className="badge-main"/>
-        {/* Welcome banner */}
-        <rect x="16" y="26" width="32" height="12" rx="2" fill="white" opacity="0.95"/>
-        <text x="32" y="35" fontSize="9" fill="#facc15" fontWeight="bold" textAnchor="middle">WELCOME!</text>
-        {/* Hand wave */}
-        <text x="32" y="18" fontSize="16">👋</text>
-        {/* Small sparkles */}
-        <path d="M48 12L49 14L51 15L49 16L48 18L47 16L45 15L47 14L48 12Z" fill="white" opacity="0.9"/>
-        <path d="M16 12L17 14L19 15L17 16L16 18L15 16L13 15L15 14L16 12Z" fill="white" opacity="0.9"/>
-        <path d="M48 44L49 46L51 47L49 48L48 50L47 48L45 47L47 46L48 44Z" fill="white" opacity="0.8"/>
+        {/* Starburst */}
+        <path d="M32 0L36 24L60 20L40 32L60 44L36 40L32 64L28 40L4 44L24 32L4 20L28 24L32 0Z" 
+              fill="url(#newbie-grad)" className="badge-main"/>
+        {/* Welcome hand wave */}
+        <circle cx="32" cy="32" r="14" fill="white" opacity="0.95"/>
+        <text x="32" y="38" fontSize="20" textAnchor="middle">👋</text>
+        {/* Sparkle effects */}
+        <path d="M12 12L14 16L18 14L14 18L16 22L12 18L8 20L12 16L10 12L12 12Z" fill="white" opacity="0.9"/>
+        <path d="M52 12L54 16L58 14L54 18L56 22L52 18L48 20L52 16L50 12L52 12Z" fill="white" opacity="0.9"/>
+        <path d="M12 52L14 48L10 50L14 46L12 42L16 46L20 44L16 48L18 52L12 52Z" fill="white" opacity="0.8"/>
+        <path d="M52 52L54 48L50 50L54 46L52 42L56 46L60 44L56 48L58 52L52 52Z" fill="white" opacity="0.8"/>
       </svg>
     ),
     
+    // DORMANT-90D+ - Sleeping moon
     'Dormant-90d+': (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="dormant-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#6b7280" />
-            <stop offset="100%" stopColor="#4b5563" />
+            <stop offset="100%" stopColor="#374151" />
           </linearGradient>
         </defs>
-        {/* Circle badge */}
-        <circle cx="32" cy="32" r="26" fill="url(#dormant-grad)" className="badge-main"/>
-        {/* Sleeping ZZZ */}
-        <text x="28" y="28" fontSize="18" fill="white" opacity="0.9" fontFamily="serif" fontStyle="italic">Z</text>
-        <text x="34" y="24" fontSize="14" fill="white" opacity="0.7" fontFamily="serif" fontStyle="italic">Z</text>
-        <text x="38" y="20" fontSize="10" fill="white" opacity="0.5" fontFamily="serif" fontStyle="italic">Z</text>
+        {/* Circle */}
+        <circle cx="32" cy="32" r="28" fill="url(#dormant-grad)" className="badge-main"/>
         {/* Moon crescent */}
-        <path d="M22 42A10 10 0 1 1 22 30A8 8 0 0 0 22 42Z" fill="white" opacity="0.8"/>
+        <path d="M38 14A18 18 0 1 1 38 50A14 14 0 1 0 38 14Z" fill="white" opacity="0.9"/>
+        {/* Sleeping face on moon */}
+        <path d="M26 30C26 30 28 32 30 30" stroke="#374151" strokeWidth="1.5" strokeLinecap="round"/>
+        <path d="M34 30C34 30 36 32 38 30" stroke="#374151" strokeWidth="1.5" strokeLinecap="round"/>
+        <path d="M30 38C30 38 32 40 34 38" stroke="#374151" strokeWidth="1.5" strokeLinecap="round"/>
+        {/* ZZZ */}
+        <text x="48" y="20" fontSize="10" fill="white" opacity="0.9" fontFamily="serif" fontStyle="italic" fontWeight="bold">Z</text>
+        <text x="52" y="14" fontSize="8" fill="white" opacity="0.7" fontFamily="serif" fontStyle="italic" fontWeight="bold">z</text>
+        <text x="55" y="10" fontSize="6" fill="white" opacity="0.5" fontFamily="serif" fontStyle="italic" fontWeight="bold">z</text>
         {/* Stars */}
-        <circle cx="44" cy="36" r="1.5" fill="white" opacity="0.6"/>
-        <circle cx="40" cy="44" r="1" fill="white" opacity="0.6"/>
-        <circle cx="48" cy="42" r="1.5" fill="white" opacity="0.6"/>
+        <circle cx="14" cy="18" r="1.5" fill="white" opacity="0.6"/>
+        <circle cx="20" cy="12" r="1" fill="white" opacity="0.5"/>
+        <circle cx="10" cy="26" r="1" fill="white" opacity="0.4"/>
+        <circle cx="16" cy="48" r="1.5" fill="white" opacity="0.5"/>
       </svg>
     ),
     
+    // DEFAULT - Generic achievement badge
     'default': (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="default-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#6366f1" />
-            <stop offset="100%" stopColor="#4f46e5" />
+            <stop offset="100%" stopColor="#4338ca" />
           </linearGradient>
         </defs>
-        <circle cx="32" cy="32" r="26" fill="url(#default-grad)" className="badge-main"/>
-        <text x="32" y="38" fontSize="16" fill="white" textAnchor="middle">🏅</text>
-        <text x="32" y="50" fontSize="8" fill="white" fontWeight="bold" textAnchor="middle">BADGE</text>
+        {/* Hexagon */}
+        <path d="M32 4L56 18V46L32 60L8 46V18L32 4Z" fill="url(#default-grad)" className="badge-main"/>
+        {/* Inner hexagon */}
+        <path d="M32 12L48 22V42L32 52L16 42V22L32 12Z" stroke="white" strokeWidth="2" fill="none" opacity="0.3"/>
+        {/* Star */}
+        <path d="M32 20L35 28L44 28L37 34L40 42L32 36L24 42L27 34L20 28L29 28L32 20Z" fill="white" opacity="0.95"/>
       </svg>
     )
   };
