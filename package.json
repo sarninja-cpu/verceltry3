@@ -19,7 +19,8 @@
     "docs:preview": "vocs preview",
     "generate-tags": "node utils/tags-fetcher.js",
     "mermaid-wrapper": "node utils/mermaid-block-wrapper.js",
-    "generate-indexes": "node utils/generate-folder-indexes.js"
+    "generate-indexes": "node utils/generate-folder-indexes.js",
+    "dev:debug": "NODE_OPTIONS='--trace-uncaught --trace-warnings' vocs dev --host 0.0.0.0 --port 5173"
   },
   "keywords": [],
   "author": "",
