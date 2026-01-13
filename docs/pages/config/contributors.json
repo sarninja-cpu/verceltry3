@@ -118,6 +118,10 @@
     "steward": "Community Management framework",
     "badges": [
       {
+        "name": "Framework-Steward",
+        "assigned": ""
+      },
+      {
         "name": "Contributor-5",
         "assigned": "2025-01-29"
       },
@@ -238,6 +242,10 @@
     "steward": "ENS framework",
     "badges": [
       {
+        "name": "Framework-Steward",
+        "assigned": ""
+      },
+      {
         "name": "Dormant-90d+",
         "assigned": "2025-08-11"
       },
@@ -264,6 +272,10 @@
     "description": "Steward of Security Testing framework",
     "steward": "Security Testing framework",
     "badges": [
+      {
+        "name": "Framework-Steward",
+        "assigned": ""
+      },
       {
         "name": "Contributor-5",
         "assigned": "2025-07-31"
@@ -295,6 +307,10 @@
     "description": "Steward of Wallet-Security framework",
     "steward": "Wallet-Security framework",
     "badges": [
+      {
+        "name": "Framework-Steward",
+        "assigned": ""
+      },
       {
         "name": "Dormant-90d+",
         "assigned": "2025-08-27"
@@ -345,6 +361,10 @@
     "description": "Steward of Safe Harbor & Steward of SEAL Certs",
     "steward": "Safe Harbor & SEAL Certs",
     "badges": [
+      {
+        "name": "Framework-Steward",
+        "assigned": ""
+      },
       {
         "name": "Contributor-10",
         "assigned": "2025-12-01"
@@ -534,7 +554,12 @@
     "role": "steward",
     "description": "SEAL Certs & SEAL Wargames",
     "steward": "SEAL Certs",
-    "badges": []
+    "badges": [
+      {
+        "name": "Framework-Steward",
+        "assigned": ""
+      }
+    ]
   },
   "geoffrey": {
     "slug": "geoffrey",
@@ -590,7 +615,12 @@
     "role": "steward",
     "description": "Steward of DNS and Domain Registration Security",
     "steward": "DNS and Domain Registration Security",
-    "badges": []
+    "badges": [
+      {
+        "name": "Framework-Steward",
+        "assigned": ""
+      }
+    ]
   },
   "scode2277": {
     "slug": "scode2277",

@@ -147,31 +147,11 @@
 .badge-wrapper:hover .badge-card {
   transform: translateY(-6px) scale(1.08);
   border-color: var(--badge-color);
-  box-shadow:
-    0 12px 28px rgba(0, 0, 0, 0.15),
-    0 0 0 4px var(--tier-glow),
-    0 0 40px var(--badge-color);
-}
-
-.badge-wrapper.tier-legendary:hover .badge-card {
-  box-shadow:
-    0 12px 32px rgba(251, 191, 36, 0.4),
-    0 0 0 4px rgba(251, 191, 36, 0.2),
-    0 0 48px rgba(251, 191, 36, 0.6);
-}
-
-.badge-wrapper.tier-epic:hover .badge-card {
-  box-shadow:
-    0 12px 32px rgba(168, 85, 247, 0.4),
-    0 0 0 4px rgba(168, 85, 247, 0.2),
-    0 0 48px rgba(168, 85, 247, 0.6);
 }
 
 /* Newly Earned Badge Animation */
 .badge-wrapper.newly-earned .badge-card {
-  animation:
-    badgeSlideIn 0.6s var(--badge-transition) forwards,
-    shimmerPulse 2.5s ease-in-out infinite;
+  animation: badgeSlideIn 0.6s var(--badge-transition) forwards;
   animation-delay: var(--delay), calc(var(--delay) + 0.6s);
 }
 
@@ -214,7 +194,7 @@
   height: 6px;
   background: white;
   border-radius: 50%;
-  animation: pulseGlow 1.5s ease-in-out infinite;
+  animation: pulseGlow 1.5s infinite;
 }
 
 @keyframes pulseGlow {
@@ -391,7 +371,6 @@
 
 /* SVG Animations */
 .badge-main {
-  animation: badgePulse 3s ease-in-out infinite;
   transform-origin: center;
 }
 
@@ -408,7 +387,6 @@
 }
 
 .badge-glow {
-  animation: glowPulse 3s ease-in-out infinite;
   transform-origin: center;
 }
 
@@ -427,7 +405,6 @@
 }
 
 .badge-ring {
-  animation: ringRotate 12s linear infinite;
   transform-origin: center;
 }
 
@@ -439,10 +416,6 @@
   to {
     transform: rotate(360deg);
   }
-}
-
-.badge-accent {
-  animation: accentFloat 3s ease-in-out infinite;
 }
 
 @keyframes accentFloat {
@@ -458,7 +431,6 @@
 }
 
 .badge-core {
-  animation: coreExpand 2s ease-in-out infinite;
   transform-origin: center;
 }
 
