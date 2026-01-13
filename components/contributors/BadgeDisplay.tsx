@@ -424,6 +424,101 @@ const BadgeIcon = ({ name, isNew }: { name: string; isNew: boolean }) => {
       </svg>
     ),
 
+    // FIRST CONTRIBUTION - Calendar with star marking the date
+    'First-Contribution': (
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="first-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#8b5cf6" />
+            <stop offset="50%" stopColor="#7c3aed" />
+            <stop offset="100%" stopColor="#6d28d9" />
+          </linearGradient>
+          <linearGradient id="first-shine" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="white" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="white" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        {/* Shield/badge background */}
+        <path d="M32 4L54 14V34C54 46 44 56 32 60C20 56 10 46 10 34V14L32 4Z"
+          fill="url(#first-grad)" className="badge-main" />
+        <path d="M32 4L54 14V34C54 46 44 56 32 60C20 56 10 46 10 34V14L32 4Z"
+          fill="url(#first-shine)" />
+        {/* Calendar body */}
+        <rect x="18" y="20" width="28" height="28" rx="3" fill="white" opacity="0.95" />
+        {/* Calendar header */}
+        <rect x="18" y="20" width="28" height="8" rx="3" fill="#7c3aed" />
+        <rect x="18" y="24" width="28" height="4" fill="#7c3aed" />
+        {/* Calendar rings */}
+        <circle cx="24" cy="20" r="2" fill="white" opacity="0.9" />
+        <circle cx="32" cy="20" r="2" fill="white" opacity="0.9" />
+        <circle cx="40" cy="20" r="2" fill="white" opacity="0.9" />
+        {/* Calendar grid dots (days) */}
+        <circle cx="24" cy="32" r="1.5" fill="#7c3aed" opacity="0.3" />
+        <circle cx="30" cy="32" r="1.5" fill="#7c3aed" opacity="0.3" />
+        <circle cx="36" cy="32" r="1.5" fill="#7c3aed" opacity="0.3" />
+        <circle cx="42" cy="32" r="1.5" fill="#7c3aed" opacity="0.3" />
+        <circle cx="24" cy="37" r="1.5" fill="#7c3aed" opacity="0.3" />
+        <circle cx="30" cy="37" r="1.5" fill="#7c3aed" opacity="0.3" />
+        <circle cx="36" cy="37" r="1.5" fill="#7c3aed" opacity="0.3" />
+        <circle cx="42" cy="37" r="1.5" fill="#7c3aed" opacity="0.3" />
+        <circle cx="24" cy="42" r="1.5" fill="#7c3aed" opacity="0.3" />
+        <circle cx="30" cy="42" r="1.5" fill="#7c3aed" opacity="0.3" />
+        {/* Highlighted date with star - THE FIRST CONTRIBUTION */}
+        <circle cx="36" cy="42" r="5" fill="#fbbf24" />
+        <path d="M36 39L37 41.5L39.5 41.5L37.5 43L38 45.5L36 44L34 45.5L34.5 43L32.5 41.5L35 41.5Z"
+          fill="white" />
+        {/* Confetti/sparkle effects */}
+        <circle cx="14" cy="16" r="1.5" fill="#fbbf24" opacity="0.8" />
+        <circle cx="50" cy="18" r="1.5" fill="#ec4899" opacity="0.8" />
+        <circle cx="12" cy="44" r="1" fill="#10b981" opacity="0.7" />
+        <circle cx="52" cy="46" r="1" fill="#3b82f6" opacity="0.7" />
+        {/* #1 badge in corner */}
+        <circle cx="48" cy="14" r="7" fill="#fbbf24" />
+        <text x="48" y="18" fontSize="8" fill="white" fontWeight="bold" textAnchor="middle">#1</text>
+      </svg>
+    ),
+
+    // FIRST REVIEW - Document with checkmark and calendar date
+    'First-Review': (
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="first-review-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#10b981" />
+            <stop offset="50%" stopColor="#059669" />
+            <stop offset="100%" stopColor="#047857" />
+          </linearGradient>
+          <linearGradient id="first-review-shine" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="white" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="white" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        {/* Shield/badge background */}
+        <path d="M32 4L54 14V34C54 46 44 56 32 60C20 56 10 46 10 34V14L32 4Z"
+          fill="url(#first-review-grad)" className="badge-main" />
+        <path d="M32 4L54 14V34C54 46 44 56 32 60C20 56 10 46 10 34V14L32 4Z"
+          fill="url(#first-review-shine)" />
+        {/* Document body */}
+        <rect x="18" y="16" width="28" height="36" rx="3" fill="white" opacity="0.95" />
+        {/* Document fold corner */}
+        <path d="M40 16L46 22H40V16Z" fill="#059669" opacity="0.3" />
+        {/* Document lines */}
+        <rect x="22" y="24" width="18" height="2" rx="1" fill="#059669" opacity="0.3" />
+        <rect x="22" y="30" width="14" height="2" rx="1" fill="#059669" opacity="0.3" />
+        <rect x="22" y="36" width="16" height="2" rx="1" fill="#059669" opacity="0.3" />
+        {/* Big checkmark - review approved */}
+        <circle cx="32" cy="44" r="8" fill="#10b981" />
+        <path d="M28 44L31 47L37 41" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        {/* Sparkle effects */}
+        <circle cx="14" cy="16" r="1.5" fill="#fbbf24" opacity="0.8" />
+        <circle cx="50" cy="18" r="1.5" fill="#ec4899" opacity="0.8" />
+        <circle cx="12" cy="44" r="1" fill="#8b5cf6" opacity="0.7" />
+        <circle cx="52" cy="46" r="1" fill="#3b82f6" opacity="0.7" />
+        {/* #1 badge in corner */}
+        <circle cx="48" cy="14" r="7" fill="#fbbf24" />
+        <text x="48" y="18" fontSize="8" fill="white" fontWeight="bold" textAnchor="middle">#1</text>
+      </svg>
+    ),
+
     // ACTIVE-LAST-30D - Lightning bolt with calendar
     'Active-Last-30d': (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -641,6 +736,20 @@ const BADGE_CONFIG: Record<string, {
     label: 'Early Contributor',
     description: 'Among the first contributors to the project',
     tier: 'rare'
+  },
+  'First-Contribution': {
+    color: '#8b5cf6',
+    category: 'achievement',
+    label: 'First Contribution',
+    description: 'Made their first contribution to the project',
+    tier: 'common'
+  },
+  'First-Review': {
+    color: '#10b981',
+    category: 'achievement',
+    label: 'First Review',
+    description: 'Completed their first code review',
+    tier: 'common'
   },
   'Active-Last-30d': {
     color: '#10b981',

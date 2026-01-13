@@ -1,0 +1,874 @@
+{
+  "fredrik0x": {
+    "name": "Fredrik Svantes",
+    "role": "core",
+    "stats": {
+      "mergedPRs": 38,
+      "reviews": 1,
+      "issues": 1,
+      "firstContribution": "2024-06-27T21:48:04Z",
+      "firstReview": "2024-10-15T07:18:57Z",
+      "lastActivity": "2024-10-15T07:18:57Z"
+    },
+    "badges": [
+      {
+        "name": "Contributor-25",
+        "assigned": "2024-07-02"
+      },
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "tebayoso": {
+    "name": "tebayoso",
+    "role": "contributor",
+    "stats": {
+      "mergedPRs": 4,
+      "reviews": 1,
+      "issues": 2,
+      "firstContribution": "2024-09-20T17:24:48Z",
+      "firstReview": "2024-09-30T19:20:22Z",
+      "lastActivity": "2024-09-30T19:20:22Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "mattaereal": {
+    "name": "matta",
+    "role": "lead",
+    "stats": {
+      "mergedPRs": 35,
+      "reviews": 95,
+      "issues": 55,
+      "firstContribution": "2024-08-21T19:27:03Z",
+      "firstReview": "2024-07-02T10:46:05Z",
+      "lastActivity": "2025-12-17T22:38:39Z"
+    },
+    "badges": [
+      {
+        "name": "Contributor-25",
+        "assigned": "2025-07-11"
+      },
+      {
+        "name": "Top-Reviewer",
+        "assigned": "2025-06-04"
+      },
+      {
+        "name": "Reviewer-25",
+        "assigned": "2024-07-02"
+      },
+      {
+        "name": "Issue-Opener-25",
+        "assigned": "2024-09-25"
+      },
+      {
+        "name": "Active-Last-30d",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "zedt3ster": {
+    "name": "zedt3ster",
+    "role": "core",
+    "stats": {
+      "mergedPRs": 3,
+      "reviews": 1,
+      "issues": 0,
+      "firstContribution": "2024-10-02T07:11:00Z",
+      "firstReview": "2024-10-15T06:44:17Z",
+      "lastActivity": "2025-12-17T20:23:06Z"
+    },
+    "badges": [
+      {
+        "name": "Active-Last-30d",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "robert-macwha": {
+    "name": "Robert MacWha",
+    "role": "core",
+    "stats": {
+      "mergedPRs": 21,
+      "reviews": 13,
+      "issues": 9,
+      "firstContribution": "2024-10-07T03:29:29Z",
+      "firstReview": "2025-01-18T05:00:36Z",
+      "lastActivity": "2025-12-08T16:09:13Z"
+    },
+    "badges": [
+      {
+        "name": "Contributor-10",
+        "assigned": "2025-04-10"
+      },
+      {
+        "name": "Reviewer-10",
+        "assigned": "2025-08-25"
+      },
+      {
+        "name": "Issue-Opener-5",
+        "assigned": "2025-08-12"
+      },
+      {
+        "name": "Active-Last-90d",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "nftdreww": {
+    "name": "NFTDreww",
+    "role": "steward",
+    "stats": {
+      "mergedPRs": 3,
+      "reviews": 18,
+      "issues": 0,
+      "firstContribution": "2025-01-24T17:59:19Z",
+      "firstReview": "2025-01-20T13:57:48Z",
+      "lastActivity": "2025-07-28T17:08:56Z"
+    },
+    "badges": [
+      {
+        "name": "Reviewer-10",
+        "assigned": "2025-01-20"
+      },
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "matt-dragonfly": {
+    "name": "matt-dragonfly",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 1,
+      "reviews": 0,
+      "issues": 0,
+      "firstContribution": "2025-01-29T18:50:34Z",
+      "firstReview": null,
+      "lastActivity": "2025-02-03T00:40:27Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "engn33r": {
+    "name": "engn33r",
+    "role": "contributor",
+    "stats": {
+      "mergedPRs": 2,
+      "reviews": 0,
+      "issues": 0,
+      "firstContribution": "2025-03-05T16:03:47Z",
+      "firstReview": null,
+      "lastActivity": "2025-06-18T20:21:35Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "davidthegardens": {
+    "name": "davidthegardens",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 3,
+      "reviews": 0,
+      "issues": 0,
+      "firstContribution": "2025-04-09T15:39:02Z",
+      "firstReview": null,
+      "lastActivity": "2025-11-18T04:33:39Z"
+    },
+    "badges": [
+      {
+        "name": "Active-Last-90d",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "ghadi8": {
+    "name": "Ghadi Mhawej",
+    "role": "steward",
+    "stats": {
+      "mergedPRs": 2,
+      "reviews": 1,
+      "issues": 0,
+      "firstContribution": "2025-05-27T12:26:43Z",
+      "firstReview": "2025-08-09T08:33:08Z",
+      "lastActivity": "2025-08-11T16:23:53Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "elliotfriedman": {
+    "name": "Elliot",
+    "role": "contributor",
+    "stats": {
+      "mergedPRs": 1,
+      "reviews": 5,
+      "issues": 0,
+      "firstContribution": "2025-05-30T00:42:48Z",
+      "firstReview": "2025-05-30T01:02:34Z",
+      "lastActivity": "2025-10-29T18:11:33Z"
+    },
+    "badges": [
+      {
+        "name": "Active-Last-90d",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "patrickalphac": {
+    "name": "Patrick Collins",
+    "role": "steward",
+    "stats": {
+      "mergedPRs": 5,
+      "reviews": 6,
+      "issues": 2,
+      "firstContribution": "2025-07-04T16:45:29Z",
+      "firstReview": "2025-07-12T01:46:35Z",
+      "lastActivity": "2025-07-31T20:32:36Z"
+    },
+    "badges": [
+      {
+        "name": "Contributor-5",
+        "assigned": "2025-07-31"
+      },
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "pinalikefruit": {
+    "name": "Piña",
+    "role": "steward",
+    "stats": {
+      "mergedPRs": 2,
+      "reviews": 6,
+      "issues": 0,
+      "firstContribution": "2025-07-04T20:29:00Z",
+      "firstReview": "2025-08-26T18:29:10Z",
+      "lastActivity": "2025-11-01T10:20:36Z"
+    },
+    "badges": [
+      {
+        "name": "Active-Last-90d",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "relotnek": {
+    "name": "relotnek",
+    "role": "contributor",
+    "stats": {
+      "mergedPRs": 1,
+      "reviews": 1,
+      "issues": 0,
+      "firstContribution": "2025-07-07T17:27:25Z",
+      "firstReview": "2025-10-07T00:09:12Z",
+      "lastActivity": "2025-10-07T00:09:12Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "godwinda": {
+    "name": "godwinda",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 2,
+      "reviews": 0,
+      "issues": 0,
+      "firstContribution": "2025-07-24T15:37:04Z",
+      "firstReview": null,
+      "lastActivity": "2025-07-29T14:46:22Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "nbelenkov": {
+    "name": "nbelenkov",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 1,
+      "reviews": 2,
+      "issues": 0,
+      "firstContribution": "2025-07-26T21:23:38Z",
+      "firstReview": "2025-08-06T08:48:56Z",
+      "lastActivity": "2025-08-22T15:02:31Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "damboy0": {
+    "name": "damboy0",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 1,
+      "reviews": 0,
+      "issues": 0,
+      "firstContribution": "2025-07-29T20:50:16Z",
+      "firstReview": null,
+      "lastActivity": "2025-08-01T15:45:07Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "the-caliber": {
+    "name": "Caliber",
+    "role": "contributor",
+    "stats": {
+      "mergedPRs": 1,
+      "reviews": 23,
+      "issues": 3,
+      "firstContribution": "2025-07-30T07:12:42Z",
+      "firstReview": "2025-08-12T10:56:52Z",
+      "lastActivity": "2025-10-09T06:15:39Z"
+    },
+    "badges": [
+      {
+        "name": "Reviewer-10",
+        "assigned": "2025-08-23"
+      },
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "dicksonwu654": {
+    "name": "Dickson Wu",
+    "role": "steward",
+    "stats": {
+      "mergedPRs": 14,
+      "reviews": 82,
+      "issues": 4,
+      "firstContribution": "2025-08-01T00:50:32Z",
+      "firstReview": "2025-08-02T21:22:11Z",
+      "lastActivity": "2025-12-17T22:39:58Z"
+    },
+    "badges": [
+      {
+        "name": "Contributor-10",
+        "assigned": "2025-12-01"
+      },
+      {
+        "name": "Top-Reviewer",
+        "assigned": "2025-10-07"
+      },
+      {
+        "name": "Reviewer-25",
+        "assigned": "2025-09-26"
+      },
+      {
+        "name": "Active-Last-30d",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "shortdoom": {
+    "name": "blackbigswan",
+    "role": "contributor",
+    "stats": {
+      "mergedPRs": 2,
+      "reviews": 12,
+      "issues": 0,
+      "firstContribution": "2025-08-07T21:15:26Z",
+      "firstReview": "2025-08-12T16:08:46Z",
+      "lastActivity": "2025-09-03T21:23:37Z"
+    },
+    "badges": [
+      {
+        "name": "Reviewer-10",
+        "assigned": "2025-08-12"
+      },
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "00xwizard": {
+    "name": "00xwizard",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 1,
+      "reviews": 1,
+      "issues": 0,
+      "firstContribution": "2025-09-04T13:38:54Z",
+      "firstReview": "2025-09-14T02:27:45Z",
+      "lastActivity": "2025-09-18T17:55:04Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "scode2277": {
+    "name": "scode2277",
+    "role": "core",
+    "stats": {
+      "mergedPRs": 28,
+      "reviews": 10,
+      "issues": 2,
+      "firstContribution": "2025-09-09T17:47:03Z",
+      "firstReview": "2025-08-12T15:01:15Z",
+      "lastActivity": "2025-12-17T22:39:12Z"
+    },
+    "badges": [
+      {
+        "name": "Contributor-25",
+        "assigned": "2025-11-15"
+      },
+      {
+        "name": "Reviewer-10",
+        "assigned": "2025-10-10"
+      },
+      {
+        "name": "Active-Last-30d",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "aviggiano": {
+    "name": "aviggiano",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 1,
+      "reviews": 0,
+      "issues": 0,
+      "firstContribution": "2025-09-26T14:06:58Z",
+      "firstReview": null,
+      "lastActivity": "2025-09-29T03:57:09Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "njelich": {
+    "name": "Noah",
+    "role": "contributor",
+    "stats": {
+      "mergedPRs": 2,
+      "reviews": 0,
+      "issues": 1,
+      "firstContribution": "2025-09-21T07:32:04Z",
+      "firstReview": null,
+      "lastActivity": "2025-12-01T18:05:45Z"
+    },
+    "badges": [
+      {
+        "name": "Active-Last-90d",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "compojoom": {
+    "name": "compojoom",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 1,
+      "reviews": 0,
+      "issues": 0,
+      "firstContribution": "2025-11-13T16:17:04Z",
+      "firstReview": null,
+      "lastActivity": "2025-12-01T13:34:44Z"
+    },
+    "badges": [
+      {
+        "name": "Active-Last-90d",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "madjin": {
+    "name": "madjin",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 1,
+      "reviews": 0,
+      "issues": 1,
+      "firstContribution": "2025-12-16T01:41:17Z",
+      "firstReview": null,
+      "lastActivity": "2025-12-17T15:31:07Z"
+    },
+    "badges": [
+      {
+        "name": "New-Joiner",
+        "assigned": "2025-12-16"
+      },
+      {
+        "name": "Active-Last-30d",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "umar-ahmed": {
+    "name": "umar-ahmed",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 0,
+      "reviews": 0,
+      "issues": 1,
+      "firstContribution": "2024-11-12T07:54:21Z",
+      "firstReview": null,
+      "lastActivity": "2024-11-12T07:54:21Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "devtooligan": {
+    "name": "devtooligan",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 0,
+      "reviews": 0,
+      "issues": 2,
+      "firstContribution": "2025-01-04T00:35:44Z",
+      "firstReview": null,
+      "lastActivity": "2025-03-20T15:35:15Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "andrewmohawk": {
+    "name": "andrewmohawk",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 0,
+      "reviews": 0,
+      "issues": 2,
+      "firstContribution": "2025-01-06T18:52:10Z",
+      "firstReview": null,
+      "lastActivity": "2025-01-06T22:38:17Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "tinchoabbate": {
+    "name": "tinchoabbate",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 0,
+      "reviews": 0,
+      "issues": 1,
+      "firstContribution": "2025-02-11T11:44:02Z",
+      "firstReview": null,
+      "lastActivity": "2025-02-11T11:44:02Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "warlordsam07": {
+    "name": "warlordsam07",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 0,
+      "reviews": 0,
+      "issues": 1,
+      "firstContribution": "2025-07-22T17:57:32Z",
+      "firstReview": null,
+      "lastActivity": "2025-07-22T17:57:32Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "pcaversaccio": {
+    "name": "pcaversaccio",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 0,
+      "reviews": 1,
+      "issues": 4,
+      "firstContribution": "2025-08-21T12:55:12Z",
+      "firstReview": "2025-08-26T17:16:47Z",
+      "lastActivity": "2025-12-27T11:06:10Z"
+    },
+    "badges": [
+      {
+        "name": "Active-Last-30d",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "shallem": {
+    "name": "shallem",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 0,
+      "reviews": 0,
+      "issues": 1,
+      "firstContribution": "2025-09-10T04:52:19Z",
+      "firstReview": null,
+      "lastActivity": "2025-09-10T04:52:19Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "dyasmanovych-hacken": {
+    "name": "dyasmanovych-hacken",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 0,
+      "reviews": 0,
+      "issues": 1,
+      "firstContribution": "2025-09-17T11:01:44Z",
+      "firstReview": null,
+      "lastActivity": "2025-09-17T11:01:44Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "greyshaws": {
+    "name": "greyshaws",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 0,
+      "reviews": 0,
+      "issues": 1,
+      "firstContribution": "2025-10-06T13:56:04Z",
+      "firstReview": null,
+      "lastActivity": "2025-10-06T13:56:04Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "smagdali": {
+    "name": "smagdali",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 0,
+      "reviews": 0,
+      "issues": 2,
+      "firstContribution": "2025-12-03T15:32:02Z",
+      "firstReview": null,
+      "lastActivity": "2025-12-03T16:20:29Z"
+    },
+    "badges": [
+      {
+        "name": "Active-Last-90d",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "quillaudits": {
+    "name": "quillaudits",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 0,
+      "reviews": 0,
+      "issues": 2,
+      "firstContribution": "2025-12-30T06:22:15Z",
+      "firstReview": null,
+      "lastActivity": "2025-12-30T06:38:13Z"
+    },
+    "badges": [
+      {
+        "name": "New-Joiner",
+        "assigned": "2025-12-30"
+      },
+      {
+        "name": "Active-Last-30d",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "armanidashh": {
+    "name": "armanidashh",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 0,
+      "reviews": 1,
+      "issues": 0,
+      "firstContribution": null,
+      "firstReview": "2025-02-10T04:04:04Z",
+      "lastActivity": "2025-02-10T04:04:04Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "smartcontracts": {
+    "name": "smartcontracts",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 0,
+      "reviews": 1,
+      "issues": 0,
+      "firstContribution": null,
+      "firstReview": "2025-03-05T18:43:38Z",
+      "lastActivity": "2025-03-05T18:43:38Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "gianfrancobazzani": {
+    "name": "gianfrancobazzani",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 0,
+      "reviews": 2,
+      "issues": 0,
+      "firstContribution": null,
+      "firstReview": "2025-03-07T09:19:05Z",
+      "lastActivity": "2025-03-07T12:04:54Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "sambacha": {
+    "name": "sambacha",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 0,
+      "reviews": 2,
+      "issues": 0,
+      "firstContribution": null,
+      "firstReview": "2025-03-07T18:40:25Z",
+      "lastActivity": "2025-03-07T18:40:25Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "montyly": {
+    "name": "montyly",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 0,
+      "reviews": 1,
+      "issues": 0,
+      "firstContribution": null,
+      "firstReview": "2025-07-09T09:46:40Z",
+      "lastActivity": "2025-07-09T09:46:40Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "ultraviolet10": {
+    "name": "ultraviolet10",
+    "role": "unknown",
+    "stats": {
+      "mergedPRs": 0,
+      "reviews": 1,
+      "issues": 0,
+      "firstContribution": null,
+      "firstReview": "2025-08-06T19:16:13Z",
+      "lastActivity": "2025-08-06T19:16:13Z"
+    },
+    "badges": [
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  },
+  "yssofer": {
+    "name": "Yaniv Sofer",
+    "role": "contributor",
+    "stats": {
+      "mergedPRs": 0,
+      "reviews": 36,
+      "issues": 0,
+      "firstContribution": null,
+      "firstReview": "2025-08-08T21:06:59Z",
+      "lastActivity": "2025-08-18T23:51:53Z"
+    },
+    "badges": [
+      {
+        "name": "Reviewer-25",
+        "assigned": "2025-08-11"
+      },
+      {
+        "name": "Dormant-90d+",
+        "assigned": "2026-01-13"
+      }
+    ]
+  }
+}
