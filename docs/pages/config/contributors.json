@@ -5,31 +5,27 @@
     "avatar": "https://avatars.githubusercontent.com/mattaereal",
     "github": "https://github.com/mattaereal",
     "twitter": "https://twitter.com/mattaereal",
+    "website": "https://theredguild.org",
+    "company": "The Red Guild | SEAL",
     "role": "lead",
+    "job_title": "Security Knowmad",
     "description": "Initiative lead and maintainer",
     "steward": "",
-    "badges": [
-      {
-        "name": "Contributor-25",
-        "assigned": "2024-07-02"
-      },
-      {
-        "name": "Reviewer-25",
-        "assigned": "2024-06-30"
-      },
-      {
-        "name": "Top-Reviewer",
-        "assigned": "2025-09-11"
-      },
-      {
-        "name": "Issue-Opener-25",
-        "assigned": "2024-09-25"
-      },
-      {
-        "name": "Active-Last-90d",
-        "assigned": "2025-11-11"
-      }
-    ]
+    "badges": []
+  },
+  "fredriksvantes": {
+    "slug": "fredriksvantes",
+    "name": "Fredrik Svantes",
+    "avatar": "https://avatars.githubusercontent.com/fredrik0x",
+    "github": "https://github.com/fredrik0x",
+    "twitter": "https://twitter.com/fredrik0x",
+    "website": "https://ethereum.org",
+    "company": "Ethereum Foundation",
+    "job_title": "Head of Security",
+    "role": "core",
+    "description": "Initial contributor to the Security Frameworks",
+    "steward": "",
+    "badges": []
   },
   "zedt3ster": {
     "slug": "zedt3ster",
@@ -37,19 +33,13 @@
     "avatar": "https://avatars.githubusercontent.com/zedt3ster",
     "github": "https://github.com/zedt3ster",
     "twitter": "https://twitter.com/ethzed",
+    "website": "https://sigmaprime.io",
+    "company": "Sigma Prime",
+    "job_title": "Director. Ethereum enthusiast",
     "role": "core",
-    "description": "Initial contributor to the Security Frameworks",
+    "description": "Director. Ethereum enthusiast",
     "steward": "",
-    "badges": [
-      {
-        "name": "Contributor-5",
-        "assigned": "2024-10-02"
-      },
-      {
-        "name": "Active-Last-30d",
-        "assigned": "2025-12-17"
-      }
-    ]
+    "badges": []
   },
   "nftdreww": {
     "slug": "nftdreww",
@@ -57,19 +47,13 @@
     "avatar": "https://pbs.twimg.com/profile_images/1589726471249174536/pEqaw6FO_400x400.png",
     "github": "https://github.com/NFTDreww",
     "twitter": "https://twitter.com/nft_dreww",
-    "role": "steward",
+    "website": null,
+    "company": "PocketUniverseZ",
+    "job_title": "Security Researcher",
     "description": "Steward of Community Management framework",
+    "role": "steward",
     "steward": "Community Management framework",
-    "badges": [
-      {
-        "name": "Contributor-5",
-        "assigned": "2025-01-29"
-      },
-      {
-        "name": "Dormant-90d+",
-        "assigned": "2025-07-28"
-      }
-    ]
+    "badges": []
   },
   "robert": {
     "slug": "robert",
@@ -77,23 +61,13 @@
     "avatar": "https://avatars.githubusercontent.com/Robert-MacWha",
     "github": "https://github.com/robert-macwha",
     "twitter": null,
-    "role": "core",
+    "website": "https://robertmacwha.ca/",
+    "company": "Skylock | SEAL",
+    "job_title": "Full-stack developer and security enthusiast",
     "description": "Web dev & fact checking",
+    "role": "core",
     "steward": "",
-    "badges": [
-      {
-        "name": "Contributor-25",
-        "assigned": "2025-09-01"
-      },
-      {
-        "name": "Issue-Opener-5",
-        "assigned": "2025-08-12"
-      },
-      {
-        "name": "Active-Last-90d",
-        "assigned": "2025-12-08"
-      }
-    ]
+    "badges": []
   },
   "tebayoso": {
     "slug": "tebayoso",
@@ -101,19 +75,13 @@
     "avatar": "https://avatars.githubusercontent.com/tebayoso",
     "github": "https://github.com/tebayoso",
     "twitter": "https://twitter.com/tebayoso",
+    "website": null,
+    "company": null,
+    "job_title": null,
     "role": "contributor",
     "description": "Initial implementation of tag filtering",
     "steward": "",
-    "badges": [
-      {
-        "name": "Contributor-10",
-        "assigned": "2024-09-27"
-      },
-      {
-        "name": "Dormant-90d+",
-        "assigned": "2024-09-30"
-      }
-    ]
+    "badges": []
   },
   "engn33r": {
     "slug": "engn33r",
@@ -121,15 +89,13 @@
     "avatar": "https://avatars.githubusercontent.com/engn33r",
     "github": "https://github.com/engn33r",
     "twitter": "https://twitter.com/bl4ckb1rd71",
+    "website": null,
+    "company": null,
+    "job_title": null,
     "role": "contributor",
     "description": "Signing best practices",
     "steward": "",
-    "badges": [
-      {
-        "name": "Dormant-90d+",
-        "assigned": "2025-06-18"
-      }
-    ]
+    "badges": []
   },
   "ghadi8": {
     "slug": "ghadi8",
@@ -137,15 +103,13 @@
     "avatar": "https://avatars.githubusercontent.com/ghadi8",
     "github": "https://github.com/ghadi8",
     "twitter": "https://twitter.com/ghadi8798",
+    "website": "https://justalab.co",
+    "company": "JustaLab",
+    "job_title": "Creator and maintainer of the ENS framework",
     "role": "steward",
     "description": "Steward of ENS framework",
     "steward": "ENS framework",
-    "badges": [
-      {
-        "name": "Dormant-90d+",
-        "assigned": "2025-08-11"
-      }
-    ]
+    "badges": []
   },
   "patrickalphac": {
     "slug": "patrickalphac",
@@ -153,19 +117,13 @@
     "avatar": "https://avatars.githubusercontent.com/patrickalphac",
     "github": "https://github.com/patrickalphac",
     "twitter": "https://twitter.com/patrickalphac",
+    "website": "https://cyfrin.io",
+    "company": "Cyfrin",
+    "job_title": "Cyfrin Co-founder and CEO",
     "role": "steward",
     "description": "Steward of Security Testing framework",
     "steward": "Security Testing framework",
-    "badges": [
-      {
-        "name": "Contributor-5",
-        "assigned": "2025-07-31"
-      },
-      {
-        "name": "Dormant-90d+",
-        "assigned": "2025-07-31"
-      }
-    ]
+    "badges": []
   },
   "pinalikefruit": {
     "slug": "pinalikefruit",
@@ -173,15 +131,13 @@
     "avatar": "https://avatars.githubusercontent.com/pinalikefruit",
     "github": "https://github.com/pinalikefruit",
     "twitter": "https://x.com/pinalikefruit",
+    "website": "https://www.coinspect.com/",
+    "company": "Coinspect",
+    "job_title": null,
     "role": "steward",
     "description": "Steward of Wallet-Security framework",
     "steward": "Wallet-Security framework",
-    "badges": [
-      {
-        "name": "Dormant-90d+",
-        "assigned": "2025-08-27"
-      }
-    ]
+    "badges": []
   },
   "njelich": {
     "slug": "njelich",
@@ -189,15 +145,13 @@
     "avatar": "https://avatars.githubusercontent.com/njelich",
     "github": "https://github.com/njelich",
     "twitter": "https://x.com/NoahJelich",
+    "website": null,
+    "company": null,
+    "job_title": null,
     "role": "contributor",
     "description": "Frameworks Contributor",
     "steward": "",
-    "badges": [
-      {
-        "name": "Active-Last-90d",
-        "assigned": "2025-10-29"
-      }
-    ]
+    "badges": []
   },
   "dickson": {
     "slug": "dickson",
@@ -205,23 +159,13 @@
     "avatar": "https://avatars.githubusercontent.com/DicksonWu654",
     "github": "https://github.com/DicksonWu654",
     "twitter": "https://x.com/DicksonWuML",
-    "role": "contributor",
+    "website": "https://skylock.xyz/",
+    "company": "SEAL",
+    "job_title": "Safe Harbor",
+    "role": "steward",
     "description": "Steward of Safe Harbor & Steward of SEAL Certs",
-    "steward": "",
-    "badges": [
-      {
-        "name": "Contributor-10",
-        "assigned": "2025-12-01"
-      },
-      {
-        "name": "Reviewer-10",
-        "assigned": "2025-12-01"
-      },
-      {
-        "name": "Active-Last-30d",
-        "assigned": "2025-12-17"
-      }
-    ]
+    "steward": "Safe Harbor & SEAL Certs",
+    "badges": []
   },
   "blackbigswan": {
     "slug": "blackbigswan",
@@ -229,15 +173,27 @@
     "avatar": "https://avatars.githubusercontent.com/shortdoom",
     "github": "https://github.com/shortdoom",
     "twitter": "https://x.com/blackbigswan",
+    "website": "https://securityalliance.org",
+    "company": "SEAL",
+    "job_title": "SEAL Intel",
     "role": "contributor",
     "description": "Frameworks Contributor",
     "steward": "",
-    "badges": [
-      {
-        "name": "Dormant-90d+",
-        "assigned": "2025-09-03"
-      }
-    ]
+    "badges": []
+  },
+  "yaniv": {
+    "slug": "yaniv",
+    "name": "Yaniv Sofer",
+    "avatar": "https://avatars.githubusercontent.com/u/47369984?v=4",
+    "github": "https://github.com/YSSofer",
+    "twitter": "",
+    "website": "",
+    "company": "EY",
+    "job_title": "Frameworks Reviewer",
+    "role": "contributor",
+    "description": "Frameworks Reviewer",
+    "steward": "",
+    "badges": []
   },
   "relotnek": {
     "slug": "relotnek",
@@ -245,15 +201,13 @@
     "avatar": "https://avatars.githubusercontent.com/u/1391674?v=4",
     "github": "https://github.com/relotnek",
     "twitter": "https://twitter.com/relotnek",
+    "website": null,
+    "company": "Filecoin Foundation",
+    "job_title": "Frameworks Contributor",
     "role": "contributor",
     "description": "Frameworks Contributor",
     "steward": "",
-    "badges": [
-      {
-        "name": "Dormant-90d+",
-        "assigned": "2025-09-30"
-      }
-    ]
+    "badges": []
   },
   "the-caliber": {
     "slug": "the-caliber",
@@ -261,15 +215,41 @@
     "avatar": "https://avatars.githubusercontent.com/u/132760011?v=4",
     "github": "https://github.com/the-caliber",
     "twitter": "https://x.com/caliber_tweets",
+    "website": "https://www.calibersec.com/",
+    "company": null,
+    "job_title": "Frameworks Contributor",
     "role": "contributor",
     "description": "Frameworks Contributor",
     "steward": "",
-    "badges": [
-      {
-        "name": "Dormant-90d+",
-        "assigned": "2025-08-28"
-      }
-    ]
+    "badges": []
+  },
+  "SEAL": {
+    "slug": "SEAL",
+    "name": "SEAL",
+    "avatar": "https://avatars.githubusercontent.com/u/141400526?s=200&v=4",
+    "github": "https://github.com/security-alliance",
+    "twitter": "https://x.com/_SEAL_Org",
+    "website": "https://securityalliance.org",
+    "company": "SEAL",
+    "job_title": null,
+    "role": "contributor",
+    "description": "SEAL content",
+    "steward": "",
+    "badges": []
+  },
+  "bsamuels453": {
+    "slug": "bsamuels453",
+    "name": "Ben S",
+    "avatar": "https://avatars.githubusercontent.com/bsamuels453",
+    "github": "https://github.com/bsamuels453",
+    "twitter": "https://x.com/thebensams",
+    "website": "https://bsamuels.net/",
+    "company": "Trail of Bits",
+    "job_title": "Director of Engineering for Blockchain",
+    "role": "contributor",
+    "description": "Director of Engineering for Blockchain",
+    "steward": "",
+    "badges": []
   },
   "ElliotFriedman": {
     "slug": "ElliotFriedman",
@@ -277,15 +257,27 @@
     "avatar": "https://avatars.githubusercontent.com/ElliotFriedman",
     "github": "https://github.com/ElliotFriedman",
     "twitter": "https://x.com/Elliot0x",
+    "website": "https://kleidi.io/",
+    "company": "Solidity Labs",
+    "job_title": "Founder & Engineer",
     "role": "contributor",
-    "description": "Frameworks Contributor",
+    "description": "Founder & Engineer",
     "steward": "",
-    "badges": [
-      {
-        "name": "Dormant-90d+",
-        "assigned": "2025-06-02"
-      }
-    ]
+    "badges": []
+  },
+  "isaac": {
+    "slug": "isaac",
+    "name": "Isaac Patka",
+    "avatar": "https://avatars.githubusercontent.com/ipatka",
+    "github": "https://github.com/ipatka",
+    "twitter": "https://x.com/isaacpatka",
+    "website": "https://www.shield3.com/",
+    "company": "SEAL | Shield3",
+    "job_title": "Co-Founder",
+    "role": "steward",
+    "description": "SEAL Certs & SEAL Wargames",
+    "steward": "SEAL Certs",
+    "badges": []
   },
   "geoffrey": {
     "slug": "geoffrey",
@@ -293,6 +285,9 @@
     "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHbkVGOCK1z6wdvZ2uBu80DExL70BmS-W-gg&s",
     "github": null,
     "twitter": null,
+    "website": "https://www.shield3.com/",
+    "company": "Shield3",
+    "job_title": "Co-Founder",
     "role": "contributor",
     "description": "Shield3 Co-Founder",
     "steward": "",
@@ -304,6 +299,9 @@
     "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsvu2pjxvA4aXUQPmyZTWzRS5thvfCX8frIg&s",
     "github": null,
     "twitter": null,
+    "website": "https://www.opsek.io/",
+    "company": "Opsek",
+    "job_title": "Head of Operations",
     "role": "contributor",
     "description": "Opsek Head of Operations",
     "steward": "",
@@ -315,9 +313,26 @@
     "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrOgjCQOqU_zKjkWq9K7HbGHWUavQ5rwP8Cg&s",
     "github": null,
     "twitter": "https://x.com/pablosabbatella",
+    "website": "https://www.opsek.io/",
+    "company": "SEAL | Opsek",
+    "job_title": "Founder",
     "role": "contributor",
     "description": "Opsek Founder",
     "steward": "",
+    "badges": []
+  },
+  "Raiders0786": {
+    "slug": "Raiders0786",
+    "name": "Raiders",
+    "avatar": "https://avatars.githubusercontent.com/Raiders0786",
+    "github": "https://github.com/Raiders0786",
+    "twitter": "https://x.com/__Raiders",
+    "website": "https://web3sec.news",
+    "company": "Web3Sec.News & Digibastion.com",
+    "job_title": "Creator",
+    "role": "steward",
+    "description": "Steward of DNS and Domain Registration Security",
+    "steward": "DNS and Domain Registration Security",
     "badges": []
   },
   "scode2277": {
@@ -326,186 +341,12 @@
     "avatar": "https://avatars.githubusercontent.com/scode2277",
     "github": "https://github.com/scode2277",
     "twitter": "https://x.com/emit_sara",
+    "company": "SEAL",
+    "website": "https://securityalliance.org",
+    "job_title": "Security Researcher",
     "role": "core",
-    "description": "Frameworks Contributor",
+    "description": "Security Researcher & SEAL Frameworks Core Team",
     "steward": "",
-    "badges": [
-      {
-        "name": "Contributor-25",
-        "assigned": "2025-12-15"
-      },
-      {
-        "name": "Active-Last-30d",
-        "assigned": "2025-12-17"
-      }
-    ]
-  },
-  "fredrik0x": {
-    "slug": "fredrik0x",
-    "name": "Fredrik",
-    "avatar": "https://avatars.githubusercontent.com/u/fredrik0x",
-    "github": "https://github.com/fredrik0x",
-    "twitter": null,
-    "role": "contributor",
-    "description": "Frameworks Contributor",
-    "steward": "",
-    "badges": [
-      {
-        "name": "Contributor-25",
-        "assigned": "2024-06-30"
-      },
-      {
-        "name": "Dormant-90d+",
-        "assigned": "2024-10-15"
-      }
-    ]
-  },
-  "davidthegardens": {
-    "slug": "davidthegardens",
-    "name": "David",
-    "avatar": "https://avatars.githubusercontent.com/u/100804766?v=4",
-    "github": "https://github.com/davidthegardens",
-    "twitter": null,
-    "role": "contributor",
-    "description": "Frameworks Contributor",
-    "steward": "",
-    "badges": [
-      {
-        "name": "Active-Last-90d",
-        "assigned": "2025-11-18"
-      }
-    ]
-  },
-  "godwinda": {
-    "slug": "godwinda",
-    "name": "Godwin Udo",
-    "avatar": "https://avatars.githubusercontent.com/u/102424075?v=4",
-    "github": "https://github.com/GodwinDA",
-    "twitter": null,
-    "role": "contributor",
-    "description": "Frameworks Contributor",
-    "steward": "",
-    "badges": [
-      {
-        "name": "Dormant-90d+",
-        "assigned": "2025-07-29"
-      }
-    ]
-  },
-  "00xwizard": {
-    "slug": "00xwizard",
-    "name": "00xWizard",
-    "avatar": "https://avatars.githubusercontent.com/u/16108762?v=4",
-    "github": "https://github.com/00xWizard",
-    "twitter": null,
-    "role": "contributor",
-    "description": "Frameworks Contributor",
-    "steward": "",
-    "badges": [
-      {
-        "name": "Dormant-90d+",
-        "assigned": "2025-09-18"
-      }
-    ]
-  },
-  "aviggiano": {
-    "slug": "aviggiano",
-    "name": "Antonio Viggiano",
-    "avatar": "https://avatars.githubusercontent.com/u/3029017?v=4",
-    "github": "https://github.com/aviggiano",
-    "twitter": "https://twitter.com/aviggiano",
-    "role": "contributor",
-    "description": "Frameworks Contributor",
-    "steward": "",
-    "badges": [
-      {
-        "name": "Dormant-90d+",
-        "assigned": "2025-09-29"
-      }
-    ]
-  },
-  "compojoom": {
-    "slug": "compojoom",
-    "name": "Daniel Dimitrov",
-    "avatar": "https://avatars.githubusercontent.com/u/693770?v=4",
-    "github": "https://github.com/compojoom",
-    "twitter": null,
-    "role": "contributor",
-    "description": "Frameworks Contributor",
-    "steward": "",
-    "badges": [
-      {
-        "name": "Active-Last-90d",
-        "assigned": "2025-12-01"
-      }
-    ]
-  },
-  "nbelenkov": {
-    "slug": "nbelenkov",
-    "name": "Nikita Belenkov",
-    "avatar": "https://avatars.githubusercontent.com/u/16175835?v=4",
-    "github": "https://github.com/nbelenkov",
-    "twitter": "https://twitter.com/nbelenkov",
-    "role": "contributor",
-    "description": "Frameworks Contributor",
-    "steward": "",
-    "badges": [
-      {
-        "name": "Dormant-90d+",
-        "assigned": "2025-08-22"
-      }
-    ]
-  },
-  "damboy0": {
-    "slug": "damboy0",
-    "name": "damboy0",
-    "avatar": "https://avatars.githubusercontent.com/u/100064629?v=4",
-    "github": "https://github.com/damboy0",
-    "twitter": "https://twitter.com/only1dami",
-    "role": "contributor",
-    "description": "Frameworks Contributor",
-    "steward": "",
-    "badges": [
-      {
-        "name": "Dormant-90d+",
-        "assigned": "2025-08-01"
-      }
-    ]
-  },
-  "madjin": {
-    "slug": "madjin",
-    "name": "jin",
-    "avatar": "https://avatars.githubusercontent.com/u/32600939?v=4",
-    "github": "https://github.com/madjin",
-    "twitter": "https://twitter.com/dankvr",
-    "role": "contributor",
-    "description": "Frameworks Contributor",
-    "steward": "",
-    "badges": [
-      {
-        "name": "New-Joiner",
-        "assigned": "2025-12-17"
-      },
-      {
-        "name": "Active-Last-30d",
-        "assigned": "2025-12-17"
-      }
-    ]
-  },
-  "mattdragonfly": {
-    "slug": "mattdragonfly",
-    "name": "matt-dragonfly",
-    "avatar": "https://avatars.githubusercontent.com/u/187294432?v=4",
-    "github": "https://github.com/matt-dragonfly",
-    "twitter": null,
-    "role": "contributor",
-    "description": "Frameworks Contributor",
-    "steward": "",
-    "badges": [
-      {
-        "name": "Dormant-90d+",
-        "assigned": "2025-02-03"
-      }
-    ]
+    "badges": []
   }
 }

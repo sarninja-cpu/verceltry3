@@ -151,19 +151,99 @@ const BadgeIcon = ({ name, isNew }: { name: string; isNew: boolean }) => {
 
     // CONTRIBUTOR-5 - Bronze medal with code brackets
     'Contributor-5': (
-      <img src="/badge-icons/5contributions.svg" alt="Bronze medal for 5 contributions" style={{ width: '100%', height: '100%' }} />
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bronze-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#d97706" />
+            <stop offset="50%" stopColor="#b45309" />
+            <stop offset="100%" stopColor="#92400e" />
+          </linearGradient>
+          <linearGradient id="bronze-shine" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.4" />
+            <stop offset="50%" stopColor="#fbbf24" stopOpacity="0" />
+            <stop offset="100%" stopColor="#fbbf24" stopOpacity="0.4" />
+          </linearGradient>
+        </defs>
+        {/* Ribbon */}
+        <path d="M24 4L32 16L40 4L44 4L38 20L32 24L26 20L20 4Z" fill="#c2410c" opacity="0.9" />
+        <path d="M28 4L32 12L36 4" stroke="#fbbf24" strokeWidth="1" opacity="0.5" />
+        {/* Medal circle */}
+        <circle cx="32" cy="38" r="20" fill="url(#bronze-grad)" className="badge-main" />
+        <circle cx="32" cy="38" r="20" fill="url(#bronze-shine)" />
+        <circle cx="32" cy="38" r="16" stroke="#fbbf24" strokeWidth="1" opacity="0.3" />
+        {/* Code brackets < > representing contributions */}
+        <path d="M24 32L18 38L24 44" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M40 32L46 38L40 44" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+        {/* Number 5 */}
+        <text x="32" y="43" fontSize="14" fill="white" fontWeight="bold" textAnchor="middle" fontFamily="sans-serif">5</text>
+      </svg>
     ),
 
     // CONTRIBUTOR-10 - Silver medal with merge icon
     'Contributor-10': (
-      <img src="/badge-icons/10contributions.svg" alt="Bronze medal for 5 contributions" style={{ width: '100%', height: '100%' }} />
-
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="silver-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#e5e7eb" />
+            <stop offset="50%" stopColor="#9ca3af" />
+            <stop offset="100%" stopColor="#6b7280" />
+          </linearGradient>
+          <linearGradient id="silver-shine" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="white" stopOpacity="0.5" />
+            <stop offset="50%" stopColor="white" stopOpacity="0" />
+            <stop offset="100%" stopColor="white" stopOpacity="0.5" />
+          </linearGradient>
+        </defs>
+        {/* Ribbon */}
+        <path d="M22 4L32 18L42 4L46 4L38 22L32 26L26 22L18 4Z" fill="#4b5563" opacity="0.9" />
+        <path d="M32 8L26 4M32 8L38 4" stroke="#9ca3af" strokeWidth="1" opacity="0.6" />
+        {/* Medal */}
+        <circle cx="32" cy="40" r="20" fill="url(#silver-grad)" className="badge-main" />
+        <circle cx="32" cy="40" r="20" fill="url(#silver-shine)" />
+        <circle cx="32" cy="40" r="16" stroke="white" strokeWidth="1" opacity="0.4" />
+        {/* Git merge icon */}
+        <circle cx="26" cy="34" r="3" fill="white" />
+        <circle cx="38" cy="34" r="3" fill="white" />
+        <circle cx="32" cy="48" r="3" fill="white" />
+        <path d="M26 37V42C26 45 28 48 32 48M38 37V40C38 43 36 46 32 48" stroke="white" strokeWidth="2" />
+        {/* Number */}
+        <text x="32" y="43" fontSize="10" fill="#4b5563" fontWeight="bold" textAnchor="middle">10</text>
+      </svg>
     ),
 
     // CONTRIBUTOR-25 - Gold medal with diamond & pull request icon
     'Contributor-25': (
-      <img src="/badge-icons/25contributions.svg" alt="Bronze medal for 5 contributions" style={{ width: '100%', height: '100%' }} />
-
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="gold-medal-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#fcd34d" />
+            <stop offset="50%" stopColor="#fbbf24" />
+            <stop offset="100%" stopColor="#d97706" />
+          </linearGradient>
+          <linearGradient id="gold-shine" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="white" stopOpacity="0.6" />
+            <stop offset="50%" stopColor="white" stopOpacity="0" />
+            <stop offset="100%" stopColor="white" stopOpacity="0.6" />
+          </linearGradient>
+        </defs>
+        {/* Premium ribbon */}
+        <path d="M20 2L32 20L44 2L48 2L38 24L32 28L26 24L16 2Z" fill="#b45309" opacity="0.9" />
+        <path d="M24 4L32 16L40 4" stroke="#fcd34d" strokeWidth="1" opacity="0.7" />
+        {/* Stars on ribbon */}
+        <circle cx="24" cy="8" r="2" fill="#fcd34d" />
+        <circle cx="32" cy="6" r="2" fill="#fcd34d" />
+        <circle cx="40" cy="8" r="2" fill="#fcd34d" />
+        {/* Medal */}
+        <circle cx="32" cy="42" r="20" fill="url(#gold-medal-grad)" className="badge-main" />
+        <circle cx="32" cy="42" r="20" fill="url(#gold-shine)" />
+        <circle cx="32" cy="42" r="16" stroke="white" strokeWidth="1.5" opacity="0.5" />
+        {/* Diamond shape in center */}
+        <path d="M32 30L42 42L32 54L22 42Z" fill="white" opacity="0.95" />
+        <path d="M32 30L37 38H27L32 30Z" fill="#ec4899" opacity="0.8" />
+        <path d="M27 38L32 54L22 42L27 38ZM37 38L32 54L42 42L37 38Z" fill="#be185d" opacity="0.6" />
+        {/* Number */}
+        <text x="32" y="47" fontSize="12" fill="#be185d" fontWeight="bold" textAnchor="middle">25</text>
+      </svg>
     ),
 
     // REVIEWER-10 - Document with checkmarks
@@ -346,7 +426,26 @@ const BadgeIcon = ({ name, isNew }: { name: string; isNew: boolean }) => {
 
     // ACTIVE-LAST-30D - Lightning bolt with calendar
     'Active-Last-30d': (
-      <img src="/badge-icons/2.svg" alt="Active Last 30 Days" style={{ width: '100%', height: '100%' }} />
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="active30-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#10b981" />
+            <stop offset="100%" stopColor="#047857" />
+          </linearGradient>
+        </defs>
+        {/* Circle */}
+        <circle cx="32" cy="32" r="28" fill="url(#active30-grad)" className="badge-main" />
+        {/* Lightning bolt - energy/activity */}
+        <path d="M36 8L22 32H30L28 56L42 28H34L36 8Z" fill="white" opacity="0.95" />
+        {/* Inner bolt highlight */}
+        <path d="M34 14L26 30H32L30 48L40 32H34L34 14Z" fill="#10b981" opacity="0.3" />
+        {/* Pulse rings */}
+        <circle cx="32" cy="32" r="24" stroke="white" strokeWidth="1" opacity="0.2" />
+        <circle cx="32" cy="32" r="20" stroke="white" strokeWidth="1" opacity="0.3" />
+        {/* 30d indicator */}
+        <rect x="42" y="44" width="18" height="14" rx="2" fill="white" />
+        <text x="51" y="54" fontSize="8" fill="#047857" fontWeight="bold" textAnchor="middle">30d</text>
+      </svg>
     ),
 
     // ACTIVE-LAST-90D - Activity chart
