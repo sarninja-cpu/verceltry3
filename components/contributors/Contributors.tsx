@@ -5,6 +5,7 @@ import BadgeDisplay from './BadgeDisplay';
 interface Badge {
   name: string;
   assigned: string;
+  framework?: string;
 }
 
 interface Contributor {
@@ -17,9 +18,17 @@ interface Contributor {
   website: string | null;
   company: string | null;
   job_title: string | null;
-  steward: string;
+  steward: string[];
   badges: Badge[];
   description: string;
+}
+
+// Helper to format steward array with "&" between items
+function formatStewards(stewards: string[]): string {
+  if (!stewards || stewards.length === 0) return '';
+  if (stewards.length === 1) return stewards[0];
+  if (stewards.length === 2) return `${stewards[0]} & ${stewards[1]}`;
+  return stewards.slice(0, -1).join(', ') + ' & ' + stewards[stewards.length - 1];
 }
 
 interface ContributorGroup {
@@ -118,10 +127,10 @@ export function Contributors() {
                   )}
 
                   {/* Steward info */}
-                  {contributor.steward && (
+                  {contributor.steward && contributor.steward.length > 0 && (
                     <div className="contributors-page-steward">
                       <span className="steward-label">Steward:</span>
-                      <span className="steward-name">{contributor.steward}</span>
+                      <span className="steward-name">{formatStewards(contributor.steward)}</span>
                     </div>
                   )}
 

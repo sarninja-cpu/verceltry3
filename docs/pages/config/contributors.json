@@ -10,7 +10,7 @@
     "role": "lead",
     "job_title": "Security Knowmad",
     "description": "Initiative lead and maintainer",
-    "steward": "",
+    "steward": [],
     "badges": [
       {
         "name": "Contributor-25",
@@ -53,7 +53,7 @@
     "job_title": "Head of Security",
     "role": "core",
     "description": "Initial contributor to the Security Frameworks",
-    "steward": "",
+    "steward": [],
     "badges": [
       {
         "name": "Contributor-25",
@@ -84,7 +84,7 @@
     "job_title": "Director. Ethereum enthusiast",
     "role": "core",
     "description": "Director. Ethereum enthusiast",
-    "steward": "",
+    "steward": [],
     "badges": [
       {
         "name": "Contributor-5",
@@ -115,11 +115,12 @@
     "job_title": "Security Researcher",
     "description": "Steward of Community Management framework",
     "role": "steward",
-    "steward": "Community Management framework",
+    "steward": ["Community Management"],
     "badges": [
       {
         "name": "Framework-Steward",
-        "assigned": ""
+        "assigned": "2025-05-20",
+        "framework": "Community Management"
       },
       {
         "name": "Contributor-5",
@@ -150,7 +151,7 @@
     "job_title": "Full-stack developer and security enthusiast",
     "description": "Web dev & fact checking",
     "role": "core",
-    "steward": "",
+    "steward": [],
     "badges": [
       {
         "name": "Contributor-25",
@@ -185,7 +186,7 @@
     "job_title": null,
     "role": "contributor",
     "description": "Initial implementation of tag filtering",
-    "steward": "",
+    "steward": [],
     "badges": [
       {
         "name": "Contributor-10",
@@ -216,7 +217,7 @@
     "job_title": null,
     "role": "contributor",
     "description": "Signing best practices",
-    "steward": "",
+    "steward": [],
     "badges": [
       {
         "name": "Dormant-90d+",
@@ -239,11 +240,12 @@
     "job_title": "Creator and maintainer of the ENS framework",
     "role": "steward",
     "description": "Steward of ENS framework",
-    "steward": "ENS framework",
+    "steward": ["ENS"],
     "badges": [
       {
         "name": "Framework-Steward",
-        "assigned": ""
+        "assigned": "2025-05-29",
+        "framework": "ENS"
       },
       {
         "name": "Dormant-90d+",
@@ -270,11 +272,12 @@
     "job_title": "Cyfrin Co-founder and CEO",
     "role": "steward",
     "description": "Steward of Security Testing framework",
-    "steward": "Security Testing framework",
+    "steward": ["Security Testing"],
     "badges": [
       {
         "name": "Framework-Steward",
-        "assigned": ""
+        "assigned": "2025-07-15",
+        "framework": "Security Testing"
       },
       {
         "name": "Contributor-5",
@@ -305,11 +308,12 @@
     "job_title": null,
     "role": "steward",
     "description": "Steward of Wallet-Security framework",
-    "steward": "Wallet-Security framework",
+    "steward": ["Wallet Security"],
     "badges": [
       {
         "name": "Framework-Steward",
-        "assigned": ""
+        "assigned": "2025-07-10",
+        "framework": "Wallet Security"
       },
       {
         "name": "Dormant-90d+",
@@ -336,7 +340,7 @@
     "job_title": null,
     "role": "contributor",
     "description": "Frameworks Contributor",
-    "steward": "",
+    "steward": [],
     "badges": [
       {
         "name": "Active-Last-90d",
@@ -359,11 +363,17 @@
     "job_title": "Safe Harbor",
     "role": "steward",
     "description": "Steward of Safe Harbor & Steward of SEAL Certs",
-    "steward": "Safe Harbor & SEAL Certs",
+    "steward": ["Safe Harbor", "SEAL Certs"],
     "badges": [
       {
         "name": "Framework-Steward",
-        "assigned": ""
+        "assigned": "2025-08-04",
+        "framework": "Safe Harbor"
+      },
+      {
+        "name": "Framework-Steward",
+        "assigned": "2025-12-17",
+        "framework": "SEAL Certs"
       },
       {
         "name": "Contributor-10",
@@ -398,7 +408,7 @@
     "job_title": "SEAL Intel",
     "role": "contributor",
     "description": "Frameworks Contributor",
-    "steward": "",
+    "steward": [],
     "badges": [
       {
         "name": "Dormant-90d+",
@@ -425,7 +435,7 @@
     "job_title": "Frameworks Reviewer",
     "role": "contributor",
     "description": "Frameworks Reviewer",
-    "steward": "",
+    "steward": [],
     "badges": [
       {
         "name": "First-Review",
@@ -444,7 +454,7 @@
     "job_title": "Frameworks Contributor",
     "role": "contributor",
     "description": "Frameworks Contributor",
-    "steward": "",
+    "steward": [],
     "badges": [
       {
         "name": "Dormant-90d+",
@@ -471,7 +481,7 @@
     "job_title": "Frameworks Contributor",
     "role": "contributor",
     "description": "Frameworks Contributor",
-    "steward": "",
+    "steward": [],
     "badges": [
       {
         "name": "Dormant-90d+",
@@ -498,7 +508,7 @@
     "job_title": null,
     "role": "contributor",
     "description": "SEAL content",
-    "steward": "",
+    "steward": [],
     "badges": []
   },
   "bsamuels453": {
@@ -512,7 +522,7 @@
     "job_title": "Director of Engineering for Blockchain",
     "role": "contributor",
     "description": "Director of Engineering for Blockchain",
-    "steward": "",
+    "steward": [],
     "badges": []
   },
   "ElliotFriedman": {
@@ -526,7 +536,7 @@
     "job_title": "Founder & Engineer",
     "role": "contributor",
     "description": "Founder & Engineer",
-    "steward": "",
+    "steward": [],
     "badges": [
       {
         "name": "Dormant-90d+",
@@ -553,11 +563,12 @@
     "job_title": "Co-Founder",
     "role": "steward",
     "description": "SEAL Certs & SEAL Wargames",
-    "steward": "SEAL Certs",
+    "steward": ["SEAL Certs"],
     "badges": [
       {
         "name": "Framework-Steward",
-        "assigned": ""
+        "assigned": "2025-12-17",
+        "framework": "SEAL Certs"
       }
     ]
   },
@@ -572,7 +583,7 @@
     "job_title": "Co-Founder",
     "role": "contributor",
     "description": "Shield3 Co-Founder",
-    "steward": "",
+    "steward": [],
     "badges": []
   },
   "louis": {
@@ -586,7 +597,7 @@
     "job_title": "Head of Operations",
     "role": "contributor",
     "description": "Opsek Head of Operations",
-    "steward": "",
+    "steward": [],
     "badges": []
   },
   "pablo": {
@@ -600,7 +611,7 @@
     "job_title": "Founder",
     "role": "contributor",
     "description": "Opsek Founder",
-    "steward": "",
+    "steward": [],
     "badges": []
   },
   "Raiders0786": {
@@ -614,11 +625,12 @@
     "job_title": "Creator",
     "role": "steward",
     "description": "Steward of DNS and Domain Registration Security",
-    "steward": "DNS and Domain Registration Security",
+    "steward": ["DNS & Domain Registration Security"],
     "badges": [
       {
         "name": "Framework-Steward",
-        "assigned": ""
+        "assigned": "2025-11-06",
+        "framework": "DNS & Domain Registration Security"
       }
     ]
   },
@@ -633,7 +645,7 @@
     "job_title": "Security Researcher",
     "role": "core",
     "description": "Security Researcher & SEAL Frameworks Core Team",
-    "steward": "",
+    "steward": [],
     "badges": [
       {
         "name": "Contributor-25",

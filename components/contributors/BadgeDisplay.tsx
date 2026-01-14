@@ -9,6 +9,7 @@ import contributorsData from '../../docs/pages/config/contributors.json';
 interface Badge {
   name: string;
   assigned: string;
+  framework?: string;
 }
 
 interface Contributor {
@@ -18,7 +19,7 @@ interface Contributor {
   github: string | null;
   twitter: string | null;
   role: string;
-  steward: string;
+  steward: string[];
   badges: Badge[];
 }
 
@@ -857,19 +858,26 @@ export function BadgeDisplay({
           const config = getBadgeConfig(badge.name);
           const isNew = isNewlyEarned(badge.assigned);
           const badgeDate = formatDate(badge.assigned);
+          const badgeKey = `${badge.name}-${badge.framework || ''}-${index}`;
+          const badgeLabel = badge.framework && badge.name === 'Framework-Steward'
+            ? `${badge.framework} Steward`
+            : config.label;
+          const badgeDescription = badge.framework && badge.name === 'Framework-Steward'
+            ? `Steward of the ${badge.framework} framework`
+            : config.description;
 
           return (
             <div
-              key={`${badge.name}-${index}`}
+              key={badgeKey}
               className={`badge-wrapper tier-${config.tier} ${isNew ? 'newly-earned' : ''} ${config.category}`}
               style={{
                 '--delay': `${index * 0.08}s`,
                 '--badge-color': config.color,
                 '--tier-glow': `${config.color}33`
               } as React.CSSProperties}
-              onMouseEnter={() => setHoveredBadge(badge.name)}
+              onMouseEnter={() => setHoveredBadge(badgeKey)}
               onMouseLeave={() => setHoveredBadge(null)}
-              title={`${config.label} - ${config.description}`}
+              title={`${badgeLabel} - ${badgeDescription}`}
             >
               <div className="badge-card">
                 <BadgeIcon name={badge.name} isNew={isNew} />
@@ -887,15 +895,15 @@ export function BadgeDisplay({
                 )}
               </div>
 
-              {hoveredBadge === badge.name && (
+              {hoveredBadge === badgeKey && (
                 <div className="badge-tooltip">
                   <div className="tooltip-header">
-                    <strong>{config.label}</strong>
+                    <strong>{badgeLabel}</strong>
                     <span className={`tier-badge tier-${config.tier}`}>
                       {config.tier?.toUpperCase()}
                     </span>
                   </div>
-                  <p className="tooltip-description">{config.description}</p>
+                  <p className="tooltip-description">{badgeDescription}</p>
                   {badgeDate && (
                     <div className="tooltip-footer">
                       <span className="tooltip-date">
