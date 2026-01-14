@@ -1,3 +1,4 @@
+import React from 'react';
 import './BadgeLegend.css';
 
 interface BadgeInfo {
@@ -144,7 +145,22 @@ export function BadgeLegend() {
 
   return (
     <div className="badge-legend">
-      <h2 className="badge-legend-title">Badge Legend</h2>
+      <h2 className="vocs_H2 vocs_Heading badge-legend-title">
+        <div id="badge-legend" className="vocs_Heading_slugTarget"></div>
+        Badge Legend
+        <a
+          className="vocs_Anchor vocs_Autolink"
+          aria-hidden="true"
+          tabIndex={-1}
+          href="#badge-legend"
+        >
+          <div
+            data-autolink-icon="true"
+            className="vocs_Div vocs_AutolinkIcon"
+            style={{ '--vocs_AutolinkIcon_iconUrl': 'url(/.vocs/icons/link.svg)' } as React.CSSProperties}
+          ></div>
+        </a>
+      </h2>
       <p className="badge-legend-intro">
         Contributors earn badges based on their participation and achievements.
         Badges are color-coded by category and sorted chronologically on each contributor's card.

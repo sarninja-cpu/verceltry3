@@ -473,6 +473,66 @@
   }
 }
 
+/* Dark mode adjustments for badges */
+:root.dark .badge-card {
+  background: linear-gradient(135deg, var(--sidebar-bg, #1f2937) 0%, var(--quote-bg, rgba(255, 255, 255, 0.05)) 100%);
+  border-color: var(--theme-popup-border, #374151);
+}
+
+:root.dark .badge-wrapper.role .badge-card {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.25), 0 4px 16px rgba(96, 165, 250, 0.35);
+}
+
+:root.dark .badge-wrapper.milestone .badge-card {
+  border-color: #34d399;
+  box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.25), 0 4px 16px rgba(52, 211, 153, 0.35);
+}
+
+:root.dark .badge-wrapper.activity .badge-card {
+  border-color: #fcd34d;
+  box-shadow: 0 0 0 2px rgba(252, 211, 77, 0.25), 0 4px 16px rgba(252, 211, 77, 0.35);
+}
+
+:root.dark .badge-wrapper.tier-legendary .badge-card {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(245, 158, 11, 0.15) 100%);
+}
+
+:root.dark .badge-wrapper.tier-epic .badge-card {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(147, 51, 234, 0.15) 100%);
+}
+
+:root.dark .badge-wrapper.tier-rare .badge-card {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(37, 99, 235, 0.15) 100%);
+}
+
+:root.dark .badge-wrapper.tier-common .badge-card {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.15) 100%);
+}
+
+:root.dark .badge-wrapper.role:hover .badge-card {
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.35), 0 8px 24px rgba(96, 165, 250, 0.45);
+}
+
+:root.dark .badge-wrapper.milestone:hover .badge-card {
+  border-color: #6ee7b7;
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.35), 0 8px 24px rgba(52, 211, 153, 0.45);
+}
+
+:root.dark .badge-wrapper.activity:hover .badge-card {
+  border-color: #fde68a;
+  box-shadow: 0 0 0 3px rgba(252, 211, 77, 0.35), 0 8px 24px rgba(252, 211, 77, 0.45);
+}
+
+:root.dark .new-indicator {
+  border-color: var(--sidebar-bg, #1f2937);
+}
+
+:root.dark .badge-tier-indicator {
+  background: var(--sidebar-bg, #1f2937);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .badge-card {

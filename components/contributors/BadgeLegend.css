@@ -7,11 +7,8 @@
   border: 1px solid var(--theme-popup-border, #e5e7eb);
 }
 
-.badge-legend-title {
-  font-size: 1.5rem;
-  font-weight: 700;
+.badge-legend-title.vocs_H2 {
   margin-bottom: 0.75rem;
-  color: var(--fg, #111827);
 }
 
 .badge-legend-intro {
@@ -22,18 +19,16 @@
   line-height: 1.6;
 }
 
+/* Horizontal layout - categories side by side */
 .badge-legend-categories {
-  display: grid;
+  display: flex;
   gap: 2rem;
-}
-
-@media (min-width: 768px) {
-  .badge-legend-categories {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  flex-wrap: wrap;
 }
 
 .badge-legend-category {
+  flex: 1;
+  min-width: 280px;
   padding: 1.25rem;
   background: var(--quote-bg, rgba(255, 255, 255, 0.5));
   border-radius: 12px;
@@ -41,15 +36,18 @@
 }
 
 .badge-legend-category.role {
-  border-color: rgba(59, 130, 246, 0.3);
+  border-color: rgba(59, 130, 246, 0.5);
+  background: rgba(59, 130, 246, 0.05);
 }
 
 .badge-legend-category.milestone {
-  border-color: rgba(16, 185, 129, 0.3);
+  border-color: rgba(16, 185, 129, 0.5);
+  background: rgba(16, 185, 129, 0.05);
 }
 
 .badge-legend-category.activity {
-  border-color: rgba(251, 191, 36, 0.3);
+  border-color: rgba(251, 191, 36, 0.5);
+  background: rgba(251, 191, 36, 0.05);
 }
 
 .category-header {
@@ -81,10 +79,11 @@
   line-height: 1.5;
 }
 
+/* Badge list - stacked vertically */
 .badge-list {
   display: flex;
   flex-direction: column;
-  gap: 0.625rem;
+  gap: 0.5rem;
 }
 
 .badge-item {
@@ -92,7 +91,7 @@
   flex-direction: column;
   gap: 0.125rem;
   padding: 0.5rem 0;
-  border-bottom: 1px solid var(--theme-popup-border, rgba(0, 0, 0, 0.05));
+  border-bottom: 1px solid var(--theme-popup-border, rgba(0, 0, 0, 0.08));
 }
 
 .badge-item:last-child {
@@ -118,7 +117,7 @@
   background: rgba(251, 191, 36, 0.1);
   border-radius: 8px;
   font-size: 0.8125rem;
-  color: var(--fg, #92400e);
+  color: #92400e;
   border-left: 3px solid #fbbf24;
 }
 
@@ -127,15 +126,66 @@
 }
 
 /* Dark mode adjustments */
-:root[data-theme='dark'] .badge-legend {
+:root.dark .badge-legend {
   background: var(--sidebar-bg, #1f2937);
+  border-color: var(--theme-popup-border, #374151);
 }
 
-:root[data-theme='dark'] .badge-legend-category {
-  background: var(--quote-bg, rgba(0, 0, 0, 0.2));
+:root.dark .badge-legend-intro {
+  color: var(--fg, #d1d5db);
 }
 
-:root[data-theme='dark'] .badge-legend-note {
+:root.dark .badge-legend-category {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+:root.dark .badge-legend-category.role {
+  border-color: rgba(59, 130, 246, 0.6);
+  background: rgba(59, 130, 246, 0.1);
+}
+
+:root.dark .badge-legend-category.milestone {
+  border-color: rgba(16, 185, 129, 0.6);
+  background: rgba(16, 185, 129, 0.1);
+}
+
+:root.dark .badge-legend-category.activity {
+  border-color: rgba(251, 191, 36, 0.6);
+  background: rgba(251, 191, 36, 0.1);
+}
+
+:root.dark .category-title {
+  color: var(--fg, #f9fafb);
+}
+
+:root.dark .category-description {
+  color: var(--fg, #9ca3af);
+}
+
+:root.dark .badge-item {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+:root.dark .badge-label {
+  color: var(--fg, #f9fafb);
+}
+
+:root.dark .badge-description {
+  color: var(--fg, #9ca3af);
+}
+
+:root.dark .badge-legend-note {
   background: rgba(251, 191, 36, 0.15);
   color: #fcd34d;
+}
+
+/* Responsive - stack on smaller screens */
+@media (max-width: 900px) {
+  .badge-legend-categories {
+    flex-direction: column;
+  }
+
+  .badge-legend-category {
+    min-width: unset;
+  }
 }
