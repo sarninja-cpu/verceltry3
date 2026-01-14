@@ -648,105 +648,105 @@ const BadgeIcon = ({ name, isNew }: { name: string; isNew: boolean }) => {
 
 const BADGE_CONFIG: Record<string, {
   color: string;
-  category: 'achievement' | 'activity';
+  category: 'role' | 'milestone' | 'activity';
   label: string;
   description: string;
   tier?: 'legendary' | 'epic' | 'rare' | 'common';
 }> = {
   'Framework-Steward': {
     color: '#3b82f6',
-    category: 'achievement',
+    category: 'role',
     label: 'Framework Steward',
     description: 'Official maintainer responsible for framework quality',
     tier: 'legendary'
   },
   'Core-Contributor': {
     color: '#fbbf24',
-    category: 'achievement',
+    category: 'role',
     label: 'Core Team',
     description: 'Elite contributor with governance responsibilities',
     tier: 'legendary'
   },
   'Top-Reviewer': {
     color: '#8b5cf6',
-    category: 'achievement',
+    category: 'role',
     label: 'Master Reviewer',
     description: 'Exceptional code review and mentorship',
     tier: 'epic'
   },
   'Contributor-25': {
     color: '#ec4899',
-    category: 'achievement',
+    category: 'milestone',
     label: 'Diamond Contributor',
     description: '25+ merged contributions',
     tier: 'epic'
   },
   'Contributor-10': {
     color: '#f59e0b',
-    category: 'achievement',
+    category: 'milestone',
     label: 'Gold Contributor',
     description: '10+ merged contributions',
     tier: 'rare'
   },
   'Contributor-5': {
     color: '#fb923c',
-    category: 'achievement',
+    category: 'milestone',
     label: 'Bronze Contributor',
     description: '5+ merged contributions',
     tier: 'common'
   },
   'Reviewer-10': {
     color: '#8b5cf6',
-    category: 'achievement',
+    category: 'milestone',
     label: 'Skilled Reviewer',
     description: '10+ code reviews completed',
     tier: 'rare'
   },
   'Reviewer-25': {
     color: '#a855f7',
-    category: 'achievement',
+    category: 'milestone',
     label: 'Review Master',
     description: '25+ code reviews completed',
     tier: 'epic'
   },
   'Issue-Opener-5': {
     color: '#06b6d4',
-    category: 'achievement',
+    category: 'milestone',
     label: 'Issue Reporter',
     description: '5+ issues opened',
     tier: 'common'
   },
   'Issue-Opener-10': {
     color: '#0ea5e9',
-    category: 'achievement',
+    category: 'milestone',
     label: 'Active Reporter',
     description: '10+ issues opened',
     tier: 'rare'
   },
   'Issue-Opener-25': {
     color: '#3b82f6',
-    category: 'achievement',
+    category: 'milestone',
     label: 'Master Reporter',
     description: '25+ issues opened',
     tier: 'epic'
   },
   'Early-Contributor': {
     color: '#f59e0b',
-    category: 'achievement',
+    category: 'milestone',
     label: 'Early Contributor',
     description: 'Among the first contributors to the project',
     tier: 'rare'
   },
   'First-Contribution': {
     color: '#8b5cf6',
-    category: 'achievement',
+    category: 'milestone',
     label: 'First Contribution',
     description: 'Made their first contribution to the project',
     tier: 'common'
   },
   'First-Review': {
     color: '#10b981',
-    category: 'achievement',
+    category: 'milestone',
     label: 'First Review',
     description: 'Completed their first code review',
     tier: 'common'
@@ -784,7 +784,7 @@ const BADGE_CONFIG: Record<string, {
 function getBadgeConfig(badgeName: string) {
   return BADGE_CONFIG[badgeName] || {
     color: '#6366f1',
-    category: 'achievement' as const,
+    category: 'milestone' as const,
     label: badgeName,
     description: 'Community recognition',
     tier: 'common' as const
@@ -833,20 +833,11 @@ export function BadgeDisplay({
 
   if (displayBadges.length === 0) return null;
 
-  // Sort badges by tier and category
+  // Sort badges chronologically by assigned date (oldest first)
   const sortedBadges = [...displayBadges].sort((a, b) => {
-    const configA = getBadgeConfig(a.name);
-    const configB = getBadgeConfig(b.name);
-
-    const tierOrder = { legendary: 0, epic: 1, rare: 2, common: 3 };
-    const tierA = tierOrder[configA.tier || 'common'];
-    const tierB = tierOrder[configB.tier || 'common'];
-
-    if (tierA !== tierB) return tierA - tierB;
-    if (configA.category !== configB.category) {
-      return configA.category === 'achievement' ? -1 : 1;
-    }
-    return 0;
+    const dateA = new Date(a.assigned || '1970-01-01').getTime();
+    const dateB = new Date(b.assigned || '1970-01-01').getTime();
+    return dateA - dateB;
   });
 
   return (

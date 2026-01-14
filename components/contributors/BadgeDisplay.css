@@ -118,35 +118,60 @@
   display: none;
 }
 
+/* Category-Based Border Styling */
+.badge-wrapper.role .badge-card {
+  border-color: #3b82f6;
+  border-width: 3px;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2), 0 4px 16px rgba(59, 130, 246, 0.3);
+}
+
+.badge-wrapper.milestone .badge-card {
+  border-color: #10b981;
+  border-width: 3px;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2), 0 4px 16px rgba(16, 185, 129, 0.3);
+}
+
+.badge-wrapper.activity .badge-card {
+  border-color: #fbbf24;
+  border-width: 3px;
+  box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.2), 0 4px 16px rgba(251, 191, 36, 0.3);
+}
+
 /* Tier-Based Styling */
 .badge-wrapper.tier-legendary .badge-card {
   background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  border-color: #fbbf24;
-  box-shadow: 0 4px 16px rgba(251, 191, 36, 0.25);
 }
 
 .badge-wrapper.tier-epic .badge-card {
   background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
-  border-color: #a855f7;
-  box-shadow: 0 4px 16px rgba(168, 85, 247, 0.25);
 }
 
 .badge-wrapper.tier-rare .badge-card {
   background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-  border-color: #3b82f6;
-  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25);
 }
 
 .badge-wrapper.tier-common .badge-card {
   background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-  border-color: #10b981;
-  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.25);
 }
 
 /* Hover Effects */
 .badge-wrapper:hover .badge-card {
   transform: translateY(-6px) scale(1.08);
-  border-color: var(--badge-color);
+}
+
+.badge-wrapper.role:hover .badge-card {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3), 0 8px 24px rgba(59, 130, 246, 0.4);
+}
+
+.badge-wrapper.milestone:hover .badge-card {
+  border-color: #059669;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3), 0 8px 24px rgba(16, 185, 129, 0.4);
+}
+
+.badge-wrapper.activity:hover .badge-card {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.3), 0 8px 24px rgba(251, 191, 36, 0.4);
 }
 
 /* Newly Earned Badge Animation */
