@@ -102,19 +102,9 @@ export function Contributors() {
                     />
                   </div>
 
-                  {/* Header with name and role badges */}
+                  {/* Header with name */}
                   <div className="contributors-page-header">
                     <div className="contributors-page-name">{contributor.name}</div>
-
-                    <div className="contributor-badges-row">
-
-                      {contributor.badges && contributor.badges.length > 0 && (
-                        <span className="contributors-badge-count">
-                          <span className="badge-count-number">{contributor.badges.filter(b => b.name && b.name.trim() !== '').length}</span>
-                          <span className="badge-count-icon">🏅</span>
-                        </span>
-                      )}
-                    </div>
                   </div>
 
                   {/* Company */}
