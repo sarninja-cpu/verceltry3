@@ -834,11 +834,11 @@ export function BadgeDisplay({
 
   if (displayBadges.length === 0) return null;
 
-  // Sort badges chronologically by assigned date (oldest first)
+  // Sort badges chronologically by assigned date (newest first)
   const sortedBadges = [...displayBadges].sort((a, b) => {
     const dateA = new Date(a.assigned || '1970-01-01').getTime();
     const dateB = new Date(b.assigned || '1970-01-01').getTime();
-    return dateA - dateB;
+    return dateB - dateA;
   });
 
   return (

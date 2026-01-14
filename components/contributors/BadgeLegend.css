@@ -1,0 +1,141 @@
+/* Badge Legend Styles */
+.badge-legend {
+  margin-top: 3rem;
+  padding: 2rem;
+  background: var(--sidebar-bg, #f9fafb);
+  border-radius: 16px;
+  border: 1px solid var(--theme-popup-border, #e5e7eb);
+}
+
+.badge-legend-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--fg, #111827);
+}
+
+.badge-legend-intro {
+  font-size: 0.9375rem;
+  color: var(--fg, #6b7280);
+  opacity: 0.8;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.badge-legend-categories {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .badge-legend-categories {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.badge-legend-category {
+  padding: 1.25rem;
+  background: var(--quote-bg, rgba(255, 255, 255, 0.5));
+  border-radius: 12px;
+  border: 2px solid transparent;
+}
+
+.badge-legend-category.role {
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.badge-legend-category.milestone {
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.badge-legend-category.activity {
+  border-color: rgba(251, 191, 36, 0.3);
+}
+
+.category-header {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 0.5rem;
+}
+
+.category-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.category-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--fg, #111827);
+}
+
+.category-description {
+  font-size: 0.8125rem;
+  color: var(--fg, #6b7280);
+  opacity: 0.7;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.badge-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.badge-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--theme-popup-border, rgba(0, 0, 0, 0.05));
+}
+
+.badge-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.badge-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--fg, #111827);
+}
+
+.badge-description {
+  font-size: 0.75rem;
+  color: var(--fg, #6b7280);
+  opacity: 0.7;
+}
+
+.badge-legend-note {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(251, 191, 36, 0.1);
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  color: var(--fg, #92400e);
+  border-left: 3px solid #fbbf24;
+}
+
+.badge-legend-note strong {
+  font-weight: 700;
+}
+
+/* Dark mode adjustments */
+:root[data-theme='dark'] .badge-legend {
+  background: var(--sidebar-bg, #1f2937);
+}
+
+:root[data-theme='dark'] .badge-legend-category {
+  background: var(--quote-bg, rgba(0, 0, 0, 0.2));
+}
+
+:root[data-theme='dark'] .badge-legend-note {
+  background: rgba(251, 191, 36, 0.15);
+  color: #fcd34d;
+}
