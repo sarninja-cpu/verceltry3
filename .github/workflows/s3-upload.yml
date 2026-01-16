@@ -239,14 +239,13 @@ jobs:
       # Step 9: Write URLs to a temp file for the processing script
       - name: Write URLs to file
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
-        env:
-          URLS_JSON: ${{ steps.extract-urls.outputs.result }}
         with:
           script: |
             const fs = require('fs');
             const path = require('path');
 
-            const urls = JSON.parse(process.env.URLS_JSON);
+            // Get URLs directly from the step output (already JSON)
+            const urls = ${{ steps.extract-urls.outputs.result }};
 
             // Write to a secure temp location
             const urlsPath = path.join(process.env.RUNNER_TEMP || '/tmp', 'urls.json');
