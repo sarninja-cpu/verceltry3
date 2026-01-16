@@ -231,7 +231,8 @@ async function main() {
   let urls;
 
   try {
-    const rawData = fs.readFileSync('urls.json', 'utf8');
+    const urlsFilePath = process.env.URLS_FILE_PATH || 'urls.json';
+    const rawData = fs.readFileSync(urlsFilePath, 'utf8');
     urls = JSON.parse(rawData);
 
     if (!Array.isArray(urls)) {
