@@ -92,7 +92,7 @@ jobs:
 
             // Expected URL format: /<user-id>/<uuid>.<ext>
             // Example: /12345678/abcd1234-5678-90ef-ghij-klmnopqrstuv.png
-            const VALID_PATH_PATTERN = /^\/\d+\/[a-f0-9-]{36}\.(png|jpg|jpeg)$/i;
+            const VALID_PATH_PATTERN = /^\/\d+\/\d+-[a-f0-9-]{36}\.(png|jpg|jpeg)$/i;
 
             for (const url of urls) {
               if (url === '/img-bot') continue;
