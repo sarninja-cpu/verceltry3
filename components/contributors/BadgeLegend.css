@@ -19,20 +19,29 @@
   line-height: 1.6;
 }
 
-/* Horizontal layout - categories side by side */
+/* Two-column layout: Role+Activity | Milestone */
 .badge-legend-categories {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 2rem;
-  flex-wrap: wrap;
+}
+
+.badge-legend-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .badge-legend-category {
-  flex: 1;
-  min-width: 280px;
   padding: 1.25rem;
   background: var(--quote-bg, rgba(255, 255, 255, 0.5));
   border-radius: 12px;
   border: 2px solid transparent;
+}
+
+/* Milestone takes full height of its column */
+.badge-legend-category.milestone {
+  height: 100%;
 }
 
 .badge-legend-category.role {
@@ -127,7 +136,7 @@
 
 /* Dark mode adjustments */
 :root.dark .badge-legend {
-  background: var(--sidebar-bg, #1f2937);
+  background: #121113;
   border-color: var(--theme-popup-border, #374151);
 }
 
@@ -182,10 +191,10 @@
 /* Responsive - stack on smaller screens */
 @media (max-width: 900px) {
   .badge-legend-categories {
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
 
-  .badge-legend-category {
-    min-width: unset;
+  .badge-legend-category.milestone {
+    height: auto;
   }
 }

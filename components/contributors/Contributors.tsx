@@ -117,14 +117,14 @@ export function Contributors() {
                   </div>
 
                   {/* Company */}
-                  {contributor.company && (
-                    <div className="contributors-page-company">{contributor.company}</div>
-                  )}
+                  <div className={`contributors-page-company ${!contributor.company ? 'empty-placeholder' : ''}`}>
+                    {contributor.company || '\u00A0'}
+                  </div>
 
                   {/* Job Title */}
-                  {contributor.job_title && (
-                    <div className="contributors-page-role">{contributor.job_title}</div>
-                  )}
+                  <div className={`contributors-page-role ${!contributor.job_title ? 'empty-placeholder' : ''}`}>
+                    {contributor.job_title || '\u00A0'}
+                  </div>
 
                   {/* Steward info */}
                   {contributor.steward && contributor.steward.length > 0 && (

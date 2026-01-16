@@ -135,7 +135,7 @@
   border-radius: 6px;
   padding: 1rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease;
+  transition: all 0.2s ease, z-index 0s 0.2s;
   display: grid;
   grid-template-rows: auto auto auto 1fr auto;
   align-items: start;
@@ -144,6 +144,7 @@
   position: relative;
   min-height: 280px;
   min-width: 250px;
+  isolation: isolate;
 }
 
 .contributors-page-card:hover {
@@ -389,11 +390,24 @@
   justify-content: center;
 }
 
+/* Elevate card when badge tooltip is shown to prevent neighboring card borders from showing through */
+.contributors-page-card:has(.badge-wrapper:hover) {
+  z-index: 10;
+  transition-delay: 0s;
+}
+
+
 .contributors-page-role {
   font-size: .8rem;
   color: #586069;
   margin-bottom: .4rem;
   font-style: italic;
+}
+
+/* Empty placeholders - maintain consistent spacing but hide visually */
+.empty-placeholder {
+  visibility: hidden;
+  border-color: transparent !important;
 }
 
 .contributors-page-company {
@@ -411,11 +425,6 @@
   margin-right: auto;
 }
 
-/* Group-Specific Styling - Enhanced */
-.leadership-group .contributors-page-card {
-  border-left: 4px solid #e34c26;
-}
-
 .core-contributors-group .contributors-page-card {
   border-left: 4px solid #28a745;
 }
@@ -426,6 +435,8 @@
 
 .contributors-group .contributors-page-card {
   border-left: 4px solid #a855f7;
+  border-right: 1px solid #ffffff17;
+  border-bottom: 1px solid #ffffff17;
 }
 
 /* Corner Accent for elite contributors */

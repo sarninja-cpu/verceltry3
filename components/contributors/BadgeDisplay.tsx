@@ -122,31 +122,37 @@ const BadgeIcon = ({ name, isNew }: { name: string; isNew: boolean }) => {
       </svg>
     ),
 
-    // TOP REVIEWER - Eye with magnifying glass and trophy
-    'Top-Reviewer': (
+    // LEAD - Compass/direction representing leadership and guiding the project
+    'Lead': (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="reviewer-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#8b5cf6" />
-            <stop offset="100%" stopColor="#5b21b6" />
+          <linearGradient id="lead-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ec4899" />
+            <stop offset="100%" stopColor="#be185d" />
+          </linearGradient>
+          <linearGradient id="lead-inner" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#f472b6" />
+            <stop offset="100%" stopColor="#ec4899" />
           </linearGradient>
         </defs>
-        {/* Badge background */}
-        <circle cx="32" cy="32" r="28" fill="url(#reviewer-grad)" className="badge-main" />
-        {/* Trophy shape */}
-        <path d="M22 16H42V20C42 28 38 34 32 36C26 34 22 28 22 20V16Z" fill="white" opacity="0.95" />
-        {/* Trophy handles */}
-        <path d="M22 18C18 18 16 22 18 26C20 28 22 26 22 24" stroke="white" strokeWidth="2" fill="none" />
-        <path d="M42 18C46 18 48 22 46 26C44 28 42 26 42 24" stroke="white" strokeWidth="2" fill="none" />
-        {/* Trophy base */}
-        <rect x="28" y="36" width="8" height="4" fill="white" opacity="0.9" />
-        <rect x="24" y="40" width="16" height="4" rx="1" fill="white" opacity="0.9" />
-        {/* Eye inside trophy - represents review/oversight */}
-        <ellipse cx="32" cy="24" rx="6" ry="4" fill="#5b21b6" />
-        <circle cx="32" cy="24" r="2" fill="white" />
-        {/* #1 ribbon */}
-        <circle cx="46" cy="18" r="8" fill="#fbbf24" />
-        <text x="46" y="22" fontSize="10" fill="white" fontWeight="bold" textAnchor="middle">#1</text>
+        {/* Outer circle badge */}
+        <circle cx="32" cy="32" r="28" fill="url(#lead-grad)" className="badge-main" />
+        {/* Inner compass ring */}
+        <circle cx="32" cy="32" r="20" fill="white" opacity="0.95" />
+        <circle cx="32" cy="32" r="16" stroke="#be185d" strokeWidth="2" fill="none" opacity="0.3" />
+        {/* Compass needle - pointing up (North/direction) */}
+        <path d="M32 14L38 32L32 28L26 32L32 14Z" fill="#be185d" />
+        <path d="M32 50L26 32L32 36L38 32L32 50Z" fill="#f9a8d4" />
+        {/* Center dot */}
+        <circle cx="32" cy="32" r="4" fill="#be185d" />
+        <circle cx="32" cy="32" r="2" fill="white" />
+        {/* Cardinal direction markers */}
+        <circle cx="32" cy="16" r="2" fill="#be185d" />
+        <circle cx="32" cy="48" r="2" fill="#be185d" opacity="0.5" />
+        <circle cx="16" cy="32" r="2" fill="#be185d" opacity="0.5" />
+        <circle cx="48" cy="32" r="2" fill="#be185d" opacity="0.5" />
+        {/* Star accent */}
+        <path d="M50 12L52 16L56 16L53 19L54 23L50 20L46 23L47 19L44 16L48 16L50 12Z" fill="#fbbf24" />
       </svg>
     ),
 
@@ -520,8 +526,8 @@ const BadgeIcon = ({ name, isNew }: { name: string; isNew: boolean }) => {
       </svg>
     ),
 
-    // ACTIVE-LAST-30D - Lightning bolt with calendar
-    'Active-Last-30d': (
+    // ACTIVE-LAST-7D - Lightning bolt with calendar
+    'Active-Last-7d': (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="active30-grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -538,14 +544,14 @@ const BadgeIcon = ({ name, isNew }: { name: string; isNew: boolean }) => {
         {/* Pulse rings */}
         <circle cx="32" cy="32" r="24" stroke="white" strokeWidth="1" opacity="0.2" />
         <circle cx="32" cy="32" r="20" stroke="white" strokeWidth="1" opacity="0.3" />
-        {/* 30d indicator */}
+        {/* 7d indicator */}
         <rect x="42" y="44" width="18" height="14" rx="2" fill="white" />
-        <text x="51" y="54" fontSize="8" fill="#047857" fontWeight="bold" textAnchor="middle">30d</text>
+        <text x="51" y="54" fontSize="8" fill="#047857" fontWeight="bold" textAnchor="middle">7d</text>
       </svg>
     ),
 
     // ACTIVE-LAST-90D - Activity chart
-    'Active-Last-90d': (
+    'Active-Last-30d': (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="active90-grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -563,9 +569,9 @@ const BadgeIcon = ({ name, isNew }: { name: string; isNew: boolean }) => {
         <circle cx="28" cy="44" r="3" fill="white" />
         <circle cx="34" cy="20" r="3" fill="white" />
         <circle cx="40" cy="38" r="3" fill="white" />
-        {/* 90d label */}
+        {/* 30d label */}
         <rect x="20" y="48" width="24" height="10" rx="2" fill="white" opacity="0.95" />
-        <text x="32" y="56" fontSize="8" fill="#0d9488" fontWeight="bold" textAnchor="middle">90 DAYS</text>
+        <text x="32" y="56" fontSize="8" fill="#0d9488" fontWeight="bold" textAnchor="middle">30 DAYS</text>
       </svg>
     ),
 
@@ -668,11 +674,11 @@ const BADGE_CONFIG: Record<string, {
     description: 'Elite contributor with governance responsibilities',
     tier: 'legendary'
   },
-  'Top-Reviewer': {
-    color: '#8b5cf6',
+  'Lead': {
+    color: '#ec4899',
     category: 'role',
-    label: 'Master Reviewer',
-    description: 'Exceptional code review and mentorship',
+    label: 'Lead',
+    description: 'Initiative lead and project maintainer',
     tier: 'epic'
   },
   'Contributor-25': {
@@ -752,18 +758,18 @@ const BADGE_CONFIG: Record<string, {
     description: 'Completed their first code review',
     tier: 'common'
   },
-  'Active-Last-30d': {
+  'Active-Last-7d': {
     color: '#10b981',
     category: 'activity',
     label: 'Recently Active',
-    description: 'Active in the last 30 days',
+    description: 'Active in the last 7 days',
     tier: 'common'
   },
-  'Active-Last-90d': {
+  'Active-Last-30d': {
     color: '#14b8a6',
     category: 'activity',
     label: 'Active Contributor',
-    description: 'Active in the last 90 days',
+    description: 'Active in the last 30 days',
     tier: 'common'
   },
   'New-Joiner': {
@@ -818,7 +824,6 @@ export function BadgeDisplay({
   layout = 'grid'
 }: BadgeDisplayProps) {
   const [containerRef, isVisible] = useIntersectionObserver({ threshold: 0.1 });
-  const [hoveredBadge, setHoveredBadge] = useState<string | null>(null);
 
   let displayBadges: Badge[] = [];
 
@@ -875,8 +880,6 @@ export function BadgeDisplay({
                 '--badge-color': config.color,
                 '--tier-glow': `${config.color}33`
               } as React.CSSProperties}
-              onMouseEnter={() => setHoveredBadge(badgeKey)}
-              onMouseLeave={() => setHoveredBadge(null)}
               title={`${badgeLabel} - ${badgeDescription}`}
             >
               <div className="badge-card">
@@ -895,8 +898,7 @@ export function BadgeDisplay({
                 )}
               </div>
 
-              {hoveredBadge === badgeKey && (
-                <div className="badge-tooltip">
+              <div className="badge-tooltip">
                   <div className="tooltip-header">
                     <strong>{badgeLabel}</strong>
                     <span className={`tier-badge tier-${config.tier}`}>
@@ -913,7 +915,6 @@ export function BadgeDisplay({
                     </div>
                   )}
                 </div>
-              )}
             </div>
           );
         })}

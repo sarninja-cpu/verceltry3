@@ -1,19 +1,16 @@
 #!/usr/bin/env node
 
 /**
- * Efficient Badge Generator for SEAL Frameworks Contributors
+ * Badge Generator for SEAL Frameworks Contributors
  *
- * This script significantly reduces API calls by:
- * 1. Fetching all data in bulk with pagination
- * 2. Processing data in memory instead of making individual API calls
- * 3. Using the Search API only once per query type
- * 4. Caching results to avoid redundant requests
+ * Badge Categories:
+ * - Role Badges: Manually assigned (Framework-Steward, Core-Contributor, Lead)
+ * - Milestone Badges: Auto-generated persistent achievements
+ * - Activity Badges: Auto-generated time-based status
  *
- * Badge Categories (all auto-generated):
- * - Achievement Badges: Persistent milestones (Contributor-5/10/25, Reviewer-10/25, etc.)
- * - Activity Badges: Time-based (Active-Last-30d, Active-Last-90d, New-Joiner, Dormant-90d+)
- *
- * Note: Roles (lead, core, steward) are indicated by the "role" field, not badges.
+ * Required GitHub Token Permissions:
+ * - public_repo (read-only access to public repositories)
+ * - OR no special scopes if repo is public (just basic read access)
  */
 
 const fs = require('fs');
@@ -41,19 +38,43 @@ const REPO_NAME = 'frameworks';
 const CONTRIBUTORS_FILE = path.join(__dirname, '../docs/pages/config/contributors.json');
 const GITHUB_API = 'https://api.github.com';
 
-// All badge types managed by this script
-const MANAGED_BADGE_NAMES = [
-    'Contributor-5', 'Contributor-10', 'Contributor-25',
-    'Reviewer-10', 'Reviewer-25', 'Top-Reviewer',
-    'Active-Last-30d', 'Active-Last-90d', 'Dormant-90d+',
-    'New-Joiner', 'Early-Contributor',
-    'Issue-Opener-5', 'Issue-Opener-10', 'Issue-Opener-25'
-];
-
-// Repo creation date for Early-Contributor badge
+// Repo creation date for Early-Contributor badge (adjust as needed)
 const REPO_CREATION_DATE = new Date('2023-01-01');
+// How many days after repo creation counts as "early"
+const EARLY_CONTRIBUTOR_WINDOW_DAYS = 90;
 
-// Helper function to make GitHub API requests with pagination
+// Role badges are manually assigned - script should preserve these
+const ROLE_BADGES = new Set(['Framework-Steward', 'Core-Contributor', 'Lead']);
+
+// Activity badges that should always use current date and be recalculated each run
+const ACTIVITY_BADGES = new Set(['Active-Last-7d', 'Active-Last-30d', 'Dormant-90d+', 'New-Joiner']);
+
+// All valid badge names for validation
+const VALID_BADGES = new Set([
+    // Role badges (manually assigned)
+    'Framework-Steward',
+    'Core-Contributor',
+    'Lead',
+    // Milestone badges (auto-assigned)
+    'Contributor-25',
+    'Contributor-10',
+    'Contributor-5',
+    'Reviewer-25',
+    'Reviewer-10',
+    'Issue-Opener-25',
+    'Issue-Opener-10',
+    'Issue-Opener-5',
+    'Early-Contributor',
+    'First-Contribution',
+    'First-Review',
+    // Activity badges (auto-assigned, time-based)
+    'Active-Last-7d',
+    'Active-Last-30d',
+    'New-Joiner',
+    'Dormant-90d+'
+]);
+
+// Helper function to make GitHub API requests with pagination and rate limit handling
 async function githubRequestWithPagination(endpoint, options = {}) {
     const headers = {
         'Accept': 'application/vnd.github.v3+json',
@@ -75,6 +96,17 @@ async function githubRequestWithPagination(endpoint, options = {}) {
 
         const response = await fetch(url, { headers });
 
+        // Check rate limit headers
+        const remaining = response.headers.get('X-RateLimit-Remaining');
+        const reset = response.headers.get('X-RateLimit-Reset');
+
+        if (remaining && parseInt(remaining) < 10) {
+            const resetTime = new Date(parseInt(reset) * 1000);
+            const waitTime = Math.max(0, resetTime - Date.now());
+            console.warn(`⏳ Rate limit low (${remaining} remaining). Waiting ${Math.ceil(waitTime / 1000)}s...`);
+            await new Promise(r => setTimeout(r, waitTime + 1000));
+        }
+
         if (!response.ok) {
             const errorBody = await response.text();
             if (response.status === 403 && errorBody.includes('rate limit')) {
@@ -89,7 +121,6 @@ async function githubRequestWithPagination(endpoint, options = {}) {
         // Handle search API response format
         if (data.items) {
             allResults.push(...data.items);
-            // Check if there are more results
             hasMore = data.items.length === 100 && allResults.length < data.total_count;
         } else if (Array.isArray(data)) {
             allResults.push(...data);
@@ -102,7 +133,7 @@ async function githubRequestWithPagination(endpoint, options = {}) {
         page++;
 
         // Add a small delay to avoid rate limiting
-        await new Promise(r => setTimeout(r, 100));
+        await new Promise(r => setTimeout(r, 200));
     }
 
     return allResults;
@@ -112,7 +143,9 @@ async function githubRequestWithPagination(endpoint, options = {}) {
 function formatDate(dateString) {
     if (!dateString) return null;
     try {
-        return new Date(dateString).toISOString().split('T')[0];
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return null;
+        return date.toISOString().split('T')[0];
     } catch {
         return null;
     }
@@ -122,6 +155,7 @@ function formatDate(dateString) {
 function daysBetween(date1, date2 = new Date()) {
     const d1 = new Date(date1);
     const d2 = new Date(date2);
+    if (isNaN(d1.getTime()) || isNaN(d2.getTime())) return null;
     return Math.ceil(Math.abs(d2 - d1) / (1000 * 60 * 60 * 24));
 }
 
@@ -147,23 +181,35 @@ async function fetchAllActivityData() {
 
         console.log('   Fetching PR reviews (this may take a moment)...');
         const allReviews = [];
-        // Only fetch reviews for merged PRs
-        for (const pr of mergedPRs) {
+        let processedPRs = 0;
+
+        // Fetch reviews for all closed PRs (not just merged) to capture review activity
+        for (const pr of allPRs) {
             try {
                 const reviews = await githubRequestWithPagination(
                     `/repos/${REPO_OWNER}/${REPO_NAME}/pulls/${pr.number}/reviews`
                 );
-                allReviews.push(...reviews.filter(r => r.state !== 'PENDING'));
+                // Filter out PENDING and COMMENTED reviews, keep APPROVED and CHANGES_REQUESTED
+                const meaningfulReviews = reviews.filter(r =>
+                    r.state === 'APPROVED' || r.state === 'CHANGES_REQUESTED'
+                );
+                allReviews.push(...meaningfulReviews);
+                processedPRs++;
+
+                // Progress indicator every 50 PRs
+                if (processedPRs % 50 === 0) {
+                    console.log(`   ... processed ${processedPRs}/${allPRs.length} PRs`);
+                }
             } catch (error) {
-                console.warn(`   ⚠️  Could not fetch reviews for PR #${pr.number}`);
+                console.warn(`   ⚠️  Could not fetch reviews for PR #${pr.number}: ${error.message}`);
             }
 
-            // Add a small delay every 10 PRs to avoid rate limiting
-            if (mergedPRs.indexOf(pr) % 10 === 0) {
-                await new Promise(r => setTimeout(r, 500));
+            // Add delay every 20 PRs to be nice to GitHub API
+            if (processedPRs % 20 === 0) {
+                await new Promise(r => setTimeout(r, 1000));
             }
         }
-        console.log(`   ✅ Found ${allReviews.length} PR reviews\n`);
+        console.log(`   ✅ Found ${allReviews.length} meaningful PR reviews (APPROVED/CHANGES_REQUESTED)\n`);
 
         return {
             mergedPRs,
@@ -191,6 +237,7 @@ function organizeActivityByContributor(activityData) {
                 issues: [],
                 reviews: [],
                 firstContribution: null,
+                firstReview: null,
                 lastActivity: null
             };
         }
@@ -208,15 +255,16 @@ function organizeActivityByContributor(activityData) {
                 title: pr.title
             });
 
-            // Track first contribution
+            // Track first contribution (use merged_at for PRs as that's when it was accepted)
+            const mergedDate = new Date(pr.merged_at);
             if (!contributorActivity[username].firstContribution ||
-                new Date(pr.created_at) < new Date(contributorActivity[username].firstContribution)) {
-                contributorActivity[username].firstContribution = pr.created_at;
+                mergedDate < new Date(contributorActivity[username].firstContribution)) {
+                contributorActivity[username].firstContribution = pr.merged_at;
             }
 
             // Track last activity
             if (!contributorActivity[username].lastActivity ||
-                new Date(pr.merged_at) > new Date(contributorActivity[username].lastActivity)) {
+                mergedDate > new Date(contributorActivity[username].lastActivity)) {
                 contributorActivity[username].lastActivity = pr.merged_at;
             }
         }
@@ -230,18 +278,20 @@ function organizeActivityByContributor(activityData) {
             contributorActivity[username].issues.push({
                 number: issue.number,
                 created_at: issue.created_at,
-                title: issue.title
+                title: issue.title,
+                state: issue.state
             });
 
             // Track first contribution
+            const issueDate = new Date(issue.created_at);
             if (!contributorActivity[username].firstContribution ||
-                new Date(issue.created_at) < new Date(contributorActivity[username].firstContribution)) {
+                issueDate < new Date(contributorActivity[username].firstContribution)) {
                 contributorActivity[username].firstContribution = issue.created_at;
             }
 
             // Track last activity
             if (!contributorActivity[username].lastActivity ||
-                new Date(issue.created_at) > new Date(contributorActivity[username].lastActivity)) {
+                issueDate > new Date(contributorActivity[username].lastActivity)) {
                 contributorActivity[username].lastActivity = issue.created_at;
             }
         }
@@ -258,9 +308,16 @@ function organizeActivityByContributor(activityData) {
                 state: review.state
             });
 
+            // Track first review
+            const reviewDate = new Date(review.submitted_at);
+            if (!contributorActivity[username].firstReview ||
+                reviewDate < new Date(contributorActivity[username].firstReview)) {
+                contributorActivity[username].firstReview = review.submitted_at;
+            }
+
             // Track last activity
             if (!contributorActivity[username].lastActivity ||
-                new Date(review.submitted_at) > new Date(contributorActivity[username].lastActivity)) {
+                reviewDate > new Date(contributorActivity[username].lastActivity)) {
                 contributorActivity[username].lastActivity = review.submitted_at;
             }
         }
@@ -270,154 +327,196 @@ function organizeActivityByContributor(activityData) {
     return contributorActivity;
 }
 
-// Generate badges for a contributor
-function generateBadges(username, activity) {
+// Generate badges for a contributor with correct date assignment
+function generateBadges(username, activity, existingBadges = []) {
     const badges = [];
     const today = formatDate(new Date());
 
-    // Achievement Badges: Contributor Milestones
+    // Create a map of existing badge dates for milestone badges (to preserve original dates)
+    const existingBadgeDates = {};
+    const existingRoleBadges = [];
+
+    for (const badge of existingBadges) {
+        if (badge.name) {
+            if (ROLE_BADGES.has(badge.name)) {
+                // Preserve role badges exactly as they are
+                existingRoleBadges.push(badge);
+            } else if (!ACTIVITY_BADGES.has(badge.name)) {
+                // Store dates for milestone badges
+                existingBadgeDates[badge.name] = badge.assigned;
+            }
+        }
+    }
+
+    // Add preserved role badges first
+    badges.push(...existingRoleBadges);
+
+    // === MILESTONE BADGES (persistent, preserve original dates) ===
+
+    // Contributor Milestones (based on merged PRs)
     const prCount = activity.mergedPRs.length;
-    if (prCount >= 25) {
-        const milestone = activity.mergedPRs.sort((a, b) =>
-            new Date(a.merged_at) - new Date(b.merged_at)
-        )[24];
+    const sortedPRs = [...activity.mergedPRs].sort((a, b) =>
+        new Date(a.merged_at) - new Date(b.merged_at)
+    );
+
+    if (prCount >= 1) {
         badges.push({
-            name: 'Contributor-25',
-            assigned: formatDate(milestone?.merged_at) || today
+            name: 'First-Contribution',
+            assigned: existingBadgeDates['First-Contribution'] ||
+                formatDate(sortedPRs[0]?.merged_at) || today
         });
-    } else if (prCount >= 10) {
-        const milestone = activity.mergedPRs.sort((a, b) =>
-            new Date(a.merged_at) - new Date(b.merged_at)
-        )[9];
-        badges.push({
-            name: 'Contributor-10',
-            assigned: formatDate(milestone?.merged_at) || today
-        });
-    } else if (prCount >= 5) {
-        const milestone = activity.mergedPRs.sort((a, b) =>
-            new Date(a.merged_at) - new Date(b.merged_at)
-        )[4];
+    }
+    if (prCount >= 5) {
         badges.push({
             name: 'Contributor-5',
-            assigned: formatDate(milestone?.merged_at) || today
+            assigned: existingBadgeDates['Contributor-5'] ||
+                formatDate(sortedPRs[4]?.merged_at) || today
+        });
+    }
+    if (prCount >= 10) {
+        badges.push({
+            name: 'Contributor-10',
+            assigned: existingBadgeDates['Contributor-10'] ||
+                formatDate(sortedPRs[9]?.merged_at) || today
+        });
+    }
+    if (prCount >= 25) {
+        badges.push({
+            name: 'Contributor-25',
+            assigned: existingBadgeDates['Contributor-25'] ||
+                formatDate(sortedPRs[24]?.merged_at) || today
         });
     }
 
-    // Achievement Badges: Reviewer Milestones
+    // Reviewer Milestones
     const reviewCount = activity.reviews.length;
-    if (reviewCount >= 50) {
-        const milestone = activity.reviews.sort((a, b) =>
-            new Date(a.submitted_at) - new Date(b.submitted_at)
-        )[49];
+    const sortedReviews = [...activity.reviews].sort((a, b) =>
+        new Date(a.submitted_at) - new Date(b.submitted_at)
+    );
+
+    if (reviewCount >= 1) {
         badges.push({
-            name: 'Top-Reviewer',
-            assigned: formatDate(milestone?.submitted_at) || today
+            name: 'First-Review',
+            assigned: existingBadgeDates['First-Review'] ||
+                formatDate(sortedReviews[0]?.submitted_at) || today
         });
     }
-
-    if (reviewCount >= 25) {
-        const milestone = activity.reviews.sort((a, b) =>
-            new Date(a.submitted_at) - new Date(b.submitted_at)
-        )[24];
-        badges.push({
-            name: 'Reviewer-25',
-            assigned: formatDate(milestone?.submitted_at) || today
-        });
-    } else if (reviewCount >= 10) {
-        const milestone = activity.reviews.sort((a, b) =>
-            new Date(a.submitted_at) - new Date(b.submitted_at)
-        )[9];
+    if (reviewCount >= 10) {
         badges.push({
             name: 'Reviewer-10',
-            assigned: formatDate(milestone?.submitted_at) || today
+            assigned: existingBadgeDates['Reviewer-10'] ||
+                formatDate(sortedReviews[9]?.submitted_at) || today
+        });
+    }
+    if (reviewCount >= 25) {
+        badges.push({
+            name: 'Reviewer-25',
+            assigned: existingBadgeDates['Reviewer-25'] ||
+                formatDate(sortedReviews[24]?.submitted_at) || today
         });
     }
 
-    // Achievement Badges: Issue Opener Milestones
+    // Issue Opener Milestones
     const issueCount = activity.issues.length;
-    if (issueCount >= 25) {
-        const milestone = activity.issues.sort((a, b) =>
-            new Date(a.created_at) - new Date(b.created_at)
-        )[24];
-        badges.push({
-            name: 'Issue-Opener-25',
-            assigned: formatDate(milestone?.created_at) || today
-        });
-    } else if (issueCount >= 10) {
-        const milestone = activity.issues.sort((a, b) =>
-            new Date(a.created_at) - new Date(b.created_at)
-        )[9];
-        badges.push({
-            name: 'Issue-Opener-10',
-            assigned: formatDate(milestone?.created_at) || today
-        });
-    } else if (issueCount >= 5) {
-        const milestone = activity.issues.sort((a, b) =>
-            new Date(a.created_at) - new Date(b.created_at)
-        )[4];
+    const sortedIssues = [...activity.issues].sort((a, b) =>
+        new Date(a.created_at) - new Date(b.created_at)
+    );
+
+    if (issueCount >= 5) {
         badges.push({
             name: 'Issue-Opener-5',
-            assigned: formatDate(milestone?.created_at) || today
+            assigned: existingBadgeDates['Issue-Opener-5'] ||
+                formatDate(sortedIssues[4]?.created_at) || today
+        });
+    }
+    if (issueCount >= 10) {
+        badges.push({
+            name: 'Issue-Opener-10',
+            assigned: existingBadgeDates['Issue-Opener-10'] ||
+                formatDate(sortedIssues[9]?.created_at) || today
+        });
+    }
+    if (issueCount >= 25) {
+        badges.push({
+            name: 'Issue-Opener-25',
+            assigned: existingBadgeDates['Issue-Opener-25'] ||
+                formatDate(sortedIssues[24]?.created_at) || today
         });
     }
 
-    // Achievement Badge: Early Contributor
+    // Early Contributor - contributed within first 90 days of repo creation
     if (activity.firstContribution) {
         const firstDate = new Date(activity.firstContribution);
         const daysSinceRepoCreation = daysBetween(REPO_CREATION_DATE, firstDate);
 
-        if (daysSinceRepoCreation <= 90) {
+        if (daysSinceRepoCreation !== null && daysSinceRepoCreation <= EARLY_CONTRIBUTOR_WINDOW_DAYS) {
             badges.push({
                 name: 'Early-Contributor',
-                assigned: formatDate(activity.firstContribution)
+                assigned: existingBadgeDates['Early-Contributor'] ||
+                    formatDate(activity.firstContribution)
             });
         }
     }
 
-    // Activity Badge: New-Joiner
-    if (activity.firstContribution) {
-        const daysSinceFirst = daysBetween(activity.firstContribution);
-        if (daysSinceFirst <= 30) {
+    // === ACTIVITY BADGES (time-based, always recalculated) ===
+
+    // New-Joiner: first contribution/review was within the last 2 weeks (14 days)
+    const firstActivityDate = getEarliestDate(activity.firstContribution, activity.firstReview);
+    if (firstActivityDate) {
+        const daysSinceFirst = daysBetween(firstActivityDate);
+        if (daysSinceFirst !== null && daysSinceFirst <= 14) {
             badges.push({
                 name: 'New-Joiner',
-                assigned: formatDate(activity.firstContribution)
+                assigned: today
             });
         }
     }
 
-    // Activity Badges: Active-Last-30d / Active-Last-90d / Dormant-90d+
+    // Activity status badges (mutually exclusive)
     if (activity.lastActivity) {
         const daysSinceLast = daysBetween(activity.lastActivity);
 
-        if (daysSinceLast <= 30) {
-            badges.push({
-                name: 'Active-Last-30d',
-                assigned: today
-            });
-        } else if (daysSinceLast <= 90) {
-            badges.push({
-                name: 'Active-Last-90d',
-                assigned: today
-            });
-        } else {
-            badges.push({
-                name: 'Dormant-90d+',
-                assigned: today
-            });
+        if (daysSinceLast !== null) {
+            if (daysSinceLast <= 7) {
+                badges.push({
+                    name: 'Active-Last-7d',
+                    assigned: today
+                });
+            } else if (daysSinceLast <= 30) {
+                badges.push({
+                    name: 'Active-Last-30d',
+                    assigned: today
+                });
+            } else if (daysSinceLast > 90) {
+                // Dormant: 90+ days since last contribution or review
+                badges.push({
+                    name: 'Dormant-90d+',
+                    assigned: today
+                });
+            }
         }
     }
 
     return badges;
 }
 
+// Helper to get the earliest of two dates
+function getEarliestDate(date1, date2) {
+    if (!date1 && !date2) return null;
+    if (!date1) return date2;
+    if (!date2) return date1;
+    return new Date(date1) < new Date(date2) ? date1 : date2;
+}
+
 // Main function
 async function main() {
     try {
-        console.log('🏅 SEAL Frameworks - Efficient Badge Generator\n');
+        console.log('🏅 SEAL Frameworks - Badge Generator\n');
         console.log('================================================\n');
 
         if (!process.env.GITHUB_TOKEN) {
             console.warn('⚠️  No GitHub Token found. Using unauthenticated requests (rate limited to 60/hr)\n');
+            console.warn('    For better performance, create a token with "public_repo" read access.\n');
         } else {
             console.log('🔑 GitHub Token found. Using authenticated requests.\n');
         }
@@ -440,7 +539,7 @@ async function main() {
         // Update badges for each contributor
         console.log('🔄 Updating contributor badges...\n');
         let updatedCount = 0;
-        let newContributorsCount = 0;
+        let skippedCount = 0;
 
         // Create a mapping of GitHub usernames to contributor slugs
         const githubUsernameToSlug = {};
@@ -459,37 +558,42 @@ async function main() {
 
             if (!slug) {
                 console.log(`   ℹ️  Skipping ${username} (not in contributors database)`);
+                skippedCount++;
                 continue;
             }
 
             const contributor = contributorsData[slug];
 
-            // Get old badges (handle both old nested structure and flat array)
-            let oldBadges = [];
+            // Get existing badges (handle both old nested structure and flat array)
+            let existingBadges = [];
             if (contributor.badges) {
                 if (typeof contributor.badges === 'object' && !Array.isArray(contributor.badges)) {
-                    // Was nested structure: { static: [], dynamic: [] }
-                    oldBadges = contributor.badges.dynamic || [];
+                    // Old nested structure: { static: [], dynamic: [] }
+                    existingBadges = [
+                        ...(contributor.badges.static || []),
+                        ...(contributor.badges.dynamic || [])
+                    ];
                 } else if (Array.isArray(contributor.badges)) {
                     // Already flat array
-                    oldBadges = contributor.badges.filter(b => b.name && MANAGED_BADGE_NAMES.includes(b.name));
+                    existingBadges = contributor.badges;
                 }
             }
 
-            // Generate new badges
-            const newBadges = generateBadges(username, activity);
+            // Generate new badges with preserved dates for milestone badges
+            const newBadges = generateBadges(username, activity, existingBadges);
+
+            // Check if badges changed (compare names only, ignore date changes for activity badges)
+            const oldBadgeNames = existingBadges.map(b => b.name).sort().join(',');
+            const newBadgeNames = newBadges.map(b => b.name).sort().join(',');
 
             // Update to simple flat array structure
             contributor.badges = newBadges;
 
-            // Check if badges changed
-            const oldBadgeNames = oldBadges.map(b => b.name).sort().join(',');
-            const newBadgeNames = newBadges.map(b => b.name).sort().join(',');
-
             if (oldBadgeNames !== newBadgeNames) {
                 updatedCount++;
-                console.log(`   ✅ Updated ${contributor.name} (${username})`);
-                console.log(`      Badges: ${newBadges.map(b => b.name).join(', ') || 'none'}`);
+                console.log(`   ✅ Updated ${contributor.name} (@${username})`);
+                console.log(`      Old: ${oldBadgeNames || 'none'}`);
+                console.log(`      New: ${newBadgeNames || 'none'}`);
             }
         }
 
@@ -503,10 +607,31 @@ async function main() {
         console.log('\n================================================');
         console.log('✅ Badge generation complete!\n');
         console.log(`📊 Statistics:`);
-        console.log(`   - Contributors processed: ${Object.keys(contributorActivity).length}`);
+        console.log(`   - Contributors in database: ${Object.keys(contributorsData).length}`);
+        console.log(`   - Contributors with activity: ${Object.keys(contributorActivity).length}`);
         console.log(`   - Badges updated: ${updatedCount}`);
-        console.log(`   - Total API calls: ~${activityData.mergedPRs.length + 4} (vs ~${Object.keys(contributorActivity).length * 15} in old script)`);
+        console.log(`   - Skipped (not in database): ${skippedCount}`);
         console.log(`\n💾 Saved to ${CONTRIBUTORS_FILE}`);
+        console.log(`\n💡 Token permissions needed: public_repo (read-only) or no special scopes for public repos`);
+
+        // Print badge legend
+        console.log('\n📋 Badge Legend:');
+        console.log('   Role Badges (manually assigned):');
+        console.log('      - Framework-Steward: Official maintainer');
+        console.log('      - Core-Contributor: Elite contributor with governance');
+        console.log('      - Lead: Initiative lead and project maintainer');
+        console.log('   Milestone Badges (auto-assigned):');
+        console.log('      - First-Contribution: Made first merged PR');
+        console.log('      - Contributor-5/10/25: Merged PR milestones');
+        console.log('      - First-Review: Completed first code review');
+        console.log('      - Reviewer-10/25: Review milestones');
+        console.log('      - Issue-Opener-5/10/25: Issue opening milestones');
+        console.log('      - Early-Contributor: Contributed in first 90 days');
+        console.log('   Activity Badges (auto-assigned, time-based):');
+        console.log('      - New-Joiner: First activity within last 14 days');
+        console.log('      - Active-Last-7d: Active in last 7 days');
+        console.log('      - Active-Last-30d: Active in last 30 days');
+        console.log('      - Dormant-90d+: No activity for 90+ days');
 
     } catch (error) {
         console.error('❌ Fatal Error:', error.message);

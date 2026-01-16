@@ -282,7 +282,7 @@
   position: absolute;
   bottom: calc(100% + 12px);
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(10px);
   background: #1f2937;
   color: white;
   padding: 1rem;
@@ -290,8 +290,17 @@
   min-width: 240px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   z-index: 9999;
-  animation: tooltipAppear 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s 0.2s;
+}
+
+.badge-wrapper:hover .badge-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s 0s;
 }
 
 .badge-tooltip::before {
@@ -304,17 +313,6 @@
   border-top-color: #1f2937;
 }
 
-@keyframes tooltipAppear {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-}
 
 .tooltip-header {
   display: flex;
@@ -325,8 +323,7 @@
 }
 
 .tooltip-header strong {
-  font-size: 0.9375rem;
-  font-weight: 700;
+  font-weight: bold;
 }
 
 .tier-badge {
@@ -392,6 +389,7 @@
   border-radius: 6px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  margin-right: 10px;
 }
 
 /* SVG Animations */
@@ -481,17 +479,17 @@
 
 :root.dark .badge-wrapper.role .badge-card {
   border-color: #60a5fa;
-  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.25), 0 4px 16px rgba(96, 165, 250, 0.35);
+  box-shadow: 0 0 0 2px rgb(96 165 250 / 85%), 2px 2px 3px rgba(96, 165, 250, 0.35);
 }
 
 :root.dark .badge-wrapper.milestone .badge-card {
   border-color: #34d399;
-  box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.25), 0 4px 16px rgba(52, 211, 153, 0.35);
+  box-shadow: 0 0 0 2px rgba(52, 211, 153, 70%), 2px 2px 3px rgba(52, 211, 153, 0.35);
 }
 
 :root.dark .badge-wrapper.activity .badge-card {
   border-color: #fcd34d;
-  box-shadow: 0 0 0 2px rgba(252, 211, 77, 0.25), 0 4px 16px rgba(252, 211, 77, 0.35);
+  box-shadow: 0 0 0 2px rgb(252 211 77 / 70%), 2px 2px 3px rgba(252, 211, 77, 0.35);
 }
 
 :root.dark .badge-wrapper.tier-legendary .badge-card {
@@ -512,17 +510,17 @@
 
 :root.dark .badge-wrapper.role:hover .badge-card {
   border-color: #93c5fd;
-  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.35), 0 8px 24px rgba(96, 165, 250, 0.45);
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 100%), 0 8px 24px rgba(96, 165, 250, 0.45);
 }
 
 :root.dark .badge-wrapper.milestone:hover .badge-card {
   border-color: #6ee7b7;
-  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.35), 0 8px 24px rgba(52, 211, 153, 0.45);
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 100%), 0 8px 24px rgba(52, 211, 153, 0.45);
 }
 
 :root.dark .badge-wrapper.activity:hover .badge-card {
   border-color: #fde68a;
-  box-shadow: 0 0 0 3px rgba(252, 211, 77, 0.35), 0 8px 24px rgba(252, 211, 77, 0.45);
+  box-shadow: 0 0 0 3px rgba(252, 211, 77, 100%), 0 8px 24px rgba(252, 211, 77, 0.45);
 }
 
 :root.dark .new-indicator {

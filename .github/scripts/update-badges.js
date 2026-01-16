@@ -1,455 +1,493 @@
-#!/usr/bin/env node
-
-/**
- * GitHub Actions script to automatically update contributor badges
- * 
- * This script:
- * 1. Fetches PRs, reviews, and comments from GitHub API
- * 2. Calculates badge eligibility based on activity
- * 3. Updates contributors.json with new badges
- * 
- * Badge Rules:
- * - Achievement Badges: Based on thresholds (Contributor-5/10/25, Reviewer-10/25, etc.)
- * - Activity Badges: Based on recent activity (Active-Last-30d, Active-Last-90d, New-Joiner)
- * - Early-Contributor: First contribution date
- */
-
-const fs = require('fs');
+const { S3Client } = require('@aws-sdk/client-s3');
+const { Upload } = require('@aws-sdk/lib-storage');
+const axios = require('axios');
+const sharp = require('sharp');
+const { v4: uuidv4 } = require('uuid');
+const crypto = require('crypto');
 const path = require('path');
+const fs = require('fs');
 
-// GitHub API configuration
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-const GITHUB_REPOSITORY = process.env.GITHUB_REPOSITORY || 'security-alliance/frameworks';
-const [owner, repo] = GITHUB_REPOSITORY.split('/');
+// ============================================================================
+// CONFIGURATION CONSTANTS
+// ============================================================================
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+const MAX_WIDTH = 4096;
+const MAX_HEIGHT = 4096;
+const MAX_PIXELS = 16777216;
+const MAX_COMPRESSION_RATIO = 50;
 
-const CONTRIBUTORS_FILE = path.join(__dirname, '../../docs/pages/config/contributors.json');
-const API_BASE = 'https://api.github.com';
+// Allowed image formats
+const ALLOWED_FORMATS = ['jpeg', 'jpg', 'png'];
 
-// Badge thresholds
-const BADGE_THRESHOLDS = {
-  CONTRIBUTOR: [5, 10, 25],
-  REVIEWER: [10, 25],
-};
+// Request timeout in milliseconds (30 seconds)
+const REQUEST_TIMEOUT = 30000;
 
-// Date helpers
-function daysAgo(days) {
-  const date = new Date();
-  date.setDate(date.getDate() - days);
-  return date.toISOString();
-}
+// Maximum images per request (rate limiting)
+const MAX_IMAGES_PER_REQUEST = 10;
 
-function formatDate(dateString) {
-  if (!dateString) return '';
+// Allowed Content-Type prefixes for image responses
+const ALLOWED_CONTENT_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
+
+// Only allowed hostname for GitHub PR comment images
+const ALLOWED_HOSTNAME = 'private-user-images.githubusercontent.com';
+
+// ============================================================================
+// AWS S3 CLIENT INITIALIZATION
+// ============================================================================
+const s3Client = new S3Client({
+  region: process.env.AWS_REGION
+});
+
+// ============================================================================
+// URL SANITIZATION HELPER
+// ============================================================================
+// Redacts sensitive information from URLs for logging
+
+function sanitizeUrlForLogging(url) {
   try {
-    return new Date(dateString).toISOString().split('T')[0];
+    const urlObj = new URL(url);
+    const sensitiveParams = ['jwt', 'token', 'key', 'secret', 'auth', 'signature', 'sig'];
+
+    for (const param of sensitiveParams) {
+      if (urlObj.searchParams.has(param)) {
+        urlObj.searchParams.set(param, '[REDACTED]');
+      }
+    }
+
+    // Also check for JWT-like patterns in any parameter
+    for (const [key, value] of urlObj.searchParams.entries()) {
+      if (value && value.length > 50 && /^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(value)) {
+        urlObj.searchParams.set(key, '[REDACTED_JWT]');
+      }
+    }
+
+    return urlObj.toString();
   } catch {
-    return dateString;
+    // If URL parsing fails, do basic redaction
+    return url.replace(/([?&](jwt|token|key|secret|auth|signature|sig)=)[^&]+/gi, '$1[REDACTED]');
   }
 }
 
-function isWithinDays(dateString, days) {
-  if (!dateString) return false;
+// ============================================================================
+// IMAGE DOWNLOAD FUNCTION
+// ============================================================================
+// Downloads the image from the URL
+async function downloadImage(url) {
+  const safeLogUrl = sanitizeUrlForLogging(url);
+  console.log(`Downloading: ${safeLogUrl.substring(0, 100)}...`);
+
+  // Validate URL hostname before making request
   try {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffTime = Math.abs(now - date);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays <= days;
-  } catch {
-    return false;
+    const urlObj = new URL(url);
+    if (urlObj.hostname.toLowerCase() !== ALLOWED_HOSTNAME) {
+      throw new Error(`Invalid hostname. Only ${ALLOWED_HOSTNAME} URLs are accepted.`);
+    }
+    if (urlObj.protocol !== 'https:') {
+      throw new Error('Only HTTPS URLs are allowed.');
+    }
+    if (!urlObj.searchParams.has('jwt')) {
+      throw new Error('URL missing required JWT token. Please copy the full image URL from GitHub.');
+    }
+  } catch (error) {
+    if (error.message.includes('Invalid hostname') ||
+      error.message.includes('Only HTTPS') ||
+      error.message.includes('JWT token')) {
+      throw error;
+    }
+    throw new Error(`Invalid URL format: ${error.message}`);
   }
-}
 
-// GitHub API helpers
-async function fetchWithPagination(url, token) {
-  const allData = [];
-  let page = 1;
-  let hasMore = true;
+  try {
+    const headers = {
+      'User-Agent': 'GitHub-Image-Upload-Bot/1.0',
+      'Accept': 'image/*'
+    };
 
-  while (hasMore) {
-    const response = await fetch(`${url}?page=${page}&per_page=100`, {
-      headers: {
-        'Authorization': `token ${token}`,
-        'Accept': 'application/vnd.github.v3+json',
-        'User-Agent': 'badge-updater'
+    const response = await axios({
+      url,
+      method: 'GET',
+      responseType: 'arraybuffer',
+      maxContentLength: MAX_FILE_SIZE,
+      maxBodyLength: MAX_FILE_SIZE,
+      timeout: REQUEST_TIMEOUT,
+      maxRedirects: 0,
+      headers,
+      validateStatus: (status) => status >= 200 && status < 300,
+      beforeRedirect: (options, { headers: responseHeaders }) => {
+        throw new Error('Redirects are not allowed for security reasons');
       }
     });
 
-    if (!response.ok) {
-      throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
-    }
+    // Validate Content-Type header to ensure we're receiving an image
+    const contentType = response.headers['content-type'];
+    if (contentType) {
+      const normalizedContentType = contentType.toLowerCase().split(';')[0].trim();
+      const isValidImageType = ALLOWED_CONTENT_TYPES.some(
+        allowed => normalizedContentType === allowed
+      );
 
-    const data = await response.json();
-    
-    if (Array.isArray(data)) {
-      if (data.length === 0) {
-        hasMore = false;
-      } else {
-        allData.push(...data);
-        page++;
-        // GitHub API returns max 100 items per page
-        if (data.length < 100) {
-          hasMore = false;
-        }
+      if (!isValidImageType) {
+        throw new Error(`Invalid Content-Type: ${normalizedContentType}. Expected: ${ALLOWED_CONTENT_TYPES.join(', ')}`);
       }
+      console.log(`Content-Type: ${normalizedContentType}`);
     } else {
-      return data;
+      throw new Error('Missing Content-Type header in response');
     }
-  }
 
-  return allData;
-}
+    const buffer = Buffer.from(response.data);
 
-async function fetchMergedPRs(token) {
-  console.log('📥 Fetching merged pull requests...');
-  const url = `${API_BASE}/repos/${owner}/${repo}/pulls?state=closed&sort=updated&direction=desc`;
-  const prs = await fetchWithPagination(url, token);
-  
-  // Filter only merged PRs
-  const mergedPRs = prs.filter(pr => pr.merged_at !== null);
-  console.log(`✅ Found ${mergedPRs.length} merged PRs`);
-  return mergedPRs;
-}
-
-async function fetchPRReviews(token) {
-  console.log('📥 Fetching PR reviews...');
-  // We'll fetch reviews for each PR (this might be rate-limited, so we'll optimize)
-  const mergedPRs = await fetchMergedPRs(token);
-  const reviews = [];
-  
-  // Limit to last 100 PRs to avoid rate limits
-  const recentPRs = mergedPRs.slice(0, 100);
-  
-  for (const pr of recentPRs) {
-    try {
-      const url = `${API_BASE}/repos/${owner}/${repo}/pulls/${pr.number}/reviews`;
-      const prReviews = await fetchWithPagination(url, token);
-      reviews.push(...prReviews.map(review => ({
-        ...review,
-        pr_number: pr.number,
-        pr_merged_at: pr.merged_at
-      })));
-    } catch (error) {
-      console.warn(`⚠️  Could not fetch reviews for PR #${pr.number}: ${error.message}`);
+    if (buffer.length > MAX_FILE_SIZE) {
+      throw new Error(`Image size (${(buffer.length / 1024 / 1024).toFixed(2)}MB) exceeds maximum allowed size (${MAX_FILE_SIZE / 1024 / 1024}MB)`);
     }
-  }
-  
-  console.log(`✅ Found ${reviews.length} PR reviews`);
-  return reviews;
-}
 
-async function fetchPRComments(token) {
-  console.log('📥 Fetching PR comments...');
-  const mergedPRs = await fetchMergedPRs(token);
-  const comments = [];
-  
-  // Limit to last 100 PRs
-  const recentPRs = mergedPRs.slice(0, 100);
-  
-  for (const pr of recentPRs) {
-    try {
-      const url = `${API_BASE}/repos/${owner}/${repo}/pulls/${pr.number}/comments`;
-      const prComments = await fetchWithPagination(url, token);
-      comments.push(...prComments.map(comment => ({
-        ...comment,
-        pr_number: pr.number,
-        pr_merged_at: pr.merged_at
-      })));
-    } catch (error) {
-      console.warn(`⚠️  Could not fetch comments for PR #${pr.number}: ${error.message}`);
+    if (buffer.length === 0) {
+      throw new Error('Downloaded image is empty');
     }
-  }
-  
-  console.log(`✅ Found ${comments.length} PR comments`);
-  return comments;
-}
 
-// Badge calculation logic
-function calculateBadges(contributor, activity) {
-  const badges = contributor.badges || [];
-  const existingBadgeNames = new Set(badges.map(b => b.name).filter(Boolean));
-  const newBadges = [];
-  const today = new Date().toISOString().split('T')[0];
+    console.log(`✓ Downloaded ${(buffer.length / 1024).toFixed(2)}KB`);
+    return buffer;
+  } catch (error) {
+    if (error.response) {
+      const status = error.response.status;
 
-  // Get contributor's GitHub username from slug or github URL
-  const githubUsername = contributor.slug || 
-    (contributor.github ? contributor.github.split('/').pop() : null);
-  
-  if (!githubUsername) {
-    return badges; // Can't calculate badges without GitHub username
-  }
-
-  const contributorActivity = activity[githubUsername.toLowerCase()] || {
-    mergedPRs: [],
-    reviews: [],
-    comments: [],
-    firstContribution: null
-  };
-
-  // Achievement Badges: Contributor milestones
-  const mergedPRCount = contributorActivity.mergedPRs.length;
-  for (const threshold of BADGE_THRESHOLDS.CONTRIBUTOR) {
-    const badgeName = `Contributor-${threshold}`;
-    if (mergedPRCount >= threshold && !existingBadgeNames.has(badgeName)) {
-      // Find the PR that crossed the threshold
-      const thresholdPR = contributorActivity.mergedPRs
-        .sort((a, b) => new Date(a.merged_at) - new Date(b.merged_at))[threshold - 1];
-      newBadges.push({
-        name: badgeName,
-        assigned: thresholdPR ? formatDate(thresholdPR.merged_at) : today
-      });
-      existingBadgeNames.add(badgeName);
-    }
-  }
-
-  // Achievement Badges: Reviewer milestones
-  const reviewCount = contributorActivity.reviews.length;
-  for (const threshold of BADGE_THRESHOLDS.REVIEWER) {
-    const badgeName = `Reviewer-${threshold}`;
-    if (reviewCount >= threshold && !existingBadgeNames.has(badgeName)) {
-      // Find the review that crossed the threshold
-      const thresholdReview = contributorActivity.reviews
-        .sort((a, b) => new Date(a.submitted_at) - new Date(b.submitted_at))[threshold - 1];
-      newBadges.push({
-        name: badgeName,
-        assigned: thresholdReview ? formatDate(thresholdReview.submitted_at) : today
-      });
-      existingBadgeNames.add(badgeName);
-    }
-  }
-
-  // Top-Reviewer badge (top 10% of reviewers)
-  if (reviewCount >= 25 && !existingBadgeNames.has('Top-Reviewer')) {
-    newBadges.push({
-      name: 'Top-Reviewer',
-      assigned: today
-    });
-    existingBadgeNames.add('Top-Reviewer');
-  }
-
-  // Early-Contributor badge
-  if (contributorActivity.firstContribution) {
-    const firstContribDate = new Date(contributorActivity.firstContribution);
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-    
-    if (firstContribDate < sixMonthsAgo && !existingBadgeNames.has('Early-Contributor')) {
-      newBadges.push({
-        name: 'Early-Contributor',
-        assigned: formatDate(contributorActivity.firstContribution)
-      });
-      existingBadgeNames.add('Early-Contributor');
-    }
-  }
-
-  // Activity Badges: Active-Last-30d
-  const recentActivity = [
-    ...contributorActivity.mergedPRs.filter(pr => isWithinDays(pr.merged_at, 30)),
-    ...contributorActivity.reviews.filter(r => isWithinDays(r.submitted_at, 30)),
-    ...contributorActivity.comments.filter(c => isWithinDays(c.created_at, 30))
-  ];
-
-  if (recentActivity.length > 0) {
-    const hasActive30d = existingBadgeNames.has('Active-Last-30d');
-    if (!hasActive30d) {
-      newBadges.push({
-        name: 'Active-Last-30d',
-        assigned: today
-      });
-    } else {
-      // Update existing badge date
-      const existingBadge = badges.find(b => b.name === 'Active-Last-30d');
-      if (existingBadge) {
-        existingBadge.assigned = today;
+      if (status === 400 || status === 404) {
+        throw new Error(
+          'Image URL expired or invalid (HTTP ' + status + '). ' +
+          'GitHub image URLs expire in ~5 minutes. ' +
+          'Please: 1) Refresh the PR page, 2) Copy a fresh image URL, 3) Run /img-bot again immediately.'
+        );
       }
+      throw new Error(`HTTP ${status}: ${error.response.statusText || 'Request failed'}`);
     }
-  } else {
-    // Remove if no longer active
-    const active30dIndex = badges.findIndex(b => b.name === 'Active-Last-30d');
-    if (active30dIndex !== -1) {
-      badges.splice(active30dIndex, 1);
+
+    if (error.code === 'ECONNABORTED') {
+      throw new Error('Download timed out. Please try again.');
     }
+
+    throw new Error(`Download failed: ${error.message}`);
   }
-
-  // Activity Badges: Active-Last-90d
-  const activity90d = [
-    ...contributorActivity.mergedPRs.filter(pr => isWithinDays(pr.merged_at, 90)),
-    ...contributorActivity.reviews.filter(r => isWithinDays(r.submitted_at, 90)),
-    ...contributorActivity.comments.filter(c => isWithinDays(c.created_at, 90))
-  ];
-
-  if (activity90d.length > 0) {
-    const hasActive90d = existingBadgeNames.has('Active-Last-90d');
-    if (!hasActive90d && !existingBadgeNames.has('Active-Last-30d')) {
-      newBadges.push({
-        name: 'Active-Last-90d',
-        assigned: today
-      });
-    } else if (hasActive90d) {
-      // Update existing badge date
-      const existingBadge = badges.find(b => b.name === 'Active-Last-90d');
-      if (existingBadge) {
-        existingBadge.assigned = today;
-      }
-    }
-  } else {
-    // Remove if no longer active
-    const active90dIndex = badges.findIndex(b => b.name === 'Active-Last-90d');
-    if (active90dIndex !== -1) {
-      badges.splice(active90dIndex, 1);
-    }
-  }
-
-  // Activity Badges: New-Joiner
-  if (contributorActivity.firstContribution && isWithinDays(contributorActivity.firstContribution, 30)) {
-    if (!existingBadgeNames.has('New-Joiner')) {
-      newBadges.push({
-        name: 'New-Joiner',
-        assigned: formatDate(contributorActivity.firstContribution)
-      });
-    }
-  } else {
-    // Remove if no longer a new joiner
-    const newJoinerIndex = badges.findIndex(b => b.name === 'New-Joiner');
-    if (newJoinerIndex !== -1) {
-      badges.splice(newJoinerIndex, 1);
-    }
-  }
-
-  // Combine existing badges (excluding empty ones) with new badges
-  const validBadges = badges.filter(b => b.name && b.name.trim() !== '');
-  return [...validBadges, ...newBadges];
 }
 
-// Main execution
-async function main() {
-  if (!GITHUB_TOKEN) {
-    console.error('❌ GITHUB_TOKEN environment variable is required');
-    process.exit(1);
-  }
-
-  console.log('🚀 Starting badge update process...');
-  console.log(`📦 Repository: ${owner}/${repo}`);
+// ============================================================================
+// IMAGE VALIDATION FUNCTION
+// ============================================================================
+// Validates that the downloaded buffer is a valid image
+async function validateImage(buffer) {
+  console.log('Validating image...');
 
   try {
-    // Load contributors.json
-    const contributorsData = JSON.parse(fs.readFileSync(CONTRIBUTORS_FILE, 'utf8'));
-    console.log(`📋 Loaded ${Object.keys(contributorsData).length} contributors`);
+    const sharpInstance = sharp(buffer, {
+      limitInputPixels: MAX_PIXELS,
+      sequentialRead: true,
+      failOn: 'error'
+    });
 
-    // Fetch activity data
-    const [mergedPRs, reviews, comments] = await Promise.all([
-      fetchMergedPRs(GITHUB_TOKEN),
-      fetchPRReviews(GITHUB_TOKEN),
-      fetchPRComments(GITHUB_TOKEN)
-    ]);
+    const metadata = await sharpInstance.metadata();
 
-    // Organize activity by contributor
-    const activity = {};
+    console.log('Image metadata:', {
+      format: metadata.format,
+      width: metadata.width,
+      height: metadata.height,
+      size: `${(buffer.length / 1024).toFixed(2)}KB`
+    });
 
-    // Process merged PRs
-    for (const pr of mergedPRs) {
-      const username = pr.user?.login?.toLowerCase();
-      if (username) {
-        if (!activity[username]) {
-          activity[username] = {
-            mergedPRs: [],
-            reviews: [],
-            comments: [],
-            firstContribution: null
-          };
-        }
-        activity[username].mergedPRs.push({
-          number: pr.number,
-          merged_at: pr.merged_at,
-          created_at: pr.created_at
-        });
-        
-        // Track first contribution
-        if (!activity[username].firstContribution || 
-            new Date(pr.created_at) < new Date(activity[username].firstContribution)) {
-          activity[username].firstContribution = pr.created_at;
-        }
-      }
+    // Validate format
+    if (!ALLOWED_FORMATS.includes(metadata.format)) {
+      throw new Error(`Invalid format: ${metadata.format}. Allowed: ${ALLOWED_FORMATS.join(', ')}`);
     }
 
-    // Process reviews
-    for (const review of reviews) {
-      const username = review.user?.login?.toLowerCase();
-      if (username && review.state !== 'PENDING') {
-        if (!activity[username]) {
-          activity[username] = {
-            mergedPRs: [],
-            reviews: [],
-            comments: [],
-            firstContribution: null
-          };
+    // Validate dimensions (prevents overly large images)
+    if (!metadata.width || !metadata.height) {
+      throw new Error('Unable to determine image dimensions');
+    }
+
+    if (metadata.width > MAX_WIDTH || metadata.height > MAX_HEIGHT) {
+      throw new Error(`Image dimensions ${metadata.width}x${metadata.height} exceed maximum ${MAX_WIDTH}x${MAX_HEIGHT}`);
+    }
+
+    if (metadata.width < 1 || metadata.height < 1) {
+      throw new Error('Invalid image dimensions');
+    }
+
+    // Check total pixel count
+    const totalPixels = metadata.width * metadata.height;
+    if (totalPixels > MAX_PIXELS) {
+      throw new Error(`Image pixel count ${totalPixels.toLocaleString()} exceeds maximum ${MAX_PIXELS.toLocaleString()}`);
+    }
+
+    const channels = metadata.channels || 4;
+    const bitsPerChannel = metadata.depth === 'uchar' ? 8 : (metadata.depth === 'ushort' ? 16 : 8);
+    const bytesPerPixel = channels * (bitsPerChannel / 8);
+    const estimatedUncompressedSize = metadata.width * metadata.height * bytesPerPixel;
+    const compressionRatio = estimatedUncompressedSize / buffer.length;
+
+    console.log(`Compression ratio: ${compressionRatio.toFixed(1)}:1`);
+
+    if (compressionRatio > MAX_COMPRESSION_RATIO) {
+      throw new Error(
+        `Suspicious compression ratio (${compressionRatio.toFixed(1)}:1) exceeds maximum allowed (${MAX_COMPRESSION_RATIO}:1). ` +
+        `This may indicate a decompression bomb.`
+      );
+    }
+
+    console.log('✓ Image validation passed');
+    return metadata;
+  } catch (error) {
+    const safeMessage = error.message
+      .replace(/\/[^\s]+/g, '[PATH]')
+      .substring(0, 200);
+    throw new Error(`Image validation failed: ${safeMessage}`);
+  }
+}
+
+// ============================================================================
+// EXIF STRIPPING FUNCTION
+// ============================================================================
+//Strips EXIF metadata from images for privacy
+async function stripExifMetadata(buffer, format) {
+  console.log('Stripping EXIF metadata...');
+
+  try {
+    const sharpInstance = sharp(buffer, {
+      limitInputPixels: MAX_PIXELS,
+      sequentialRead: true
+    });
+
+    let processed = sharpInstance.rotate();
+
+    if (format === 'png') {
+      processed = processed.png({
+        compressionLevel: 9,
+        effort: 10
+      });
+    } else {
+      processed = processed.jpeg({
+        quality: 95,
+        mozjpeg: true
+      });
+    }
+
+    const strippedBuffer = await processed.toBuffer();
+
+    console.log(`✓ EXIF stripped. Original: ${(buffer.length / 1024).toFixed(2)}KB, New: ${(strippedBuffer.length / 1024).toFixed(2)}KB`);
+    return strippedBuffer;
+  } catch (error) {
+    console.warn(`Warning: Could not strip EXIF metadata: ${error.message}`);
+    return buffer;
+  }
+}
+
+// ============================================================================
+// FILENAME GENERATION FUNCTION
+// ============================================================================
+// Generates a unique, collision-resistant filename for the uploaded image
+function generateUniqueFilename(originalUrl, format) {
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+
+  // Use full UUID for better collision resistance
+  const uniqueId = uuidv4();
+  const randomBytes = crypto.randomBytes(16).toString('hex');
+  const hash = crypto.createHash('sha256')
+    .update(originalUrl)
+    .update(randomBytes)
+    .update(Date.now().toString())
+    .digest('hex')
+    .substring(0, 12);
+
+  const sanitizedFormat = format.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+
+  const safeFormats = ['jpeg', 'jpg', 'png'];
+  if (!safeFormats.includes(sanitizedFormat)) {
+    throw new Error(`Invalid format for filename: ${format}`);
+  }
+
+  return `${timestamp}_${uniqueId}_${hash}.${sanitizedFormat}`;
+}
+
+// ============================================================================
+// S3 UPLOAD FUNCTION
+// ============================================================================
+// Uploads the image buffer to AWS S3
+async function uploadToS3(buffer, filename, contentType) {
+  console.log(`Uploading to S3: ${filename}`);
+
+  try {
+    const bucket = process.env.AWS_S3_BUCKET;
+    const region = process.env.AWS_REGION;
+
+    if (!bucket || !region) {
+      throw new Error('AWS_S3_BUCKET and AWS_REGION environment variables are required');
+    }
+
+    const upload = new Upload({
+      client: s3Client,
+      params: {
+        Bucket: bucket,
+        Key: `images/${filename}`,
+        Body: buffer,
+        ContentType: contentType,
+        CacheControl: 'public, max-age=31536000, immutable',
+        ContentDisposition: `inline; filename="${filename}"`,
+        Metadata: {
+          'uploaded-by': 'img-bot',
+          'upload-timestamp': new Date().toISOString()
         }
-        activity[username].reviews.push({
-          id: review.id,
-          submitted_at: review.submitted_at,
-          state: review.state
-        });
       }
-    }
+    });
 
-    // Process comments
-    for (const comment of comments) {
-      const username = comment.user?.login?.toLowerCase();
-      if (username) {
-        if (!activity[username]) {
-          activity[username] = {
-            mergedPRs: [],
-            reviews: [],
-            comments: [],
-            firstContribution: null
-          };
-        }
-        activity[username].comments.push({
-          id: comment.id,
-          created_at: comment.created_at
-        });
-      }
-    }
+    await upload.done();
 
-    console.log(`📊 Activity data collected for ${Object.keys(activity).length} contributors`);
+    const publicUrl = `https://${bucket}.s3.${region}.amazonaws.com/images/${filename}`;
 
-    // Update badges for each contributor
-    let updatedCount = 0;
-    for (const [slug, contributor] of Object.entries(contributorsData)) {
-      const oldBadges = JSON.stringify(contributor.badges || []);
-      contributor.badges = calculateBadges(contributor, activity);
-      const newBadges = JSON.stringify(contributor.badges);
-      
-      if (oldBadges !== newBadges) {
-        updatedCount++;
-        const newBadgeNames = contributor.badges
-          .filter(b => b.name && b.name.trim() !== '')
-          .map(b => b.name);
-        console.log(`  ✨ Updated badges for ${contributor.name}: ${newBadgeNames.join(', ')}`);
-      }
-    }
+    console.log(`✓ Uploaded to S3: ${publicUrl}`);
+    return publicUrl;
+  } catch (error) {
+    const safeMessage = error.message
+      .replace(/arn:[^\s]+/gi, '[ARN]')
+      .replace(/[a-z0-9-]+\.s3\.[a-z0-9-]+\.amazonaws\.com/gi, '[S3_ENDPOINT]')
+      .replace(/s3:\/\/[^\s]+/gi, '[S3_PATH]')
+      .substring(0, 200);
 
-    // Save updated contributors.json
-    fs.writeFileSync(
-      CONTRIBUTORS_FILE,
-      JSON.stringify(contributorsData, null, 2) + '\n',
-      'utf8'
+    throw new Error(`S3 upload failed: ${safeMessage}`);
+  }
+}
+
+// ============================================================================
+// MAIN IMAGE PROCESSING FUNCTION
+// ============================================================================
+// Processes a single image: download, validate, strip EXIF, upload
+async function processImage(url, index) {
+  const safeLogUrl = sanitizeUrlForLogging(url).substring(0, 80) + '...';
+
+  try {
+    const buffer = await downloadImage(url);
+
+    const metadata = await validateImage(buffer);
+
+    const strippedBuffer = await stripExifMetadata(buffer, metadata.format);
+
+    const filename = generateUniqueFilename(url, metadata.format);
+
+    const s3Url = await uploadToS3(
+      strippedBuffer,
+      filename,
+      `image/${metadata.format}`
     );
 
-    console.log(`\n✅ Badge update complete!`);
-    console.log(`📝 Updated ${updatedCount} contributor(s)`);
-    console.log(`💾 Saved to ${CONTRIBUTORS_FILE}`);
-
+    return {
+      success: true,
+      originalUrl: safeLogUrl,
+      s3Url: s3Url,
+      filename: filename,
+      metadata: {
+        format: metadata.format,
+        width: metadata.width,
+        height: metadata.height,
+        size: `${(strippedBuffer.length / 1024).toFixed(2)}KB`
+      }
+    };
   } catch (error) {
-    console.error('❌ Error updating badges:', error);
+    // We don't throw the error here so other images can still be processed
+    return {
+      success: false,
+      originalUrl: safeLogUrl,
+      error: error.message.substring(0, 300)
+    };
+  }
+}
+
+// ============================================================================
+// MAIN ENTRY POINT
+// ============================================================================
+// Reads URLs from file and processes them sequentially
+async function main() {
+  let urls;
+
+  try {
+    const urlsPath = process.env.URLS_FILE_PATH || 'urls.json';
+
+    if (!fs.existsSync(urlsPath)) {
+      throw new Error(`URLs file not found: ${urlsPath}`);
+    }
+
+    const rawData = fs.readFileSync(urlsPath, 'utf8');
+    urls = JSON.parse(rawData);
+
+    if (!Array.isArray(urls)) {
+      throw new Error('URLs file does not contain an array');
+    }
+
+    if (urls.length === 0) {
+      throw new Error('URLs array is empty');
+    }
+
+    if (urls.length > MAX_IMAGES_PER_REQUEST) {
+      throw new Error(
+        `Too many images (${urls.length}). Maximum allowed per request: ${MAX_IMAGES_PER_REQUEST}`
+      );
+    }
+
+    for (const url of urls) {
+      if (typeof url !== 'string' || !url.startsWith('https://')) {
+        throw new Error('Invalid URL format in input array');
+      }
+    }
+
+    console.log(`Processing ${urls.length} image(s)...`);
+  } catch (error) {
+    console.error('Failed to read/parse URLs file:', error.message);
+    // Output error result so workflow can parse and report it
+    console.log('\nRESULTS:', JSON.stringify([{
+      success: false,
+      originalUrl: 'unknown',
+      error: `Failed to read/parse URLs: ${error.message.substring(0, 200)}`
+    }], null, 2));
+    process.exit(1);
+  }
+
+  // Process each URL sequentially
+  const results = [];
+  for (let i = 0; i < urls.length; i++) {
+    const url = urls[i];
+    const safeLogUrl = sanitizeUrlForLogging(url).substring(0, 60);
+    console.log(`\n[${i + 1}/${urls.length}] Processing: ${safeLogUrl}...`);
+
+    const result = await processImage(url, i);
+    results.push(result);
+
+    if (result.success) {
+      console.log(`✓ Success: ${result.filename}`);
+    } else {
+      console.error(`✗ Failed: ${result.error}`);
+    }
+  }
+
+  // Summary
+  const successCount = results.filter(r => r.success).length;
+  const failCount = results.filter(r => !r.success).length;
+  console.log(`\n========================================`);
+  console.log(`Summary: ${successCount} succeeded, ${failCount} failed`);
+  console.log(`========================================`);
+
+  // Always output RESULTS, even if empty (for workflow parsing)
+  console.log('\nRESULTS:', JSON.stringify(results, null, 2));
+
+  // Exit with code 1 only if all images failed
+  const allFailed = results.length > 0 && results.every(r => !r.success);
+  if (allFailed) {
+    console.error('\n✗ All images failed to process');
     process.exit(1);
   }
 }
 
-// Run if executed directly
-if (require.main === module) {
-  main();
-}
-
-module.exports = { calculateBadges, fetchMergedPRs, fetchPRReviews };
-
+// Run main function and handle any unhandled errors
+main().catch(error => {
+  console.error('Fatal error:', error.message);
+  // Output empty results so workflow can still parse and report the error
+  console.log('\nRESULTS:', JSON.stringify([{
+    success: false,
+    originalUrl: 'unknown',
+    error: `Fatal error: ${error.message.substring(0, 200)}`
+  }], null, 2));
+  process.exit(1);
+});

@@ -19,13 +19,13 @@ const BADGE_LEGEND: BadgeInfo[] = [
   {
     name: 'Core-Contributor',
     label: 'Core Team',
-    description: 'Elite contributor with governance responsibilities',
+    description: 'Elite contributor with governance duties',
     category: 'role'
   },
   {
-    name: 'Top-Reviewer',
-    label: 'Master Reviewer',
-    description: 'Exceptional code review and mentorship',
+    name: 'Lead',
+    label: 'Lead',
+    description: 'Initiative lead and project maintainer',
     category: 'role'
   },
   // Milestone Badges (Green)
@@ -97,15 +97,15 @@ const BADGE_LEGEND: BadgeInfo[] = [
   },
   // Activity Badges (Yellow)
   {
-    name: 'Active-Last-30d',
+    name: 'Active-Last-7d',
     label: 'Recently Active',
-    description: 'Active in the last 30 days',
+    description: 'Active in the last 7 days',
     category: 'activity'
   },
   {
-    name: 'Active-Last-90d',
+    name: 'Active-Last-30d',
     label: 'Active Contributor',
-    description: 'Active in the last 90 days',
+    description: 'Active in the last 30 days',
     category: 'activity'
   },
   {
@@ -140,9 +140,34 @@ const CATEGORY_INFO = {
   }
 };
 
-export function BadgeLegend() {
-  const categories: ('role' | 'milestone' | 'activity')[] = ['role', 'milestone', 'activity'];
+function CategoryCard({ category }: { category: 'role' | 'milestone' | 'activity' }) {
+  const info = CATEGORY_INFO[category];
+  const badges = BADGE_LEGEND.filter(b => b.category === category);
 
+  return (
+    <div className={`badge-legend-category ${category}`}>
+      <div className="category-header">
+        <span
+          className="category-indicator"
+          style={{ backgroundColor: info.color }}
+        />
+        <h3 className="category-title">{info.label}</h3>
+      </div>
+      <p className="category-description">{info.description}</p>
+
+      <div className="badge-list">
+        {badges.map((badge) => (
+          <div key={badge.name} className="badge-item">
+            <span className="badge-label">{badge.label}</span>
+            <span className="badge-description">{badge.description}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function BadgeLegend() {
   return (
     <div className="badge-legend">
       <h2 className="vocs_H2 vocs_Heading badge-legend-title">
@@ -167,36 +192,20 @@ export function BadgeLegend() {
       </p>
 
       <div className="badge-legend-categories">
-        {categories.map((category) => {
-          const info = CATEGORY_INFO[category];
-          const badges = BADGE_LEGEND.filter(b => b.category === category);
+        {/* Left column: Role + Activity (shorter lists) */}
+        <div className="badge-legend-column">
+          <CategoryCard category="role" />
+          <CategoryCard category="activity" />
+        </div>
 
-          return (
-            <div key={category} className={`badge-legend-category ${category}`}>
-              <div className="category-header">
-                <span
-                  className="category-indicator"
-                  style={{ backgroundColor: info.color }}
-                />
-                <h3 className="category-title">{info.label}</h3>
-              </div>
-              <p className="category-description">{info.description}</p>
-
-              <div className="badge-list">
-                {badges.map((badge) => (
-                  <div key={badge.name} className="badge-item">
-                    <span className="badge-label">{badge.label}</span>
-                    <span className="badge-description">{badge.description}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          );
-        })}
+        {/* Right column: Milestone (longer list) */}
+        <div className="badge-legend-column">
+          <CategoryCard category="milestone" />
+        </div>
       </div>
 
       <div className="badge-legend-note">
-        <strong>Note:</strong> Badges with a pulsing indicator were earned within the last 30 days.
+        <strong>Note:</strong> Badges with a pulsing indicator were earned within the last 7 days.
       </div>
     </div>
   );
