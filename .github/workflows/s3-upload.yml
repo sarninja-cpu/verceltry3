@@ -376,7 +376,7 @@ jobs:
             if (failed.length > 0) {
               commentBody += '### ❌ Failed Uploads\n\n';
               failed.forEach((result, index) => {
-                const safeError = sanitizeForMarkdown(result.error);
+                const safeError = sanitizedUrl(result.error);
                 commentBody += `${index + 1}. **Error**: ${safeError}\n\n`;
               });
             }
