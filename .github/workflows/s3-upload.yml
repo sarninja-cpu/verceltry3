@@ -347,41 +347,49 @@ jobs:
                 .substring(0, 500);
             }
 
-            // Build comment body with results
-            let commentBody = '## 🖼️ Image(s) Upload Results\n\n';
-            commentBody += '**Next steps**: Copy the S3 URLs below and add them in the PR files.\n\n';
-
             // Separate successful and failed uploads
             const successful = results.filter(r => r.success);
             const failed = results.filter(r => !r.success);
 
+            // Build comment body with results
+            let commentBody = '## Image Upload Results\n\n';
+
             // Add successful uploads section
             if (successful.length > 0) {
-              commentBody += '### ✅ Uploaded\n\n';
-              successful.forEach((result, index) => {
+              commentBody += '### Uploaded Successfully\n\n';
+              commentBody += '| File | Dimensions | Format | Size |\n';
+              commentBody += '|------|------------|--------|------|\n';
+
+              successful.forEach((result) => {
+                const safeFilename = sanitizeUrl(result.filename);
+                const dimensions = result.metadata ? `${result.metadata.width}×${result.metadata.height}` : '—';
+                const format = result.metadata ? result.metadata.format.toUpperCase() : '—';
+                const size = result.metadata ? result.metadata.size : '—';
+                commentBody += `| \`${safeFilename}\` | ${dimensions} | ${format} | ${size} |\n`;
+              });
+
+              commentBody += '\n<details>\n<summary><strong>S3 URLs</strong></summary>\n\n';
+              successful.forEach((result) => {
                 const safeS3Url = sanitizeUrl(result.s3Url);
                 const safeFilename = sanitizeUrl(result.filename);
-                
-                commentBody += `${index + 1}. **File**: \`${safeFilename}\`\n`;
-                commentBody += `   **S3 URL**: \`${safeS3Url}\`\n`;
-                if (result.metadata) {
-                  commentBody += `   **Info**: ${result.metadata.width}x${result.metadata.height} ${result.metadata.format} (${result.metadata.size})\n`;
-                }
-                commentBody += '\n---\n\n';
+                commentBody += `**${safeFilename}**\n\`\`\`\n${safeS3Url}\n\`\`\`\n\n`;
               });
+              commentBody += '</details>\n\n';
             }
 
             // Add failed uploads section
             if (failed.length > 0) {
-              commentBody += '### ❌ Failed Uploads\n\n';
+              commentBody += '### Failed\n\n';
               failed.forEach((result, index) => {
                 const safeError = sanitizeUrl(result.error);
-                commentBody += `${index + 1}. **Error**: ${safeError}\n\n`;
+                commentBody += `- ${safeError}\n`;
               });
+              commentBody += '\n';
             }
 
-            // Add summary
-            commentBody += `\n*Processed ${results.length} image(s): ${successful.length} successful, ${failed.length} failed*`;
+            // Add summary footer
+            const statusIcon = failed.length === 0 ? '✓' : '⚠';
+            commentBody += `---\n${statusIcon} **${successful.length}** of **${results.length}** image(s) uploaded successfully`;
 
             // Post comment to PR
             await github.rest.issues.createComment({
