@@ -360,7 +360,7 @@ jobs:
 
               successful.forEach((result) => {
                 const safeS3Url = sanitizeUrl(result.s3Url);
-                commentBody += `| <pre>${safeS3Url}</pre> | <img src="${result.s3Url}" width="200" /> |\n`;
+                commentBody += `| \`${safeS3Url}\` | <img src="${result.s3Url}" width="200" /> |\n`;
               });
 
               commentBody += '\n**Next step:** Copy the URL and use it in your contribution:\n';
