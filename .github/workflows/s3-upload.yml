@@ -354,42 +354,26 @@ jobs:
             // Build comment body with results
             let commentBody = '## Image Upload Results\n\n';
 
-            // Add successful uploads section
+            // Add successful uploads as a table with preview
             if (successful.length > 0) {
-              commentBody += '### Uploaded Successfully\n\n';
-              commentBody += '| File | Dimensions | Format | Size |\n';
-              commentBody += '|------|------------|--------|------|\n';
+              commentBody += '| S3 URL | Preview |\n';
+              commentBody += '|:-------:|--------|\n';
 
-              successful.forEach((result) => {
-                const safeFilename = sanitizeUrl(result.filename);
-                const dimensions = result.metadata ? `${result.metadata.width}×${result.metadata.height}` : '—';
-                const format = result.metadata ? result.metadata.format.toUpperCase() : '—';
-                const size = result.metadata ? result.metadata.size : '—';
-                commentBody += `| \`${safeFilename}\` | ${dimensions} | ${format} | ${size} |\n`;
-              });
-
-              commentBody += '\n<details>\n<summary><strong>S3 URLs</strong></summary>\n\n';
               successful.forEach((result) => {
                 const safeS3Url = sanitizeUrl(result.s3Url);
-                const safeFilename = sanitizeUrl(result.filename);
-                commentBody += `**${safeFilename}**\n\`\`\`\n${safeS3Url}\n\`\`\`\n\n`;
-              });
-              commentBody += '</details>\n\n';
-            }
-
-            // Add failed uploads section
-            if (failed.length > 0) {
-              commentBody += '### Failed\n\n';
-              failed.forEach((result, index) => {
-                const safeError = sanitizeUrl(result.error);
-                commentBody += `- ${safeError}\n`;
+                commentBody += `| \`${safeS3Url}\` | <img src="${result.s3Url}" width="80" /> |\n`;
               });
               commentBody += '\n';
             }
 
-            // Add summary footer
-            const statusIcon = failed.length === 0 ? '✓' : '⚠';
-            commentBody += `---\n${statusIcon} **${successful.length}** of **${results.length}** image(s) uploaded successfully`;
+            // Add failed uploads section
+            if (failed.length > 0) {
+              commentBody += '**Failed:**\n';
+              failed.forEach((result) => {
+                const safeError = sanitizeUrl(result.error);
+                commentBody += `- ${safeError}\n`;
+              });
+            }
 
             // Post comment to PR
             await github.rest.issues.createComment({
