@@ -356,13 +356,15 @@ jobs:
             // Add successful uploads as a table with preview
             if (successful.length > 0) {
               commentBody += '| S3 URL | Preview |\n';
-              commentBody += '|--------|:-------:|\n';
+              commentBody += '|:------:|:-------:|\n';
 
               successful.forEach((result) => {
                 const safeS3Url = sanitizeUrl(result.s3Url);
-                commentBody += `| \`${safeS3Url}\` | <img src="${result.s3Url}" width="150" /> |\n`;
+                commentBody += `| <pre>${safeS3Url}</pre> | <img src="${result.s3Url}" width="200" /> |\n`;
               });
-              commentBody += '\n';
+
+              commentBody += '\n**Next step:** Copy the URL and use it in your contribution:\n';
+              commentBody += '```md\n![alt text](S3_URL)\n```\n\n';
             }
 
             // Add failed uploads section
