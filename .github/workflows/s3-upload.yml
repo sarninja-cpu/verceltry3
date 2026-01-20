@@ -29,7 +29,7 @@ jobs:
         github.event.comment.author_association == 'COLLABORATOR' ||
         github.event.comment.author_association == 'MEMBER' ||
         github.event.comment.author_association == 'OWNER'
-      ) 
+      )
 
     runs-on: ubuntu-latest
 
@@ -43,7 +43,7 @@ jobs:
             const allowed = ['admin', 'maintain', 'triage'];
             const username = context.payload.comment.user.login;
 
-            // Verify the permission level via API
+            // Get the permission level via API
             const { data } = await github.rest.repos.getCollaboratorPermissionLevel({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -87,11 +87,9 @@ jobs:
             const validatedUrls = [];
             const validationErrors = [];
 
-            // Only allowed hostname - GitHub uses this for ALL PR comment images now
+            // Only allowed hostname
             const ALLOWED_HOSTNAME = 'private-user-images.githubusercontent.com';
 
-            // Expected URL format: /<user-id>/<uuid>.<ext>
-            // Example: /12345678/abcd1234-5678-90ef-ghij-klmnopqrstuv.png
             const VALID_PATH_PATTERN = /^\/\d+\/\d+-[a-f0-9-]{36}\.(png|jpg|jpeg)$/i;
 
             for (const url of urls) {
@@ -105,7 +103,7 @@ jobs:
                   continue;
                 }
 
-                // Strict hostname validation - exact match only
+                // Strict hostname validation
                 const hostname = urlObj.hostname.toLowerCase();
 
                 if (hostname !== ALLOWED_HOSTNAME) {
@@ -335,7 +333,7 @@ jobs:
               throw error;
             }
 
-            // Comprehensive URL sanitization to prevent markdown injection
+            // URL sanitization to prevent markdown injection
             function sanitizeUrl(str) {
               if (!str) return '';
               return str
@@ -418,7 +416,7 @@ jobs:
       - name: Cleanup temporary files
         if: always()
         run: |
-          # Securely remove temporary files
+          # Remove temporary files
           if [ -n "$URLS_FILE_PATH" ] && [ -f "$URLS_FILE_PATH" ]; then
             shred -u "$URLS_FILE_PATH" 2>/dev/null || rm -f "$URLS_FILE_PATH"
           fi

@@ -42,7 +42,6 @@ const s3Client = new S3Client({
 // URL SANITIZATION HELPER
 // ============================================================================
 // Redacts sensitive information from URLs for logging
-
 function sanitizeUrlForLogging(url) {
   try {
     const urlObj = new URL(url);
@@ -243,7 +242,7 @@ async function validateImage(buffer) {
 // ============================================================================
 // EXIF STRIPPING FUNCTION
 // ============================================================================
-//Strips EXIF metadata from images for privacy
+// Strips EXIF metadata from images
 async function stripExifMetadata(buffer, format) {
   console.log('Stripping EXIF metadata...');
 
@@ -280,7 +279,7 @@ async function stripExifMetadata(buffer, format) {
 // ============================================================================
 // FILENAME GENERATION FUNCTION
 // ============================================================================
-// Generates a unique, collision-resistant filename for the uploaded image
+// Generates a unique filename for the uploaded image
 function generateUniqueFilename(originalUrl, format) {
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
 
