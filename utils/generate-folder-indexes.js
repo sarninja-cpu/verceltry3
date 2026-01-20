@@ -221,6 +221,7 @@ function loadSidebarConfig(branchName) {
   const raw = fs.readFileSync(configPath, 'utf8');
   const sanitized = raw
     .replace(/^import[^\n]*\n/, '')
+    .replace(/export const sidebar/g, 'const sidebar')
     .replace(/export default defineConfig\(config\)\s*;?\s*$/, 'return defineConfig(config);')
     .replace(/function filterDevItems\(items: any\[\]\): any\[\] \{/, 'function filterDevItems(items) {')
     .replace(/\bas const\b/g, '');
