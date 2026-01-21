@@ -16,7 +16,7 @@ interface Props {
  *   Description here...
  * </DevOnly>
  */
-export function s({ children }: Props) {
+export function DevOnly({ children }: Props) {
   if (__IS_MAIN_BRANCH__) {
     return null
   }
