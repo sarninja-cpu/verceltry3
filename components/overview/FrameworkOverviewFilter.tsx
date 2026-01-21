@@ -1,5 +1,5 @@
 import React, { Children, isValidElement, ReactNode } from 'react'
-import { sidebar } from '../../vocs.config.ts'
+import { config } from '../../vocs.config.ts'
 
 const isMainBranch = process.env.CF_PAGES_BRANCH === 'main' || process.env.VERCEL_GIT_COMMIT_REF === 'main'
 
@@ -34,7 +34,7 @@ function getDevOnlyLinks(items: SidebarItem[]): Set<string> {
   return devLinks
 }
 
-const devOnlyLinks = getDevOnlyLinks(sidebar as SidebarItem[])
+const devOnlyLinks = getDevOnlyLinks(config.sidebar as SidebarItem[])
 
 interface ElementProps {
   href?: string
@@ -77,8 +77,8 @@ function isDevOnlyLink(href: string): boolean {
 
   // Check if this exact link or its overview is dev-only
   return devOnlyLinks.has(normalized) ||
-         devOnlyLinks.has(normalized + '/overview') ||
-         devOnlyLinks.has(normalized.replace('/overview', ''))
+    devOnlyLinks.has(normalized + '/overview') ||
+    devOnlyLinks.has(normalized.replace('/overview', ''))
 }
 
 interface Props {

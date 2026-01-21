@@ -1,10 +1,22 @@
 import { defineConfig } from 'vocs'
 
-/**
- * Sidebar configuration - exported separately so components can read dev flags
- * before filtering is applied on main branch builds.
- */
-export const sidebar = [
+export const config = {
+  banner: {
+    content: '***This is a work in progress and not a release. We are looking for volunteers. See [Issues](https://github.com/security-alliance/frameworks/issues) and [Contribution](https://github.com/security-alliance/frameworks/blob/develop/docs/pages/contribute/contributing.mdx) to know how to collaborate.***',
+    height: '30px',
+    backgroundColor: '#8b5cf6',
+    textColor: 'white',
+    dismissable: false
+  },
+  title: 'Security Frameworks by SEAL',
+  description: 'Comprehensive security framework documentation for Web3 projects and blockchain security best practices.',
+  logoUrl: 'https://frameworks-static.s3.us-east-2.amazonaws.com/images/logo/frameworks-full.svg',
+  iconUrl: 'https://frameworks-static.s3.us-east-2.amazonaws.com/images/logo/favicon.svg',
+  ogImageUrl: {
+    '/': 'https://frameworks-static.s3.us-east-2.amazonaws.com/images/logo/frameworks-full.png'
+  },
+  checkDeadlinks: "warn" as const,
+  sidebar: [
     {
       text: 'Introduction',
       collapsed: false,
@@ -446,32 +458,7 @@ export const sidebar = [
         },
       ]
     }
-  ]
-
-const config = {
-  vite: {
-    build: {
-      rollupOptions: {
-        external: ['fsevents']
-      }
-    }
-  },
-  banner: {
-    content: '***This is a work in progress and not a release. We are looking for volunteers. See [Issues](https://github.com/security-alliance/frameworks/issues) and [Contribution](https://github.com/security-alliance/frameworks/blob/develop/docs/pages/contribute/contributing.mdx) to know how to collaborate.***',
-    height: '30px',
-    backgroundColor: '#8b5cf6',
-    textColor: 'white',
-    dismissable: false
-  },
-  title: 'Security Frameworks by SEAL',
-  description: 'Comprehensive security framework documentation for Web3 projects and blockchain security best practices.',
-  logoUrl: 'https://frameworks-static.s3.us-east-2.amazonaws.com/images/logo/frameworks-full.svg',
-  iconUrl: 'https://frameworks-static.s3.us-east-2.amazonaws.com/images/logo/favicon.svg',
-  ogImageUrl: {
-    '/': 'https://frameworks-static.s3.us-east-2.amazonaws.com/images/logo/frameworks-full.png'
-  },
-  checkDeadlinks: "warn" as const,
-  sidebar,
+  ],
   socials: [
     {
       icon: 'github' as const,
