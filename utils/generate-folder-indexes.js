@@ -218,18 +218,9 @@ function loadSidebarConfig(branchName) {
     return null;
   }
 
-  // Load the sidebar from the separate file
-  const sidebarPath = path.join(__dirname, '..', 'components', 'shared', 'sidebar.ts');
-  let sidebarContent = '';
-  if (fs.existsSync(sidebarPath)) {
-    sidebarContent = fs.readFileSync(sidebarPath, 'utf8')
-      .replace(/export const sidebar\s*=/, 'const sidebar =')
-      .replace(/\bas const\b/g, '');
-  }
-
   const raw = fs.readFileSync(configPath, 'utf8');
-  const sanitized = sidebarContent + '\n' + raw
-    .replace(/^import[^\n]*\n/gm, '')
+  const sanitized = raw
+    .replace(/^import[^\n]*\n/, '')
     .replace(/export const sidebar/g, 'const sidebar')
     .replace(/export default defineConfig\(config\)\s*;?\s*$/, 'return defineConfig(config);')
     .replace(/function filterDevItems\(items: any\[\]\): any\[\] \{/, 'function filterDevItems(items) {')
