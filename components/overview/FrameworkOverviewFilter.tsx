@@ -1,5 +1,5 @@
 import React, { Children, isValidElement, ReactNode } from 'react'
-import { config } from '../../vocs.config.ts'
+import { sidebar } from '../shared/sidebar'
 
 const isMainBranch = process.env.CF_PAGES_BRANCH === 'main' || process.env.VERCEL_GIT_COMMIT_REF === 'main'
 
@@ -34,7 +34,7 @@ function getDevOnlyLinks(items: SidebarItem[]): Set<string> {
   return devLinks
 }
 
-const devOnlyLinks = getDevOnlyLinks(config.sidebar as SidebarItem[])
+const devOnlyLinks = getDevOnlyLinks(sidebar as SidebarItem[])
 
 interface ElementProps {
   href?: string
