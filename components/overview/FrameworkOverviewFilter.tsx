@@ -1,7 +1,8 @@
 import React, { Children, isValidElement, ReactNode } from 'react'
 import { sidebar } from '../shared/sidebar'
 
-const isMainBranch = process.env.CF_PAGES_BRANCH === 'main' || process.env.VERCEL_GIT_COMMIT_REF === 'main'
+declare const __IS_MAIN_BRANCH__: boolean
+const isMainBranch = __IS_MAIN_BRANCH__
 
 interface SidebarItem {
   text?: string
