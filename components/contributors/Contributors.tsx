@@ -1,7 +1,7 @@
 import contributorsData from '../../docs/pages/config/contributors.json';
 import './Contributors.css';
 import BadgeDisplay from './BadgeDisplay';
-import { getBadgeConfig } from '../shared/badgeConfig';
+import { getBadgeConfig, BADGE_ICONS } from '../shared/badgeConfig';
 
 interface Badge {
   name: string;
@@ -40,21 +40,23 @@ function formatFrameworks(frameworks: string[]): string {
 }
 
 // Get role badge info for a contributor
-function getRoleBadgeInfo(role: string, badges: Badge[]): { label: string; color: string; description: string } | null {
+function getRoleBadgeInfo(role: string, badges: Badge[]): { label: string; badgeName: string; color: string; description: string; tier: string } | null {
   if (role === 'lead') {
     const config = getBadgeConfig('Lead');
-    return { label: 'Lead', color: config.color, description: config.description };
+    return { label: 'Lead', badgeName: 'Lead', color: config.color, description: config.description, tier: config.tier || 'epic' };
   }
   if (role === 'core') {
     const config = getBadgeConfig('Core-Contributor');
-    return { label: 'Core', color: config.color, description: config.description };
+    return { label: 'Core', badgeName: 'Core-Contributor', color: config.color, description: config.description, tier: config.tier || 'legendary' };
   }
   if (role === 'steward') {
     const config = getBadgeConfig('Framework-Steward');
     const frameworks = getStewardFrameworks(badges);
     return {
       label: 'Steward',
+      badgeName: 'Framework-Steward',
       color: config.color,
+      tier: config.tier || 'legendary',
       description: frameworks.length > 0
         ? `Steward of ${formatFrameworks(frameworks)}`
         : config.description
@@ -184,7 +186,7 @@ export function Contributors() {
                   id={contributor.name.toLowerCase().replace(/ /g, '-').replace(/[^a-z0-9_-]/g, '')}
                   style={{ '--card-index': index } as React.CSSProperties}
                 >
-                  {/* Avatar with Option A: Role badge overlay (for Lead) */}
+                  {/* Avatar with Option A: Role badge overlay for all roles */}
                   <div className="avatar-wrapper">
                     <img
                       className="contributors-page-avatar"
@@ -192,68 +194,67 @@ export function Contributors() {
                       alt={`${contributor.name}'s avatar`}
                       loading="lazy"
                     />
-                    {/* Option A: Corner overlay role badge (Lead only) */}
-                    {contributor.role === 'lead' && (() => {
+                    {/* Option A: Corner overlay role badge (for Lead, Core, Steward) */}
+                    {(contributor.role === 'lead' || contributor.role === 'core' || contributor.role === 'steward') && (() => {
                       const roleInfo = getRoleBadgeInfo(contributor.role, contributor.badges || []);
                       return roleInfo ? (
                         <div
                           className="role-badge-overlay"
                           style={{ '--role-color': roleInfo.color } as React.CSSProperties}
-                          title={roleInfo.description}
                         >
-                          <span className="role-badge-icon">🧭</span>
+                          <div className="role-badge-icon-svg">
+                            {BADGE_ICONS[roleInfo.badgeName] || BADGE_ICONS['default']}
+                          </div>
+                          {/* Tooltip for role badge */}
+                          <div className="role-badge-tooltip">
+                            <div className="tooltip-header">
+                              <strong>{roleInfo.label}</strong>
+                              <span className={`tier-badge tier-${roleInfo.tier}`}>{roleInfo.tier}</span>
+                            </div>
+                            <div className="tooltip-description">{roleInfo.description}</div>
+                          </div>
                         </div>
                       ) : null;
                     })()}
                   </div>
 
-                  {/* Header with name + Option D: Inline role badge (for Core/Steward) */}
+                  {/* Header with name */}
                   <div className="contributors-page-header">
                     <div className="contributors-page-name">
                       {contributor.name}
-                      {/* Option D: Inline role badge (Core and Steward) */}
-                      {(contributor.role === 'core' || contributor.role === 'steward') && (() => {
-                        const roleInfo = getRoleBadgeInfo(contributor.role, contributor.badges || []);
-                        return roleInfo ? (
-                          <span
-                            className="role-badge-inline"
-                            style={{ '--role-color': roleInfo.color } as React.CSSProperties}
-                            title={roleInfo.description}
-                          >
-                            {roleInfo.label}
-                          </span>
-                        ) : null;
-                      })()}
                     </div>
                   </div>
 
-                  {/* Company */}
-                  <div className={`contributors-page-company ${!contributor.company ? 'empty-placeholder' : ''}`}>
-                    {contributor.company || '\u00A0'}
-                  </div>
+                  {/* Content area - flexible section */}
+                  <div className="contributors-page-content">
+                    {/* Company */}
+                    <div className={`contributors-page-company ${!contributor.company ? 'empty-placeholder' : ''}`}>
+                      {contributor.company || '\u00A0'}
+                    </div>
 
-                  {/* Job Title */}
-                  <div className={`contributors-page-role ${!contributor.job_title ? 'empty-placeholder' : ''}`}>
-                    {contributor.job_title || '\u00A0'}
-                  </div>
+                    {/* Job Title */}
+                    <div className={`contributors-page-role ${!contributor.job_title ? 'empty-placeholder' : ''}`}>
+                      {contributor.job_title || '\u00A0'}
+                    </div>
 
-                  {/* Steward info */}
-                  {(() => {
-                    const frameworks = getStewardFrameworks(contributor.badges || []);
-                    return frameworks.length > 0 ? (
-                      <div className="contributors-page-steward">
-                        <span className="steward-label">Steward:</span>
-                        <span className="steward-name">{formatFrameworks(frameworks)}</span>
+                    {/* Steward info */}
+                    {(() => {
+                      const frameworks = getStewardFrameworks(contributor.badges || []);
+                      return frameworks.length > 0 ? (
+                        <div className="contributors-page-steward">
+                          <span className="steward-label">Steward:</span>
+                          <span className="steward-name">{formatFrameworks(frameworks)}</span>
+                        </div>
+                      ) : null;
+                    })()}
+
+                    {/* Description - only show for non-stewards */}
+                    {contributor.description && contributor.role !== "steward" && (
+                      <div className="contributors-page-description">
+                        {contributor.description}
                       </div>
-                    ) : null;
-                  })()}
-
-                  {/* Description - only show for non-stewards */}
-                  {contributor.description && contributor.role !== "steward" && (
-                    <div className="contributors-page-description">
-                      {contributor.description}
-                    </div>
-                  )}
+                    )}
+                  </div>
 
                   {/* Badges display */}
                   {contributor.badges && contributor.badges.length > 0 && (

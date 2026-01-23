@@ -136,9 +136,9 @@
   padding: 1rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease, z-index 0s 0.2s;
-  display: grid;
-  grid-template-rows: auto auto auto 1fr auto;
-  align-items: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
   font-size: 0.875rem;
   position: relative;
@@ -149,6 +149,15 @@
 
 .contributors-page-card:hover {
   transform: translateY(-3px);
+}
+
+/* Content wrapper - pushes badges and social to bottom */
+.contributors-page-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 /* Avatar - Enhanced with wrapper */
@@ -199,47 +208,140 @@
   position: absolute;
   bottom: -4px;
   right: calc(50% - 48px);
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--role-color, #ec4899);
   border: 2px solid var(--sidebar-bg);
   border-radius: 50%;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   z-index: 3;
   cursor: help;
+  overflow: hidden;
 }
 
-.role-badge-overlay .role-badge-icon {
-  font-size: 0.875rem;
-  line-height: 1;
+.role-badge-overlay .role-badge-icon-svg {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.role-badge-overlay .role-badge-icon-svg svg {
+  width: 100%;
+  height: 100%;
 }
 
 .role-badge-overlay:hover {
-  transform: scale(1.1);
+  transform: scale(1.15);
+  z-index: 99999;
 }
 
-/* Option D: Inline role badge next to name */
-.role-badge-inline {
-  display: inline-flex;
+/* Role badge tooltip */
+.role-badge-tooltip {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  color: white;
+  padding: 0.875rem;
+  border-radius: 10px;
+  width: 220px;
+  max-width: 220px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  z-index: 999999;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.role-badge-tooltip::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 8px solid transparent;
+  border-top-color: #111827;
+}
+
+.role-badge-overlay:hover .role-badge-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.role-badge-tooltip .tooltip-header {
+  display: flex;
   align-items: center;
-  margin-left: 0.5rem;
-  padding: 0.15rem 0.5rem;
-  font-size: 0.625rem;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  gap: 0.5rem;
+}
+
+.role-badge-tooltip .tooltip-header strong {
   font-weight: 700;
+  font-size: 0.875rem;
+  line-height: 1.3;
+  flex: 1;
+}
+
+.role-badge-tooltip .tooltip-description {
+  font-size: 0.75rem;
+  color: #d1d5db;
+  line-height: 1.4;
+}
+
+/* Light mode for role badge tooltip */
+:root:not(.dark) .role-badge-tooltip {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  color: #111827;
+  box-shadow:
+    0 8px 24px rgba(15, 23, 42, 0.12),
+    0 0 0 1px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+:root:not(.dark) .role-badge-tooltip::before {
+  border-top-color: #ffffff;
+}
+
+:root:not(.dark) .role-badge-tooltip .tooltip-description {
+  color: #4b5563;
+}
+
+/* Tier badges for role badge tooltip */
+.role-badge-tooltip .tier-badge {
+  font-size: 0.5625rem;
+  font-weight: 800;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  color: white;
-  background: var(--role-color, #3b82f6);
-  border-radius: 4px;
-  vertical-align: middle;
-  cursor: help;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.role-badge-inline:hover {
-  filter: brightness(1.1);
+.role-badge-tooltip .tier-badge.tier-legendary {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: #78350f;
+}
+
+.role-badge-tooltip .tier-badge.tier-epic {
+  background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+  color: white;
+}
+
+.role-badge-tooltip .tier-badge.tier-rare {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+}
+
+.role-badge-tooltip .tier-badge.tier-common {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
 }
 
 /* Header Section */
@@ -394,6 +496,7 @@
   padding-top: 0.75rem;
   border-top: 1px solid var(--theme-popup-border);
   width: 100%;
+  margin-top: auto;
 }
 
 .contributors-page-badges::before {
@@ -427,7 +530,7 @@
 
 /* Elevate card when badge tooltip is shown to prevent neighboring card borders from showing through */
 .contributors-page-card:has(.badge-wrapper:hover) {
-  z-index: 10;
+  z-index: 99999;
   transition-delay: 0s;
 }
 
