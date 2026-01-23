@@ -149,7 +149,6 @@
 .legend-note-arrow {
   font-size: 1rem;
   color: #f59e0b;
-  animation: arrow-bounce 1.5s ease-in-out infinite;
 }
 
 @keyframes arrow-bounce {

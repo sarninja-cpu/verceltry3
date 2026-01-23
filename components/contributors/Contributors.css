@@ -211,7 +211,7 @@
   width: 32px;
   height: 32px;
   z-index: 3;
-  cursor: help;
+  cursor: pointer;
 }
 
 .role-badge-overlay .role-badge-icon-svg {
