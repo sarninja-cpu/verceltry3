@@ -243,9 +243,9 @@
 /* Simple tooltip for role badge - just shows the role name */
 .role-badge-simple-tooltip {
   position: absolute;
-  bottom: calc(100% + 10px);
-  left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  left: calc(100% + 8px);
+  transform: translateY(-50%);
   background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
   color: white;
   padding: 0.35rem 0.75rem;
@@ -265,11 +265,11 @@
 .role-badge-simple-tooltip::before {
   content: '';
   position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  right: 100%;
+  transform: translateY(-50%);
   border: 6px solid transparent;
-  border-top-color: #111827;
+  border-right-color: #111827;
 }
 
 .role-badge-overlay:hover .role-badge-simple-tooltip {
@@ -285,7 +285,7 @@
 }
 
 :root:not(.dark) .role-badge-simple-tooltip::before {
-  border-top-color: #ffffff;
+  border-right-color: #ffffff;
 }
 
 /* Header Section */
