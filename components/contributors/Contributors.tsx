@@ -205,14 +205,8 @@ export function Contributors() {
                           <div className="role-badge-icon-svg">
                             {BADGE_ICONS[roleInfo.badgeName] || BADGE_ICONS['default']}
                           </div>
-                          {/* Tooltip for role badge */}
-                          <div className="role-badge-tooltip">
-                            <div className="tooltip-header">
-                              <strong>{roleInfo.label}</strong>
-                              <span className={`tier-badge tier-${roleInfo.tier}`}>{roleInfo.tier}</span>
-                            </div>
-                            <div className="tooltip-description">{roleInfo.description}</div>
-                          </div>
+                          {/* Simple tooltip with just the role name */}
+                          <span className="role-badge-simple-tooltip">{roleInfo.label}</span>
                         </div>
                       ) : null;
                     })()}
