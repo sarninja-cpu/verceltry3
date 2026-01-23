@@ -11,7 +11,7 @@
     "job_title": "Security Knowmad",
     "description": "Initiative lead and maintainer",
     "badges": [
-      { "name": "Lead", "assigned": "" },
+      { "name": "Lead", "assigned": "2024-06-06" },
       { "name": "Early-Contributor", "assigned": "2024-06-06" },
       { "name": "First-Contribution", "assigned": "2024-06-06" },
       { "name": "Contributor-5", "assigned": "2025-01-29" },
@@ -39,6 +39,7 @@
     "description": "Initial contributor to the Security Frameworks",
     "badges": [
       { "name": "Early-Contributor", "assigned": "2024-06-30" },
+      { "name": "Core-Contributor", "assigned": "2024-06-30" },
       { "name": "First-Contribution", "assigned": "2024-06-30" },
       { "name": "Contributor-5", "assigned": "2024-07-02" },
       { "name": "Contributor-10", "assigned": "2024-07-02" },
@@ -95,7 +96,7 @@
     "description": "Web dev & fact checking",
     "role": "core",
     "badges": [
-      { "name": "Core-Contributor", "assigned": "" },
+      { "name": "Core-Contributor", "assigned": "2025-03-20" },
       { "name": "Early-Contributor", "assigned": "2024-10-07" },
       { "name": "First-Contribution", "assigned": "2024-10-07" },
       { "name": "Contributor-5", "assigned": "2025-01-09" },
@@ -150,7 +151,7 @@
     "role": "steward",
     "description": "Steward of ENS framework",
     "badges": [
-      { "name": "Framework-Steward", "assigned": "", "framework": "ENS" },
+      { "name": "Framework-Steward", "assigned": "2025-03-29", "framework": "ENS" },
       { "name": "First-Contribution", "assigned": "2025-05-29" },
       { "name": "First-Review", "assigned": "2025-08-09" },
       { "name": "Dormant-90d+", "lastActive": "2025-08-11" }
@@ -168,7 +169,7 @@
     "role": "steward",
     "description": "Steward of Security Testing framework",
     "badges": [
-      { "name": "Framework-Steward", "assigned": "", "framework": "Security Testing" },
+      { "name": "Framework-Steward", "assigned": "2025-07-15", "framework": "Security Testing" },
       { "name": "First-Contribution", "assigned": "2025-07-15" },
       { "name": "Contributor-5", "assigned": "2025-07-31" },
       { "name": "Dormant-90d+", "lastActive": "2026-07-31" }
@@ -186,9 +187,8 @@
     "role": "steward",
     "description": "Steward of Wallet-Security framework",
     "badges": [
-      { "name": "Framework-Steward", "assigned": "", "framework": "Wallet Security"},
+      { "name": "Framework-Steward", "assigned": "2025-07-10", "framework": "Wallet Security"},
       { "name": "First-Contribution", "assigned": "2025-07-10" },
-      { "name": "Contributor-5", "assigned": "" },
       { "name": "First-Review", "assigned": "2025-09-25" }
     ]
   },
@@ -219,8 +219,8 @@
     "role": "steward",
     "description": "Steward of Safe Harbor & Steward of SEAL Certs",
     "badges": [
-      { "name": "Framework-Steward", "assigned": "", "framework": "Safe Harbor" },
-      { "name": "Framework-Steward", "assigned": "", "framework": "SEAL Certs" },
+      { "name": "Framework-Steward", "assigned": "2025-08-04", "framework": "Safe Harbor" },
+      { "name": "Framework-Steward", "assigned": "2025-12-17", "framework": "SEAL Certs" },
       { "name": "First-Contribution", "assigned": "2025-08-04" },
       { "name": "Contributor-5", "assigned": "2025-08-18" },
       { "name": "Contributor-10", "assigned": "2025-12-01" },
@@ -249,8 +249,8 @@
     "name": "Yaniv Sofer",
     "avatar": "https://avatars.githubusercontent.com/u/47369984?v=4",
     "github": "https://github.com/YSSofer",
-    "twitter": "",
-    "website": "",
+    "twitter": null,
+    "website": null,
     "company": "EY",
     "job_title": "Frameworks Reviewer",
     "role": "contributor",
@@ -397,7 +397,6 @@
     "role": "steward",
     "description": "Steward of DNS and Domain Registration Security",
     "badges": [
-      { "name": "Lead", "assigned": "" },
       { "name": "Framework-Steward", "assigned": "2025-11-06", "framework": "DNS & Domain Registration Security" },
       { "name": "First-Contribution", "assigned": "2025-11-06" },
       { "name": "First-Review", "assigned": "2025-12-19" },

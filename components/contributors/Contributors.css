@@ -186,7 +186,6 @@
   border: 3px solid var(--sidebar-bg);
   border-radius: 50%;
   box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
-  animation: badgeBounce 2s ease-in-out infinite;
   z-index: 3;
 }
 
@@ -195,16 +194,52 @@
   box-shadow: 0 4px 12px rgba(168, 85, 247, 0.4);
 }
 
-@keyframes badgeBounce {
+/* Option A: Role badge overlay on avatar corner */
+.role-badge-overlay {
+  position: absolute;
+  bottom: -4px;
+  right: calc(50% - 48px);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--role-color, #ec4899);
+  border: 2px solid var(--sidebar-bg);
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 3;
+  cursor: help;
+}
 
-  0%,
-  100% {
-    transform: translateY(0) scale(1);
-  }
+.role-badge-overlay .role-badge-icon {
+  font-size: 0.875rem;
+  line-height: 1;
+}
 
-  50% {
-    transform: translateY(-4px) scale(1.05);
-  }
+.role-badge-overlay:hover {
+  transform: scale(1.1);
+}
+
+/* Option D: Inline role badge next to name */
+.role-badge-inline {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.5rem;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: white;
+  background: var(--role-color, #3b82f6);
+  border-radius: 4px;
+  vertical-align: middle;
+  cursor: help;
+}
+
+.role-badge-inline:hover {
+  filter: brightness(1.1);
 }
 
 /* Header Section */

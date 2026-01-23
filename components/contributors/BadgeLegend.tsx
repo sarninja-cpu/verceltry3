@@ -93,7 +93,11 @@ export function BadgeLegend() {
       </div>
 
       <div className="badge-legend-note">
-        <strong>Note:</strong> Badges with a pulsing indicator were earned within the last 7 days.
+        <strong>Note:</strong> Badges earned within the last 30 days display a{' '}
+        <span className="legend-new-indicator">
+          <span className="legend-pulse-dot"></span>
+        </span>
+        {' '}golden pulsing dot indicator in the top-right corner.
       </div>
     </div>
   );

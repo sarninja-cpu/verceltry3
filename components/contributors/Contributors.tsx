@@ -1,6 +1,7 @@
 import contributorsData from '../../docs/pages/config/contributors.json';
 import './Contributors.css';
 import BadgeDisplay from './BadgeDisplay';
+import { getBadgeConfig } from '../shared/badgeConfig';
 
 interface Badge {
   name: string;
@@ -36,6 +37,30 @@ function formatFrameworks(frameworks: string[]): string {
   if (frameworks.length === 1) return frameworks[0];
   if (frameworks.length === 2) return `${frameworks[0]} & ${frameworks[1]}`;
   return frameworks.slice(0, -1).join(', ') + ' & ' + frameworks[frameworks.length - 1];
+}
+
+// Get role badge info for a contributor
+function getRoleBadgeInfo(role: string, badges: Badge[]): { label: string; color: string; description: string } | null {
+  if (role === 'lead') {
+    const config = getBadgeConfig('Lead');
+    return { label: 'Lead', color: config.color, description: config.description };
+  }
+  if (role === 'core') {
+    const config = getBadgeConfig('Core-Contributor');
+    return { label: 'Core', color: config.color, description: config.description };
+  }
+  if (role === 'steward') {
+    const config = getBadgeConfig('Framework-Steward');
+    const frameworks = getStewardFrameworks(badges);
+    return {
+      label: 'Steward',
+      color: config.color,
+      description: frameworks.length > 0
+        ? `Steward of ${formatFrameworks(frameworks)}`
+        : config.description
+    };
+  }
+  return null;
 }
 
 // Get activity status from badges: 'active' | 'dormant' | 'none'
@@ -159,7 +184,7 @@ export function Contributors() {
                   id={contributor.name.toLowerCase().replace(/ /g, '-').replace(/[^a-z0-9_-]/g, '')}
                   style={{ '--card-index': index } as React.CSSProperties}
                 >
-                  {/* Avatar */}
+                  {/* Avatar with Option A: Role badge overlay (for Lead) */}
                   <div className="avatar-wrapper">
                     <img
                       className="contributors-page-avatar"
@@ -167,11 +192,39 @@ export function Contributors() {
                       alt={`${contributor.name}'s avatar`}
                       loading="lazy"
                     />
+                    {/* Option A: Corner overlay role badge (Lead only) */}
+                    {contributor.role === 'lead' && (() => {
+                      const roleInfo = getRoleBadgeInfo(contributor.role, contributor.badges || []);
+                      return roleInfo ? (
+                        <div
+                          className="role-badge-overlay"
+                          style={{ '--role-color': roleInfo.color } as React.CSSProperties}
+                          title={roleInfo.description}
+                        >
+                          <span className="role-badge-icon">🧭</span>
+                        </div>
+                      ) : null;
+                    })()}
                   </div>
 
-                  {/* Header with name */}
+                  {/* Header with name + Option D: Inline role badge (for Core/Steward) */}
                   <div className="contributors-page-header">
-                    <div className="contributors-page-name">{contributor.name}</div>
+                    <div className="contributors-page-name">
+                      {contributor.name}
+                      {/* Option D: Inline role badge (Core and Steward) */}
+                      {(contributor.role === 'core' || contributor.role === 'steward') && (() => {
+                        const roleInfo = getRoleBadgeInfo(contributor.role, contributor.badges || []);
+                        return roleInfo ? (
+                          <span
+                            className="role-badge-inline"
+                            style={{ '--role-color': roleInfo.color } as React.CSSProperties}
+                            title={roleInfo.description}
+                          >
+                            {roleInfo.label}
+                          </span>
+                        ) : null;
+                      })()}
+                    </div>
                   </div>
 
                   {/* Company */}

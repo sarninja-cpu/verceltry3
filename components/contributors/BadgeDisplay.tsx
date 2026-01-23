@@ -67,6 +67,10 @@ function formatDate(dateString: string): string {
   }
 }
 
+function getBadgeDateLabel(badge: Badge): 'Earned' | 'Last active' {
+  return badge.lastActive ? 'Last active' : 'Earned';
+}
+
 interface BadgeDisplayProps {
   contributorSlug?: string;
   badges?: Badge[];
@@ -121,6 +125,7 @@ export function BadgeDisplay({
         {sortedBadges.map((badge, index) => {
           const config = getBadgeConfig(badge.name);
           const effectiveDate = getBadgeDate(badge);
+          const dateLabel = getBadgeDateLabel(badge);
           const isNew = isNewlyEarned(effectiveDate);
           const badgeDate = formatDate(effectiveDate);
           const badgeKey = `${badge.name}-${badge.framework || ''}-${index}`;
@@ -159,22 +164,22 @@ export function BadgeDisplay({
               </div>
 
               <div className="badge-tooltip">
-                  <div className="tooltip-header">
-                    <strong>{badgeLabel}</strong>
-                    <span className={`tier-badge tier-${config.tier}`}>
-                      {config.tier?.toUpperCase()}
+                <div className="tooltip-header">
+                  <strong>{badgeLabel}</strong>
+                  <span className={`tier-badge tier-${config.tier}`}>
+                    {config.tier?.toUpperCase()}
+                  </span>
+                </div>
+                <p className="tooltip-description">{badgeDescription}</p>
+                {badgeDate && (
+                  <div className="tooltip-footer">
+                    <span className="tooltip-date">
+                      {isNew && <span className="new-badge-text">✨ NEW</span>}
+                      {dateLabel} {badgeDate}
                     </span>
                   </div>
-                  <p className="tooltip-description">{badgeDescription}</p>
-                  {badgeDate && (
-                    <div className="tooltip-footer">
-                      <span className="tooltip-date">
-                        {isNew && <span className="new-badge-text">✨ NEW</span>}
-                        Earned {badgeDate}
-                      </span>
-                    </div>
-                  )}
-                </div>
+                )}
+              </div>
             </div>
           );
         })}
