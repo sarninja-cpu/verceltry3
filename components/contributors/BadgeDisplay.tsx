@@ -129,8 +129,8 @@ export function BadgeDisplay({
           const isNew = isNewlyEarned(effectiveDate);
           const badgeDate = formatDate(effectiveDate);
           const badgeKey = `${badge.name}-${badge.framework || ''}-${index}`;
-          const badgeLabel = badge.framework && badge.name === 'Framework-Steward'
-            ? `${badge.framework} Steward`
+          const badgeLabel = badge.name === 'Framework-Steward'
+            ? 'Steward'
             : config.label;
           const badgeDescription = badge.framework && badge.name === 'Framework-Steward'
             ? `Steward of the ${badge.framework} framework`

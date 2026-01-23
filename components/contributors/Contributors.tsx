@@ -95,8 +95,8 @@ function sortByActivity(contributors: Contributor[]): Contributor[] {
     const statusA = getActivityStatus(a.badges || []);
     const statusB = getActivityStatus(b.badges || []);
 
-    // Priority: active > dormant > none
-    const priority = { active: 0, dormant: 1, none: 2 };
+    // Priority: active > none > dormant (none = >30d but <90d, before dormant)
+    const priority = { active: 0, none: 1, dormant: 2 };
     if (priority[statusA] !== priority[statusB]) {
       return priority[statusA] - priority[statusB];
     }

@@ -34,15 +34,15 @@ export const BADGE_CONFIG: Record<string, BadgeConfigItem> = {
   'Framework-Steward': {
     color: '#3b82f6',
     category: 'role',
-    label: 'Framework Steward',
-    description: 'Official maintainer responsible for framework quality',
+    label: 'Steward',
+    description: 'Framework maintainer',
     tier: 'legendary'
   },
   'Core-Contributor': {
     color: '#fbbf24',
     category: 'role',
     label: 'Core Team',
-    description: 'Elite contributor with governance responsibilities',
+    description: 'Core team member',
     tier: 'legendary'
   },
   'Contributor-25': {
