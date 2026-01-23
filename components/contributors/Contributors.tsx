@@ -65,6 +65,35 @@ function getRoleBadgeInfo(role: string, badges: Badge[]): { label: string; badge
   return null;
 }
 
+// Helper component for role badge overlay (avoids IIFE which breaks MDX parsing)
+function RoleBadgeOverlay({ role, badges }: { role: string; badges: Badge[] }) {
+  const roleInfo = getRoleBadgeInfo(role, badges);
+  if (!roleInfo) return null;
+  return (
+    <div
+      className="role-badge-overlay"
+      style={{ '--role-color': roleInfo.color } as React.CSSProperties}
+    >
+      <div className="role-badge-icon-svg">
+        {BADGE_ICONS[roleInfo.badgeName] || BADGE_ICONS['default']}
+      </div>
+      <span className="role-badge-simple-tooltip">{roleInfo.label}</span>
+    </div>
+  );
+}
+
+// Helper component for steward info (avoids IIFE which breaks MDX parsing)
+function StewardInfo({ badges }: { badges: Badge[] }) {
+  const frameworks = getStewardFrameworks(badges);
+  if (frameworks.length === 0) return null;
+  return (
+    <div className="contributors-page-steward">
+      <span className="steward-label">Steward:</span>
+      <span className="steward-name">{formatFrameworks(frameworks)}</span>
+    </div>
+  );
+}
+
 // Get activity status from badges: 'active' | 'dormant' | 'none'
 function getActivityStatus(badges: Badge[]): 'active' | 'dormant' | 'none' {
   const hasActive = badges.some(b =>
@@ -195,21 +224,9 @@ export function Contributors() {
                       loading="lazy"
                     />
                     {/* Option A: Corner overlay role badge (for Lead, Core, Steward) */}
-                    {(contributor.role === 'lead' || contributor.role === 'core' || contributor.role === 'steward') && (() => {
-                      const roleInfo = getRoleBadgeInfo(contributor.role, contributor.badges || []);
-                      return roleInfo ? (
-                        <div
-                          className="role-badge-overlay"
-                          style={{ '--role-color': roleInfo.color } as React.CSSProperties}
-                        >
-                          <div className="role-badge-icon-svg">
-                            {BADGE_ICONS[roleInfo.badgeName] || BADGE_ICONS['default']}
-                          </div>
-                          {/* Simple tooltip with just the role name */}
-                          <span className="role-badge-simple-tooltip">{roleInfo.label}</span>
-                        </div>
-                      ) : null;
-                    })()}
+                    {(contributor.role === 'lead' || contributor.role === 'core' || contributor.role === 'steward') && (
+                      <RoleBadgeOverlay role={contributor.role} badges={contributor.badges || []} />
+                    )}
                   </div>
 
                   {/* Header with name */}
@@ -232,15 +249,7 @@ export function Contributors() {
                     </div>
 
                     {/* Steward info */}
-                    {(() => {
-                      const frameworks = getStewardFrameworks(contributor.badges || []);
-                      return frameworks.length > 0 ? (
-                        <div className="contributors-page-steward">
-                          <span className="steward-label">Steward:</span>
-                          <span className="steward-name">{formatFrameworks(frameworks)}</span>
-                        </div>
-                      ) : null;
-                    })()}
+                    <StewardInfo badges={contributor.badges || []} />
 
                     {/* Description - only show for non-stewards */}
                     {contributor.description && contributor.role !== "steward" && (
