@@ -4,7 +4,8 @@ import BadgeDisplay from './BadgeDisplay';
 
 interface Badge {
   name: string;
-  assigned: string;
+  assigned?: string;
+  lastActive?: string;
   framework?: string;
 }
 
@@ -18,17 +19,74 @@ interface Contributor {
   website: string | null;
   company: string | null;
   job_title: string | null;
-  steward: string[];
   badges: Badge[];
   description: string;
 }
 
-// Helper to format steward array with "&" between items
-function formatStewards(stewards: string[]): string {
-  if (!stewards || stewards.length === 0) return '';
-  if (stewards.length === 1) return stewards[0];
-  if (stewards.length === 2) return `${stewards[0]} & ${stewards[1]}`;
-  return stewards.slice(0, -1).join(', ') + ' & ' + stewards[stewards.length - 1];
+// Extract framework names from Framework-Steward badges
+function getStewardFrameworks(badges: Badge[]): string[] {
+  return badges
+    .filter(b => b.name === 'Framework-Steward' && b.framework)
+    .map(b => b.framework as string);
+}
+
+// Helper to format frameworks with "&" between items
+function formatFrameworks(frameworks: string[]): string {
+  if (!frameworks || frameworks.length === 0) return '';
+  if (frameworks.length === 1) return frameworks[0];
+  if (frameworks.length === 2) return `${frameworks[0]} & ${frameworks[1]}`;
+  return frameworks.slice(0, -1).join(', ') + ' & ' + frameworks[frameworks.length - 1];
+}
+
+// Get activity status from badges: 'active' | 'dormant' | 'none'
+function getActivityStatus(badges: Badge[]): 'active' | 'dormant' | 'none' {
+  const hasActive = badges.some(b =>
+    b.name === 'Active-Last-7d' || b.name === 'Active-Last-30d'
+  );
+  if (hasActive) return 'active';
+
+  const hasDormant = badges.some(b => b.name === 'Dormant-90d+');
+  if (hasDormant) return 'dormant';
+
+  return 'none';
+}
+
+// Get the most recent activity date from badges
+function getLastActivityDate(badges: Badge[]): Date | null {
+  const activityBadge = badges.find(b =>
+    b.name === 'Active-Last-7d' || b.name === 'Active-Last-30d' || b.name === 'Dormant-90d+'
+  );
+  if (activityBadge?.lastActive) {
+    return new Date(activityBadge.lastActive);
+  }
+  return null;
+}
+
+// Sort contributors by activity within their group
+function sortByActivity(contributors: Contributor[]): Contributor[] {
+  return [...contributors].sort((a, b) => {
+    const statusA = getActivityStatus(a.badges || []);
+    const statusB = getActivityStatus(b.badges || []);
+
+    // Priority: active > dormant > none
+    const priority = { active: 0, dormant: 1, none: 2 };
+    if (priority[statusA] !== priority[statusB]) {
+      return priority[statusA] - priority[statusB];
+    }
+
+    // Within same status, sort by most recent activity date (newest first)
+    const dateA = getLastActivityDate(a.badges || []);
+    const dateB = getLastActivityDate(b.badges || []);
+
+    if (dateA && dateB) {
+      return dateB.getTime() - dateA.getTime();
+    }
+    if (dateA) return -1;
+    if (dateB) return 1;
+
+    // Fallback to alphabetical by name
+    return a.name.localeCompare(b.name);
+  });
 }
 
 interface ContributorGroup {
@@ -51,19 +109,19 @@ export function Contributors() {
   const groups: ContributorGroup[] = [
     {
       label: "Leadership",
-      contributors: contributors.filter(c => c.role === "lead")
+      contributors: sortByActivity(contributors.filter(c => c.role === "lead"))
     },
     {
       label: "Stewards",
-      contributors: contributors.filter(c => c.role === "steward")
+      contributors: sortByActivity(contributors.filter(c => c.role === "steward"))
     },
     {
       label: "Core Contributors",
-      contributors: contributors.filter(c => c.role === "core")
+      contributors: sortByActivity(contributors.filter(c => c.role === "core"))
     },
     {
       label: "Contributors",
-      contributors: contributors.filter(c => c.role === "contributor")
+      contributors: sortByActivity(contributors.filter(c => c.role === "contributor"))
     }
   ].filter(group => group.contributors.length > 0);
 
@@ -127,12 +185,15 @@ export function Contributors() {
                   </div>
 
                   {/* Steward info */}
-                  {contributor.steward && contributor.steward.length > 0 && (
-                    <div className="contributors-page-steward">
-                      <span className="steward-label">Steward:</span>
-                      <span className="steward-name">{formatStewards(contributor.steward)}</span>
-                    </div>
-                  )}
+                  {(() => {
+                    const frameworks = getStewardFrameworks(contributor.badges || []);
+                    return frameworks.length > 0 ? (
+                      <div className="contributors-page-steward">
+                        <span className="steward-label">Steward:</span>
+                        <span className="steward-name">{formatFrameworks(frameworks)}</span>
+                      </div>
+                    ) : null;
+                  })()}
 
                   {/* Description - only show for non-stewards */}
                   {contributor.description && contributor.role !== "steward" && (

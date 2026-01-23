@@ -219,3 +219,24 @@ Suggested display priority:
 - How long should activity badges last (30d vs 60d vs 90d)?
 - Should stewards be required to maintain activity?
 - Should reviewers have a minimum activity threshold?
+
+"badges": [
+      { "name": "Lead", "assigned": "" },
+      { "name": "Framework-Steward", "assigned": "", "framework": "" },
+      { "name": "Core-Contributor", "assigned": "" },
+      { "name": "Early-Contributor", "assigned": "" },
+      { "name": "First-Contribution", "assigned": "" },
+      { "name": "Contributor-5", "assigned": "" },
+      { "name": "Contributor-10", "assigned": "" },
+      { "name": "Contributor-25", "assigned": "" },
+      { "name": "First-Review", "assigned": "" },
+      { "name": "Reviewer-10", "assigned": "" },
+      { "name": "Reviewer-25", "assigned": "" },
+      { "name": "Issue-Opener-5", "assigned": "" },
+      { "name": "Issue-Opener-10", "assigned": "" },
+      { "name": "Issue-Opener-25", "assigned": "" },
+      { "name": "Active-Last-7d", "assigned": "" },
+      { "name": "Active-Last-30d", "assigned": "" },
+      { "name": "New-Joiner", "assigned": "" },
+      { "name": "Dormant-90d+", "assigned": "" }          
+    ]
