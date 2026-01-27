@@ -94,7 +94,7 @@ export function BadgeLegend() {
 
       <div className="badge-legend-note">
         <span className="legend-note-text">
-          <strong>New:</strong> Badges earned within the last 30 days display a golden pulsing indicator
+          Badges earned within the last 30 days display a golden pulsing indicator
         </span>
         <span className="legend-note-arrow">→</span>
         <span className="legend-new-indicator">
