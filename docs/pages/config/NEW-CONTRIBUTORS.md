@@ -239,6 +239,7 @@ Suggested display priority:
 - Should stewards be required to maintain activity?
 - Should reviewers have a minimum activity threshold?
 
+```json
 "badges": [
       { "name": "Lead", "assigned": "" },
       { "name": "Framework-Steward", "assigned": "", "framework": "" },
@@ -257,5 +258,6 @@ Suggested display priority:
       { "name": "Active-Last-7d", "assigned": "" },
       { "name": "Active-Last-30d", "assigned": "" },
       { "name": "New-Joiner", "assigned": "" },
-      { "name": "Dormant-90d+", "assigned": "" }          
+      { "name": "Dormant-90d+", "assigned": "" }
     ]
+```
