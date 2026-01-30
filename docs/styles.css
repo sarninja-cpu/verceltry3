@@ -14,7 +14,7 @@ details .vocs_Paragraph {
     width: unset;
 }
 
-@media (max-width: 1650px) {
+@media (max-width: 1650px) { 
     .vocs_DocsLayout_gutterRight {
         justify-content: flex-end;
         width: calc(100vw - var(--vocs-content_width) - var(--vocs_DocsLayout_leftGutterWidth));
