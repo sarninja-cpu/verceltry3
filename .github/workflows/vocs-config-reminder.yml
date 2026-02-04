@@ -1,8 +1,8 @@
-name: Vocs Config Reminder (On Open)
+name: Vocs Config Reminder
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, synchronize]
     branches:
       - develop
 
@@ -14,49 +14,133 @@ jobs:
   check-for-new-files:
     runs-on: ubuntu-latest
     steps:
-      - name: Check for added or renamed files
-        uses: actions/github-script@v7.1.0
+      - name: Check for added, renamed, or removed documentation files
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.1.0
         with:
           script: |
+            // Sanitize filenames to prevent markdown/HTML injection
+            const sanitizeFilename = (str) => {
+              if (typeof str !== 'string') return '';
+              return str
+                .replace(/[`\[\]()\\<>|_*~#]/g, '\\$&')  // Escape markdown/HTML chars
+                .replace(/[\n\r]/g, ' ')                  // Replace newlines with space
+                .slice(0, 255);                           // Length limit
+            };
+
+            // Whitelist allowed file statuses from GitHub API
+            const sanitizeStatus = (status) => {
+              const allowed = ['added', 'renamed', 'removed'];
+              return allowed.includes(status) ? status : 'unknown';
+            };
+
             const { owner, repo } = context.repo;
             const pull_number = context.payload.pull_request.number;
+            const eventAction = context.payload.action;
+            const MARKER = '<!-- vocs-config-reminder -->';
 
             // Get all files changed in this PR
-            const { data: files } = await github.rest.pulls.listFiles({
+            const { data: allPrFiles } = await github.rest.pulls.listFiles({
               owner,
               repo,
               pull_number,
               per_page: 100
             });
 
-            // Check if any documentation files were added or renamed
-            const docFiles = files.filter(file =>
-              (file.status === 'added' || file.status === 'renamed') &&
-              (file.filename.startsWith('docs/') || file.filename.endsWith('.mdx') || file.filename.endsWith('.md'))
+            // Filter for added/renamed/removed .mdx files in docs/pages/
+            const currentDocFiles = allPrFiles.filter(file =>
+              ['added', 'renamed', 'removed'].includes(file.status) &&
+              file.filename.startsWith('docs/pages/') &&
+              file.filename.endsWith('.mdx')
             );
 
-            if (docFiles.length === 0) {
-              console.log('No documentation files were added or renamed. Skipping reminder.');
+            if (currentDocFiles.length === 0) {
+              console.log('No documentation files were added, renamed, or removed in this PR. Skipping.');
               return;
             }
 
-            console.log(`Found ${docFiles.length} added/renamed documentation file(s):`);
-            docFiles.forEach(f => console.log(`  - ${f.filename} (${f.status})`));
+            // Find all previous bot comments with our marker
+            const { data: comments } = await github.rest.issues.listComments({
+              owner,
+              repo,
+              issue_number: pull_number,
+              per_page: 100
+            });
 
-            const fileList = docFiles.map(f => `- \`${f.filename}\` (${f.status})`).join('\n');
+            // Only trust comments from the GitHub Actions bot with our marker
+            const previousComments = comments.filter(c =>
+              c.body.includes(MARKER) &&
+              c.user.login === 'github-actions[bot]'
+            );
 
-            const body = `### Sidebar Configuration Reminder ONCE
+            // Extract previously seen files from all past comments
+            const previouslySeenFiles = new Set();
+            for (const comment of previousComments) {
+              // Match file paths in backticks from the file list
+              const matches = comment.body.matchAll(/- `([^`]+)`/g);
+              for (const match of matches) {
+                // Remove any "← NEW" suffix and status suffix to get clean filename
+                const filename = match[1].split('`')[0].trim();
+                previouslySeenFiles.add(filename);
+              }
+            }
 
-            This PR includes new or renamed documentation files:
+            console.log(`Previously seen files: ${[...previouslySeenFiles].join(', ') || 'none'}`);
 
-            ${fileList}
+            // Determine which files are new vs already seen
+            const newFiles = [];
+            const seenFiles = [];
+
+            for (const file of currentDocFiles) {
+              if (previouslySeenFiles.has(file.filename)) {
+                seenFiles.push(file);
+              } else {
+                newFiles.push(file);
+              }
+            }
+
+            // On PR open, all files are "new" (first comment)
+            // On synchronize, only post if there are actually new files
+            if (eventAction === 'synchronize' && newFiles.length === 0) {
+              console.log('No new documentation files in this push. Skipping comment.');
+              return;
+            }
+
+            console.log(`New files: ${newFiles.map(f => f.filename).join(', ') || 'none'}`);
+            console.log(`Previously seen files: ${seenFiles.map(f => f.filename).join(', ') || 'none'}`);
+
+            // Build the comment body
+            let fileListSection = '';
+
+            if (eventAction === 'opened') {
+              // First comment - list all files
+              fileListSection = currentDocFiles.map(f => `- \`${sanitizeFilename(f.filename)}\` (${sanitizeStatus(f.status)})`).join('\n');
+            } else {
+              // Subsequent comments - show new files with marker, then previously seen
+              if (newFiles.length > 0) {
+                fileListSection += '**New in this push:**\n';
+                fileListSection += newFiles.map(f => `- \`${sanitizeFilename(f.filename)}\` (${sanitizeStatus(f.status)}) ← NEW`).join('\n');
+              }
+
+              if (seenFiles.length > 0) {
+                if (newFiles.length > 0) fileListSection += '\n\n';
+                fileListSection += '**Previously seen:**\n';
+                fileListSection += seenFiles.map(f => `- \`${sanitizeFilename(f.filename)}\` (${sanitizeStatus(f.status)})`).join('\n');
+              }
+            }
+
+            const body = `### Sidebar Configuration Reminder
+            ${MARKER}
+
+            ${eventAction === 'opened' ? 'This PR includes added, renamed, or removed documentation files:' : 'Documentation files update:'}
+
+            ${fileListSection}
 
             Please ensure that:
             - [ ] The sidebar in [\`vocs.config.ts\`](../blob/develop/vocs.config.ts) has been updated to include these files
             - [ ] New content has the \`dev: true\` parameter so it appears on the dev site first
             - [ ] Links in the sidebar match the file paths
 
-            See the [contributing guide](https://frameworks.securityalliance.dev/contribute/contributing) for more details.
+            See the [contributing guide](https://frameworks.securityalliance.org/contribute/contributing/#contributor-tasks-beyond-content-changes) for more details.
 
             ---
             <sub>This is an automated reminder. If this PR doesn't need sidebar changes, you can ignore this message.</sub>`;
