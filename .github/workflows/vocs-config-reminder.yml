@@ -1,4 +1,4 @@
-name: Vocs Config Reminder
+name: Sidebar Config Reminder
 
 on:
   pull_request:
@@ -11,7 +11,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  check-for-new-files:
+  notify-sidebar-config-changes:
     runs-on: ubuntu-latest
     steps:
       - name: Check for added, renamed, or removed documentation files
@@ -136,11 +136,11 @@ jobs:
             ${fileListSection}
 
             Please ensure that:
-            - [ ] The sidebar in [\`vocs.config.ts\`](../blob/develop/vocs.config.ts) has been updated to include these files
-            - [ ] New content has the \`dev: true\` parameter so it appears on the dev site first
+            - [ ] The sidebar in \`vocs.config.ts\` has been updated to include these files
+            - [ ] New content has the \`dev: true\` parameter so it's marked as under development
             - [ ] Links in the sidebar match the file paths
 
-            See the [contributing guide](https://frameworks.securityalliance.org/contribute/contributing/#contributor-tasks-beyond-content-changes) for more details.
+            See [Contributing Guide – Sidebar & Navigation](https://frameworks.securityalliance.dev/contribute/contributing/#3-sidebar--navigation) for more details.
 
             ---
             <sub>This is an automated reminder. If this PR doesn't need sidebar changes, you can ignore this message.</sub>`;
