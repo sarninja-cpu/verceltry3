@@ -157,8 +157,10 @@ function extractSidebarLinks(isMainBranch) {
 
 /**
  * Generate XML sitemap content
+ * @param {Array} urls - Array of {loc, lastmod} objects
+ * @param {string} writtenFrom - Path where this sitemap was written (for debugging)
  */
-function generateSitemapXml(urls) {
+function generateSitemapXml(urls, writtenFrom) {
   const urlEntries = urls
     .map(({ loc, lastmod }) => {
       return `  <url>
@@ -170,6 +172,7 @@ function generateSitemapXml(urls) {
     .join('\n');
 
   return `<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated from: ${writtenFrom} -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urlEntries}
 </urlset>`;
@@ -177,9 +180,11 @@ ${urlEntries}
 
 /**
  * Generate empty sitemap for dev branch
+ * @param {string} writtenFrom - Path where this sitemap was written (for debugging)
  */
-function generateEmptySitemap() {
+function generateEmptySitemap(writtenFrom) {
   return `<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated from: ${writtenFrom} -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </urlset>`;
 }
@@ -204,11 +209,10 @@ async function main() {
     process.exit(1);
   }
 
-  let sitemapContent;
-
+  // Prepare URLs once (only for main branch)
+  let urls = [];
   if (!isMainBranch) {
     console.log('Generating empty sitemap for dev branch');
-    sitemapContent = generateEmptySitemap();
   } else {
     console.log('Generating sitemap for main branch...');
 
@@ -218,7 +222,6 @@ async function main() {
     // Use the first sitemap location's directory as the dist directory
     const distDir = path.dirname(sitemapLocations[0]);
 
-    const urls = [];
     for (const link of links) {
       const lastmod = getLastModFromHtml(distDir, link);
 
@@ -228,13 +231,16 @@ async function main() {
       });
     }
 
-    sitemapContent = generateSitemapXml(urls);
     console.log(`Generated sitemap with ${urls.length} URLs`);
   }
 
-  // Write to all found locations
+  // Write to all found locations (each with its own path in the XML comment)
   for (const sitemapPath of sitemapLocations) {
     try {
+      const sitemapContent = isMainBranch
+        ? generateSitemapXml(urls, sitemapPath)
+        : generateEmptySitemap(sitemapPath);
+
       fs.writeFileSync(sitemapPath, sitemapContent);
       console.log(`Sitemap written to: ${sitemapPath}`);
     } catch (err) {
