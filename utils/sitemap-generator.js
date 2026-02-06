@@ -9,17 +9,14 @@
   - Parses the sidebar configuration from vocs.config.ts to collect all page URLs.
   - Respects branch-based filtering: on main branch, excludes pages marked with dev: true.
   - Reads file modification times from the source MDX files for the lastmod tag.
-  - Writes sitemap.xml to dist/ for Cloudflare Pages deployment.
+  - Finds and overwrites the placeholder sitemap.xml copied from public/.
 
   High-level flow
   1) Only run on Cloudflare Pages (skip Vercel preview deployments).
-  2) Check branch via CF_PAGES_BRANCH (main vs develop/other).
-  3) For dev branch: write an empty sitemap (consistent with robots.txt noindex).
-  4) For main branch:
-     a) Parse vocs.config.ts to extract sidebar links (excluding dev: true items).
-     b) For each link, find the corresponding MDX file and get its mtime.
-     c) Generate sitemap.xml with loc, lastmod, and changefreq.
-  5) Write to dist/.
+  2) Find the sitemap.xml placeholder in the build output.
+  3) Check branch via CF_PAGES_BRANCH (main vs develop/other).
+  4) For dev branch: write an empty sitemap.
+  5) For main branch: generate full sitemap with lastmod dates.
 */
 
 const fs = require('fs');
@@ -28,9 +25,41 @@ const path = require('path');
 const workspaceRoot = process.cwd();
 const pagesDir = path.join(workspaceRoot, 'docs', 'pages');
 const vocsConfigPath = path.join(workspaceRoot, 'vocs.config.ts');
-const outputDir = path.join(workspaceRoot, 'dist');
+
+// Candidate output directories (same as searchbar-indexing.js)
+const candidateDirs = [
+  path.join(workspaceRoot, 'dist'),
+  path.join(workspaceRoot, '.vercel', 'output', 'static'),
+  '/vercel/path0/docs/dist',
+  path.join(workspaceRoot, 'docs', 'dist'),
+];
 
 const MAIN_SITE_URL = 'https://frameworks.securityalliance.org';
+
+/**
+ * Find sitemap.xml in candidate directories
+ */
+function findSitemapLocations() {
+  const locations = [];
+
+  for (const dir of candidateDirs) {
+    const sitemapPath = path.join(dir, 'sitemap.xml');
+    console.log(`Checking: ${sitemapPath}`);
+
+    if (fs.existsSync(sitemapPath)) {
+      console.log(`  Found sitemap.xml at: ${sitemapPath}`);
+      locations.push(sitemapPath);
+    } else if (fs.existsSync(dir)) {
+      // Directory exists but no sitemap - we can create one here
+      console.log(`  Directory exists, can write to: ${sitemapPath}`);
+      locations.push(sitemapPath);
+    } else {
+      console.log(`  Directory not found: ${dir}`);
+    }
+  }
+
+  return locations;
+}
 
 /**
  * Convert a sidebar link (e.g., '/intro/introduction') to its MDX file path
@@ -90,7 +119,6 @@ function extractSidebarLinks(isMainBranch) {
       const hasDevOnLine = line.includes('dev:') && line.includes('true');
 
       // Also check parent context (look back for dev: true in containing object)
-      // This handles cases like { text: 'Foo', collapsed: false, dev: true, items: [...] }
       let hasDevInParent = false;
 
       // Look back up to 10 lines for an opening brace that might have dev: true
@@ -158,18 +186,23 @@ async function main() {
     return;
   }
 
+  console.log(`Working directory: ${workspaceRoot}`);
+
   const isMainBranch = process.env.CF_PAGES_BRANCH === 'main';
   console.log(`Branch: ${isMainBranch ? 'main (.org)' : 'develop (.dev)'}`);
 
-  if (!fs.existsSync(outputDir)) {
-    console.error('Output directory not found: dist/');
+  // Find all locations where sitemap.xml should be written
+  const sitemapLocations = findSitemapLocations();
+
+  if (sitemapLocations.length === 0) {
+    console.error('No output directories found for sitemap.xml');
     process.exit(1);
   }
 
   let sitemapContent;
 
   if (!isMainBranch) {
-    console.log('Generating empty sitemap for dev branch (pages canonicalize to .org)');
+    console.log('Generating empty sitemap for dev branch');
     sitemapContent = generateEmptySitemap();
   } else {
     console.log('Generating sitemap for main branch...');
@@ -192,9 +225,15 @@ async function main() {
     console.log(`Generated sitemap with ${urls.length} URLs`);
   }
 
-  const sitemapPath = path.join(outputDir, 'sitemap.xml');
-  fs.writeFileSync(sitemapPath, sitemapContent);
-  console.log(`Sitemap written to: ${sitemapPath}`);
+  // Write to all found locations
+  for (const sitemapPath of sitemapLocations) {
+    try {
+      fs.writeFileSync(sitemapPath, sitemapContent);
+      console.log(`Sitemap written to: ${sitemapPath}`);
+    } catch (err) {
+      console.log(`Failed to write to ${sitemapPath}: ${err.message}`);
+    }
+  }
 }
 
 main().catch((err) => {
