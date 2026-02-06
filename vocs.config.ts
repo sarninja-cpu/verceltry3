@@ -479,7 +479,8 @@ const config = {
   editLink: {
     pattern: 'https://github.com/security-alliance/frameworks/edit/develop/docs/pages/:path',
     text: 'Suggest changes to this page'
-  }
+  },
+  lastUpdated: true,
 }
 
 function filterDevItems(items: any[]): any[] {
