@@ -11,23 +11,23 @@ permissions:
   pull-requests: write
 
 jobs:
-  notify-sidebar-config-changes:
+  sidebar-reminder:
     runs-on: ubuntu-latest
     steps:
       - name: Check for added, renamed, or removed documentation files
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.1.0
         with:
           script: |
-            // Sanitize filenames to prevent markdown/HTML injection
+            // Sanitize filenames
             const sanitizeFilename = (str) => {
               if (typeof str !== 'string') return '';
               return str
-                .replace(/[`\[\]()\\<>|_*~#]/g, '\\$&')  // Escape markdown/HTML chars
-                .replace(/[\n\r]/g, ' ')                  // Replace newlines with space
-                .slice(0, 255);                           // Length limit
+                .replace(/[`\[\]()\\<>|_*~#]/g, '\\$&')
+                .replace(/[\n\r]/g, ' ')
+                .slice(0, 255);
             };
 
-            // Whitelist allowed file statuses from GitHub API
+            // Allowed file statuses
             const sanitizeStatus = (status) => {
               const allowed = ['added', 'renamed', 'removed'];
               return allowed.includes(status) ? status : 'unknown';
@@ -38,7 +38,7 @@ jobs:
             const eventAction = context.payload.action;
             const MARKER = '<!-- vocs-config-reminder -->';
 
-            // Get all files changed in this PR
+            // Get files changed
             const { data: allPrFiles } = await github.rest.pulls.listFiles({
               owner,
               repo,
@@ -58,7 +58,7 @@ jobs:
               return;
             }
 
-            // Find all previous bot comments with our marker
+            // Find all previous bot comments with marker
             const { data: comments } = await github.rest.issues.listComments({
               owner,
               repo,
@@ -66,19 +66,17 @@ jobs:
               per_page: 100
             });
 
-            // Only trust comments from the GitHub Actions bot with our marker
+            // Only read comments from the bot with the marker
             const previousComments = comments.filter(c =>
               c.body.includes(MARKER) &&
               c.user.login === 'github-actions[bot]'
             );
 
-            // Extract previously seen files from all past comments
+            // Extract previously seen files from bot past comments
             const previouslySeenFiles = new Set();
             for (const comment of previousComments) {
-              // Match file paths in backticks from the file list
               const matches = comment.body.matchAll(/- `([^`]+)`/g);
               for (const match of matches) {
-                // Remove any "← NEW" suffix and status suffix to get clean filename
                 const filename = match[1].split('`')[0].trim();
                 previouslySeenFiles.add(filename);
               }
@@ -86,7 +84,6 @@ jobs:
 
             console.log(`Previously seen files: ${[...previouslySeenFiles].join(', ') || 'none'}`);
 
-            // Determine which files are new vs already seen
             const newFiles = [];
             const seenFiles = [];
 
@@ -108,14 +105,11 @@ jobs:
             console.log(`New files: ${newFiles.map(f => f.filename).join(', ') || 'none'}`);
             console.log(`Previously seen files: ${seenFiles.map(f => f.filename).join(', ') || 'none'}`);
 
-            // Build the comment body
             let fileListSection = '';
 
             if (eventAction === 'opened') {
-              // First comment - list all files
               fileListSection = currentDocFiles.map(f => `- \`${sanitizeFilename(f.filename)}\` (${sanitizeStatus(f.status)})`).join('\n');
             } else {
-              // Subsequent comments - show new files with marker, then previously seen
               if (newFiles.length > 0) {
                 fileListSection += '**New in this push:**\n';
                 fileListSection += newFiles.map(f => `- \`${sanitizeFilename(f.filename)}\` (${sanitizeStatus(f.status)}) ← NEW`).join('\n');
@@ -140,7 +134,7 @@ jobs:
             - [ ] New content has the \`dev: true\` parameter so it's marked as under development
             - [ ] Links in the sidebar match the file paths
 
-            See [Contributing Guide – Sidebar & Navigation](https://frameworks.securityalliance.dev/contribute/contributing/#3-sidebar--navigation) for more details.
+            See [Contributing Guide – Sidebar & Navigation](https://frameworks.securityalliance.org/contribute/contributing/#3-sidebar--navigation) for more details.
 
             ---
             <sub>This is an automated reminder. If this PR doesn't need sidebar changes, you can ignore this message.</sub>`;
