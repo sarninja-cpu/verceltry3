@@ -8,7 +8,7 @@
   What it does
   - Parses the sidebar configuration from vocs.config.ts to collect all page URLs.
   - Respects branch-based filtering: on main branch, excludes pages marked with dev: true.
-  - Reads file modification times from the source MDX files for the lastmod tag.
+  - Extracts lastmod dates from the Vocs-generated HTML files (parses the <time> element in the footer).
   - Finds and overwrites the placeholder sitemap.xml copied from public/.
 
   High-level flow
@@ -23,7 +23,6 @@ const fs = require('fs');
 const path = require('path');
 
 const workspaceRoot = process.cwd();
-const pagesDir = path.join(workspaceRoot, 'docs', 'pages');
 const vocsConfigPath = path.join(workspaceRoot, 'vocs.config.ts');
 
 // Candidate output directories (same as searchbar-indexing.js)
@@ -74,36 +73,30 @@ function findSitemapLocations() {
 }
 
 /**
- * Convert a sidebar link (e.g., '/intro/introduction') to its MDX file path
+ * Get lastmod date by parsing the Vocs-generated HTML file.
+ * Vocs embeds a <time datetime="..."> in the footer with the git commit timestamp.
+ * This ensures the sitemap date matches what users see on the page.
  */
-function linkToMdxPath(link) {
-  const relativePath = link.replace(/^\//, '');
+function getLastModFromHtml(distDir, link) {
+  const htmlPath = path.join(distDir, link, 'index.html');
 
-  // Try direct .mdx file first
-  const directPath = path.join(pagesDir, `${relativePath}.mdx`);
-  if (fs.existsSync(directPath)) {
-    return directPath;
-  }
-
-  // Try index.mdx in directory
-  const indexPath = path.join(pagesDir, relativePath, 'index.mdx');
-  if (fs.existsSync(indexPath)) {
-    return indexPath;
-  }
-
-  return null;
-}
-
-/**
- * Get file modification time as ISO date string (YYYY-MM-DD)
- */
-function getLastMod(filePath) {
-  try {
-    const stats = fs.statSync(filePath);
-    return stats.mtime.toISOString().split('T')[0];
-  } catch {
+  if (!fs.existsSync(htmlPath)) {
+    console.log(`  HTML not found: ${htmlPath}`);
     return new Date().toISOString().split('T')[0];
   }
+
+  try {
+    const html = fs.readFileSync(htmlPath, 'utf8');
+    const match = html.match(/<time datetime="([^"]+)"/);
+
+    if (match) {
+      return match[1].split('T')[0]; // "2026-02-02T16:01:40.000Z" → "2026-02-02"
+    }
+  } catch (err) {
+    console.log(`  Error reading ${htmlPath}: ${err.message}`);
+  }
+
+  return new Date().toISOString().split('T')[0];
 }
 
 /**
@@ -222,10 +215,12 @@ async function main() {
     const links = extractSidebarLinks(true);
     console.log(`Found ${links.length} pages in sidebar`);
 
+    // Use the first sitemap location's directory as the dist directory
+    const distDir = path.dirname(sitemapLocations[0]);
+
     const urls = [];
     for (const link of links) {
-      const mdxPath = linkToMdxPath(link);
-      const lastmod = mdxPath ? getLastMod(mdxPath) : new Date().toISOString().split('T')[0];
+      const lastmod = getLastModFromHtml(distDir, link);
 
       urls.push({
         loc: `${MAIN_SITE_URL}${link}`,
