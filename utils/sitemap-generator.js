@@ -8,7 +8,7 @@
   What it does
   - Parses the sidebar configuration from vocs.config.ts to collect all page URLs.
   - Respects branch-based filtering: on main branch, excludes pages marked with dev: true.
-  - Extracts lastmod dates from the Vocs-generated HTML files (parses the <time> element in the footer).
+  - Extracts lastmod dates from the Vocs JS bundle (parses lastUpdatedAt from virtual routes).
   - Finds and overwrites the placeholder sitemap.xml copied from public/.
 
   High-level flow
@@ -16,7 +16,9 @@
   2) Find the sitemap.xml placeholder in the build output.
   3) Check branch via CF_PAGES_BRANCH (main vs develop/other).
   4) For dev branch: write an empty sitemap.
-  5) For main branch: generate full sitemap with lastmod dates.
+  5) For main branch: generate full sitemap with lastmod dates from JS bundle.
+
+  Note: Requires GIT_CLONE_DEPTH=0 on CF Pages for Vocs to extract git timestamps.
 */
 
 const fs = require('fs');
@@ -25,9 +27,9 @@ const path = require('path');
 const workspaceRoot = process.cwd();
 const vocsConfigPath = path.join(workspaceRoot, 'vocs.config.ts');
 
-// Candidate output directories - ordered by priority (docs/dist is the actual Vocs output on CF Pages)
+// Candidate output directories - ordered by priority
 const candidateDirs = [
-  path.join(workspaceRoot, 'docs', 'dist'), // Primary: Vocs build output
+  path.join(workspaceRoot, 'docs', 'dist'),
   path.join(workspaceRoot, 'dist'),
   path.join(workspaceRoot, '.vercel', 'output', 'static'),
   '/vercel/path0/docs/dist',
@@ -48,8 +50,8 @@ function escapeXml(str) {
 }
 
 /**
- * Find sitemap.xml in candidate directories
- * Returns { distDir, writeLocations } where distDir is the actual build output directory
+ * Find sitemap.xml in candidate directories.
+ * Returns { distDir, writeLocations } where distDir is the build output directory.
  */
 function findSitemapLocations() {
   const writeLocations = [];
@@ -60,15 +62,13 @@ function findSitemapLocations() {
     console.log(`Checking: ${sitemapPath}`);
 
     if (fs.existsSync(sitemapPath)) {
-      // Found actual sitemap.xml - this is the real build output directory
       console.log(`  Found sitemap.xml at: ${sitemapPath}`);
       writeLocations.push(sitemapPath);
       if (!distDir) {
         distDir = dir;
-        console.log(`  Using as HTML source directory: ${distDir}`);
+        console.log(`  Using as build output directory: ${distDir}`);
       }
     } else if (fs.existsSync(dir)) {
-      // Directory exists but no sitemap - we can still write here
       console.log(`  Directory exists, can write to: ${sitemapPath}`);
       writeLocations.push(sitemapPath);
     } else {
@@ -80,35 +80,71 @@ function findSitemapLocations() {
 }
 
 /**
- * Get lastmod date by parsing the Vocs-generated HTML file.
- * Vocs embeds a <time datetime="..."> in the footer with the git commit timestamp.
- * This ensures the sitemap date matches what users see on the page.
- * Returns { date, found } where found indicates if date was extracted from HTML.
+ * Parse the Vocs JS bundle to extract lastUpdatedAt timestamps for all routes.
+ * Vocs embeds route data: path:"/route",type:"mdx",...,lastUpdatedAt:1234567890
+ * Returns a Map of path -> date string (YYYY-MM-DD)
  */
-function getLastModFromHtml(distDir, link) {
-  const htmlPath = path.join(distDir, link, 'index.html');
-  const fallbackDate = new Date().toISOString().split('T')[0];
+function parseTimestampsFromBundle(distDir) {
+  const assetsDir = path.join(distDir, 'assets');
+  const timestampMap = new Map();
 
-  if (!fs.existsSync(htmlPath)) {
-    return { date: fallbackDate, found: false, reason: 'file_not_found' };
+  if (!fs.existsSync(assetsDir)) {
+    console.log('  Assets directory not found, cannot parse JS bundle');
+    return timestampMap;
   }
 
-  try {
-    const html = fs.readFileSync(htmlPath, 'utf8');
-    const match = html.match(/<time datetime="([^"]+)"/);
+  const jsFiles = fs.readdirSync(assetsDir).filter((f) => f.endsWith('.js'));
 
-    if (match) {
-      return { date: match[1].split('T')[0], found: true };
+  for (const jsFile of jsFiles) {
+    const jsPath = path.join(assetsDir, jsFile);
+    const content = fs.readFileSync(jsPath, 'utf8');
+
+    if (!content.includes('lastUpdatedAt')) continue;
+
+    console.log(`  Parsing routes from: ${jsFile}`);
+
+    // Match: path:"/route",...,lastUpdatedAt:1234567890 (may use scientific notation e3)
+    const routePattern = /path:"([^"]+)"[^}]*?lastUpdatedAt:(\d+(?:e\d+)?)/g;
+    let match;
+
+    while ((match = routePattern.exec(content)) !== null) {
+      const routePath = match[1];
+      const rawTimestamp = parseFloat(match[2]);
+
+      // Skip .html duplicates (Vocs generates both /path and /path.html)
+      if (routePath.endsWith('.html')) continue;
+
+      // Convert to milliseconds if needed
+      const timestampMs = rawTimestamp < 1e10 ? rawTimestamp * 1000 : rawTimestamp;
+      const date = new Date(timestampMs);
+      const dateStr = date.toISOString().split('T')[0];
+
+      if (rawTimestamp > 0 && !isNaN(date.getTime())) {
+        timestampMap.set(routePath, dateStr);
+      }
     }
-    return { date: fallbackDate, found: false, reason: 'no_time_element' };
-  } catch (err) {
-    return { date: fallbackDate, found: false, reason: `error: ${err.message}` };
   }
+
+  return timestampMap;
 }
 
 /**
- * Parse vocs.config.ts and extract all sidebar links
- * On main branch, excludes items with dev: true
+ * Get lastmod date for a link from the timestamp map.
+ * Falls back to today's date if not found.
+ */
+function getLastModFromBundle(timestampMap, link) {
+  const fallbackDate = new Date().toISOString().split('T')[0];
+
+  if (timestampMap.has(link)) {
+    return { date: timestampMap.get(link), found: true };
+  }
+
+  return { date: fallbackDate, found: false, reason: 'not_in_bundle' };
+}
+
+/**
+ * Parse vocs.config.ts and extract all sidebar links.
+ * On main branch, excludes items with dev: true.
  */
 function extractSidebarLinks(isMainBranch) {
   if (!fs.existsSync(vocsConfigPath)) {
@@ -127,13 +163,16 @@ function extractSidebarLinks(isMainBranch) {
     if (linkMatch) {
       const link = linkMatch[2];
 
+      // Skip external URLs (social links, etc.)
+      if (link.startsWith('http://') || link.startsWith('https://')) {
+        continue;
+      }
+
       // Check for dev: true on the same line
       const hasDevOnLine = line.includes('dev:') && line.includes('true');
 
-      // Also check parent context (look back for dev: true in containing object)
+      // Check parent context for dev: true
       let hasDevInParent = false;
-
-      // Look back up to 10 lines for an opening brace that might have dev: true
       let braceDepth = 0;
       for (let j = i; j >= Math.max(0, i - 10); j--) {
         const checkLine = lines[j];
@@ -148,9 +187,7 @@ function extractSidebarLinks(isMainBranch) {
         }
       }
 
-      const hasDev = hasDevOnLine || hasDevInParent;
-
-      if (isMainBranch && hasDev) {
+      if (isMainBranch && (hasDevOnLine || hasDevInParent)) {
         console.log(`  Skipping dev page: ${link}`);
         continue;
       }
@@ -164,18 +201,16 @@ function extractSidebarLinks(isMainBranch) {
 
 /**
  * Generate XML sitemap content
- * @param {Array} urls - Array of {loc, lastmod} objects
- * @param {string} writtenFrom - Path where this sitemap was written (for debugging)
  */
 function generateSitemapXml(urls, writtenFrom) {
   const urlEntries = urls
-    .map(({ loc, lastmod }) => {
-      return `  <url>
+    .map(
+      ({ loc, lastmod }) => `  <url>
     <loc>${escapeXml(loc)}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
-  </url>`;
-    })
+  </url>`
+    )
     .join('\n');
 
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -187,7 +222,6 @@ ${urlEntries}
 
 /**
  * Generate empty sitemap for dev branch
- * @param {string} writtenFrom - Path where this sitemap was written (for debugging)
  */
 function generateEmptySitemap(writtenFrom) {
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -197,9 +231,8 @@ function generateEmptySitemap(writtenFrom) {
 }
 
 async function main() {
-  // Only run on Cloudflare Pages deployments (skip local builds and Vercel PR previews)
   if (!process.env.CF_PAGES) {
-    console.log('Skipping sitemap generation: not running on Cloudflare Pages (local build or Vercel preview)');
+    console.log('Skipping sitemap generation: not running on Cloudflare Pages');
     return;
   }
 
@@ -208,7 +241,6 @@ async function main() {
   const isMainBranch = process.env.CF_PAGES_BRANCH === 'main';
   console.log(`Branch: ${isMainBranch ? 'main (.org)' : 'develop (.dev)'}`);
 
-  // Find all locations where sitemap.xml should be written
   const { distDir, writeLocations } = findSitemapLocations();
 
   if (writeLocations.length === 0) {
@@ -221,12 +253,15 @@ async function main() {
     process.exit(1);
   }
 
-  // Prepare URLs once (only for main branch)
   let urls = [];
   if (!isMainBranch) {
     console.log('Generating empty sitemap for dev branch');
   } else {
     console.log('Generating sitemap for main branch...');
+
+    console.log('Parsing lastUpdatedAt timestamps from JS bundle...');
+    const timestampMap = parseTimestampsFromBundle(distDir);
+    console.log(`  Found ${timestampMap.size} timestamps in bundle`);
 
     const links = extractSidebarLinks(true);
     console.log(`Found ${links.length} pages in sidebar`);
@@ -236,7 +271,7 @@ async function main() {
     const fallbackReasons = {};
 
     for (const link of links) {
-      const { date, found, reason } = getLastModFromHtml(distDir, link);
+      const { date, found, reason } = getLastModFromBundle(timestampMap, link);
 
       if (found) {
         datesFound++;
@@ -252,13 +287,12 @@ async function main() {
     }
 
     console.log(`Generated sitemap with ${urls.length} URLs`);
-    console.log(`  Dates from HTML: ${datesFound}, Fallback to today: ${datesFallback}`);
+    console.log(`  Dates from JS bundle: ${datesFound}, Fallback to today: ${datesFallback}`);
     if (datesFallback > 0) {
       console.log(`  Fallback reasons: ${JSON.stringify(fallbackReasons)}`);
     }
   }
 
-  // Write to all found locations (each with its own path in the XML comment)
   for (const sitemapPath of writeLocations) {
     try {
       const sitemapContent = isMainBranch
