@@ -37,6 +37,18 @@ const candidateDirs = [
 const MAIN_SITE_URL = 'https://frameworks.securityalliance.org';
 
 /**
+ * Escape special XML characters in URLs
+ */
+function escapeXml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+/**
  * Find sitemap.xml in candidate directories
  */
 function findSitemapLocations() {
@@ -157,7 +169,7 @@ function generateSitemapXml(urls) {
   const urlEntries = urls
     .map(({ loc, lastmod }) => {
       return `  <url>
-    <loc>${loc}</loc>
+    <loc>${escapeXml(loc)}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
   </url>`;
