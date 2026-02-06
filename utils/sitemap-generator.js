@@ -25,12 +25,12 @@ const path = require('path');
 const workspaceRoot = process.cwd();
 const vocsConfigPath = path.join(workspaceRoot, 'vocs.config.ts');
 
-// Candidate output directories (same as searchbar-indexing.js)
+// Candidate output directories - ordered by priority (docs/dist is the actual Vocs output on CF Pages)
 const candidateDirs = [
+  path.join(workspaceRoot, 'docs', 'dist'), // Primary: Vocs build output
   path.join(workspaceRoot, 'dist'),
   path.join(workspaceRoot, '.vercel', 'output', 'static'),
   '/vercel/path0/docs/dist',
-  path.join(workspaceRoot, 'docs', 'dist'),
 ];
 
 const MAIN_SITE_URL = 'https://frameworks.securityalliance.org';
@@ -83,13 +83,14 @@ function findSitemapLocations() {
  * Get lastmod date by parsing the Vocs-generated HTML file.
  * Vocs embeds a <time datetime="..."> in the footer with the git commit timestamp.
  * This ensures the sitemap date matches what users see on the page.
+ * Returns { date, found } where found indicates if date was extracted from HTML.
  */
 function getLastModFromHtml(distDir, link) {
   const htmlPath = path.join(distDir, link, 'index.html');
+  const fallbackDate = new Date().toISOString().split('T')[0];
 
   if (!fs.existsSync(htmlPath)) {
-    console.log(`  HTML not found: ${htmlPath}`);
-    return new Date().toISOString().split('T')[0];
+    return { date: fallbackDate, found: false, reason: 'file_not_found' };
   }
 
   try {
@@ -97,13 +98,12 @@ function getLastModFromHtml(distDir, link) {
     const match = html.match(/<time datetime="([^"]+)"/);
 
     if (match) {
-      return match[1].split('T')[0]; // "2026-02-02T16:01:40.000Z" → "2026-02-02"
+      return { date: match[1].split('T')[0], found: true };
     }
+    return { date: fallbackDate, found: false, reason: 'no_time_element' };
   } catch (err) {
-    console.log(`  Error reading ${htmlPath}: ${err.message}`);
+    return { date: fallbackDate, found: false, reason: `error: ${err.message}` };
   }
-
-  return new Date().toISOString().split('T')[0];
 }
 
 /**
@@ -231,16 +231,31 @@ async function main() {
     const links = extractSidebarLinks(true);
     console.log(`Found ${links.length} pages in sidebar`);
 
+    let datesFound = 0;
+    let datesFallback = 0;
+    const fallbackReasons = {};
+
     for (const link of links) {
-      const lastmod = getLastModFromHtml(distDir, link);
+      const { date, found, reason } = getLastModFromHtml(distDir, link);
+
+      if (found) {
+        datesFound++;
+      } else {
+        datesFallback++;
+        fallbackReasons[reason] = (fallbackReasons[reason] || 0) + 1;
+      }
 
       urls.push({
         loc: `${MAIN_SITE_URL}${link}`,
-        lastmod,
+        lastmod: date,
       });
     }
 
     console.log(`Generated sitemap with ${urls.length} URLs`);
+    console.log(`  Dates from HTML: ${datesFound}, Fallback to today: ${datesFallback}`);
+    if (datesFallback > 0) {
+      console.log(`  Fallback reasons: ${JSON.stringify(fallbackReasons)}`);
+    }
   }
 
   // Write to all found locations (each with its own path in the XML comment)
