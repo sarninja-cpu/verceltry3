@@ -49,27 +49,34 @@ function escapeXml(str) {
 
 /**
  * Find sitemap.xml in candidate directories
+ * Returns { distDir, writeLocations } where distDir is the actual build output directory
  */
 function findSitemapLocations() {
-  const locations = [];
+  const writeLocations = [];
+  let distDir = null;
 
   for (const dir of candidateDirs) {
     const sitemapPath = path.join(dir, 'sitemap.xml');
     console.log(`Checking: ${sitemapPath}`);
 
     if (fs.existsSync(sitemapPath)) {
+      // Found actual sitemap.xml - this is the real build output directory
       console.log(`  Found sitemap.xml at: ${sitemapPath}`);
-      locations.push(sitemapPath);
+      writeLocations.push(sitemapPath);
+      if (!distDir) {
+        distDir = dir;
+        console.log(`  Using as HTML source directory: ${distDir}`);
+      }
     } else if (fs.existsSync(dir)) {
-      // Directory exists but no sitemap - we can create one here
+      // Directory exists but no sitemap - we can still write here
       console.log(`  Directory exists, can write to: ${sitemapPath}`);
-      locations.push(sitemapPath);
+      writeLocations.push(sitemapPath);
     } else {
       console.log(`  Directory not found: ${dir}`);
     }
   }
 
-  return locations;
+  return { distDir, writeLocations };
 }
 
 /**
@@ -202,10 +209,15 @@ async function main() {
   console.log(`Branch: ${isMainBranch ? 'main (.org)' : 'develop (.dev)'}`);
 
   // Find all locations where sitemap.xml should be written
-  const sitemapLocations = findSitemapLocations();
+  const { distDir, writeLocations } = findSitemapLocations();
 
-  if (sitemapLocations.length === 0) {
+  if (writeLocations.length === 0) {
     console.error('No output directories found for sitemap.xml');
+    process.exit(1);
+  }
+
+  if (!distDir) {
+    console.error('No sitemap.xml placeholder found in any candidate directory');
     process.exit(1);
   }
 
@@ -218,9 +230,6 @@ async function main() {
 
     const links = extractSidebarLinks(true);
     console.log(`Found ${links.length} pages in sidebar`);
-
-    // Use the first sitemap location's directory as the dist directory
-    const distDir = path.dirname(sitemapLocations[0]);
 
     for (const link of links) {
       const lastmod = getLastModFromHtml(distDir, link);
@@ -235,7 +244,7 @@ async function main() {
   }
 
   // Write to all found locations (each with its own path in the XML comment)
-  for (const sitemapPath of sitemapLocations) {
+  for (const sitemapPath of writeLocations) {
     try {
       const sitemapContent = isMainBranch
         ? generateSitemapXml(urls, sitemapPath)
