@@ -1,7 +1,7 @@
 name: Sidebar Config Reminder
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, synchronize]
     branches:
       - develop
@@ -22,7 +22,8 @@ jobs:
             const sanitizeFilename = (str) => {
               if (typeof str !== 'string') return '';
               return str
-                .replace(/[`\[\]()\\<>|_*~#]/g, '\\$&')
+                .replace(/`/g, '')
+                .replace(/[\[\]()\\<>|_*~#]/g, '\\$&')
                 .replace(/[\n\r]/g, ' ')
                 .slice(0, 255);
             };
