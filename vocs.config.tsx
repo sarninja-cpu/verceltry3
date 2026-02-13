@@ -5,7 +5,6 @@ const CANONICAL_BASE = 'https://frameworks.securityalliance.org'
 const isMainBranch = process.env.CF_PAGES_BRANCH === 'main' || process.env.VERCEL_GIT_COMMIT_REF === 'main'
 
 const config = {
-  baseUrl: CANONICAL_BASE,
   head({ path }: { path: string }) {
     const cleanPath = path.replace(/\/index\.html$/, '').replace(/\.html$/, '').replace(/\/$/, '')
     const canonicalUrl = `${CANONICAL_BASE}${cleanPath || '/'}`
