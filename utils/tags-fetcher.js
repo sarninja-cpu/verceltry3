@@ -10,7 +10,7 @@ const path = require('path');
 
 const workspaceRoot = process.cwd();
 const pagesDir = path.join(workspaceRoot, 'docs', 'pages');
-const vocsConfigPath = path.join(workspaceRoot, 'vocs.config.ts');
+const vocsConfigPath = path.join(workspaceRoot, 'vocs.config.tsx');
 
 // Simple frontmatter parser
 function parseFrontmatter(filePath) {
@@ -101,7 +101,7 @@ function extractUrlSegment(link) {
 // Extract allowed routes from sidebar config
 function getAllowedRoutes() {
   // Check if we're on main branch
-  const isMainBranch = process.env.VERCEL_GIT_COMMIT_REF === 'main';
+  const isMainBranch = process.env.CF_PAGES_BRANCH === 'main';
   console.log(`Branch check: ${isMainBranch ? 'main (filtering dev: true pages)' : 'develop (including all pages)'}`);
 
   let allowedRoutes = undefined;
@@ -142,7 +142,7 @@ function getAllowedRoutes() {
       
       if (routes.size > 0) allowedRoutes = routes;
     } catch (e) {
-      console.warn('Failed to parse vocs.config.ts:', e.message);
+      console.warn('Failed to parse vocs.config.tsx:', e.message);
     }
   }
 
@@ -202,7 +202,7 @@ function getAllTagsFromMDX(docsDir) {
   return { allTags: Array.from(tags).sort(), pageTagsMap };
 }
 
-// Extract section mappings from vocs.config.ts
+// Extract section mappings from vocs.config.tsx
 function extractSectionMappings() {
   try {
     const vocsConfigContent = fs.readFileSync(vocsConfigPath, 'utf-8');
@@ -267,7 +267,7 @@ function extractSectionMappings() {
     return sectionMappings;
     
   } catch (error) {
-    console.warn('Failed to extract section mappings from vocs.config.ts:', error);
+    console.warn('Failed to extract section mappings from vocs.config.tsx:', error);
     return {};
   }
 }

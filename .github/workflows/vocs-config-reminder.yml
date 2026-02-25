@@ -22,10 +22,11 @@ jobs:
             const sanitizeFilename = (str) => {
               if (typeof str !== 'string') return '';
               return str
-                .replace(/`/g, '')
-                .replace(/[\x00-\x1f\x7f]/g, '')
+                .replace(/[`\[\]()\\<>|_*~#]/g, '\\$&')
+                .replace(/[\n\r]/g, ' ')
                 .replace(/[\u200b-\u200f\u202a-\u202e\u2060\ufeff]/g, '')
                 .slice(0, 255);
+
             };
 
             // Allowed file statuses
@@ -143,7 +144,7 @@ jobs:
             Please ensure that:
             - [ ] The sidebar in \`vocs.config.ts\` has been updated to include these files
             - [ ] New content has the \`dev: true\` parameter so it's marked as under development
-            - [ ] Links in the sidebar match the file paths (check in the preview deployment)
+            - [ ] Sidebar links match the file paths - use the preview deployment to verify
 
             See [Contributing Guide – Sidebar & Navigation](https://frameworks.securityalliance.org/contribute/contributing/#3-sidebar--navigation) for more details.
 

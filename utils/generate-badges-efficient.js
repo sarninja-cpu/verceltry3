@@ -359,11 +359,11 @@ function generateBadges(username, activity, existingBadges = []) {
         new Date(a.merged_at) - new Date(b.merged_at)
     );
 
-    if (prCount >= 1) {
+    if (prCount >= 1 || activity.issues.length >= 1) {
         badges.push({
             name: 'First-Contribution',
             assigned: existingBadgeDates['First-Contribution'] ||
-                formatDate(sortedPRs[0]?.merged_at) || today
+                formatDate(activity.firstContribution) || today
         });
     }
     if (prCount >= 5) {
@@ -458,6 +458,16 @@ function generateBadges(username, activity, existingBadges = []) {
         }
     }
 
+    // Preserve any existing milestone badges that weren't regenerated
+    // (e.g., manually assigned Early-Contributor, or badges from incomplete API data)
+    for (const badge of existingBadges) {
+        if (!ROLE_BADGES.has(badge.name) && !ACTIVITY_BADGES.has(badge.name)) {
+            if (!badges.find(b => b.name === badge.name)) {
+                badges.push(badge);
+            }
+        }
+    }
+
     // === ACTIVITY BADGES (time-based, always recalculated) ===
 
     // New-Joiner: first contribution/review was within the last 2 weeks (14 days)
@@ -467,7 +477,7 @@ function generateBadges(username, activity, existingBadges = []) {
         if (daysSinceFirst !== null && daysSinceFirst <= 14) {
             badges.push({
                 name: 'New-Joiner',
-                assigned: today
+                lastActive: formatDate(firstActivityDate)
             });
         }
     }
@@ -475,23 +485,24 @@ function generateBadges(username, activity, existingBadges = []) {
     // Activity status badges (mutually exclusive)
     if (activity.lastActivity) {
         const daysSinceLast = daysBetween(activity.lastActivity);
+        const lastActiveDate = formatDate(activity.lastActivity);
 
         if (daysSinceLast !== null) {
             if (daysSinceLast <= 7) {
                 badges.push({
                     name: 'Active-Last-7d',
-                    assigned: today
+                    lastActive: lastActiveDate
                 });
             } else if (daysSinceLast <= 30) {
                 badges.push({
                     name: 'Active-Last-30d',
-                    assigned: today
+                    lastActive: lastActiveDate
                 });
             } else if (daysSinceLast > 90) {
                 // Dormant: 90+ days since last contribution or review
                 badges.push({
                     name: 'Dormant-90d+',
-                    assigned: today
+                    lastActive: lastActiveDate
                 });
             }
         }
@@ -554,12 +565,26 @@ async function main() {
 
         // Process each contributor with activity
         for (const [username, activity] of Object.entries(contributorActivity)) {
-            const slug = githubUsernameToSlug[username];
+            let slug = githubUsernameToSlug[username];
 
             if (!slug) {
-                console.log(`   ℹ️  Skipping ${username} (not in contributors database)`);
-                skippedCount++;
-                continue;
+                // Auto-add new contributors not yet in the database
+                slug = username;
+                contributorsData[slug] = {
+                    slug: slug,
+                    name: username,
+                    avatar: `https://avatars.githubusercontent.com/${username}`,
+                    github: `https://github.com/${username}`,
+                    twitter: null,
+                    website: null,
+                    company: null,
+                    job_title: null,
+                    role: 'contributor',
+                    description: 'Frameworks Contributor',
+                    badges: []
+                };
+                githubUsernameToSlug[username] = slug;
+                console.log(`   🆕 Auto-added new contributor: ${username}`);
             }
 
             const contributor = contributorsData[slug];
