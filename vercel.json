@@ -4,7 +4,7 @@
   "rewrites": [
     {
       "source": "/:match*",
-      "destination": "/:match/overview"
+      "destination": "/:match/overview" 
     }
   ]
 }
