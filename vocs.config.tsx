@@ -12,7 +12,7 @@ const config = {
     return <link rel="canonical" href={canonicalUrl} />
   },
   vite: {
-    define: {
+    define: { 
       __IS_MAIN_BRANCH__: JSON.stringify(isMainBranch)
     }
   },
