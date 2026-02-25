@@ -9,7 +9,7 @@
  * - Activity Badges: Auto-generated time-based status
  *
  * Required GitHub Token Permissions:
- * - public_repo (read-only access to public repositories)
+ * - public_repo (read-only access to public repositories) 
  * - OR no special scopes if repo is public (just basic read access)
  */
 
